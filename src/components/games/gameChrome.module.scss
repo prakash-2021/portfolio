@@ -1,0 +1,69 @@
+/* Shared chrome for mini games — keep side column width consistent */
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 220px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  color: var(--muted);
+}
+
+.scoreRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+}
+
+.score {
+  font-variant-numeric: tabular-nums;
+}
+
+.restart {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  transition: opacity 0.15s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .restart:hover {
+    opacity: 0.75;
+  }
+}
+
+.hint {
+  font-size: 0.625rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  /* Reserve space so status text doesn’t resize the column */
+  min-height: 2.8em;
+}
+
+.board {
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #0a0a0a;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  overflow: hidden;
+}

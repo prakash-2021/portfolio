@@ -1,0 +1,47 @@
+.padWrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 200px;
+}
+
+.pad {
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: filter 0.1s ease, box-shadow 0.1s ease, transform 0.08s ease;
+}
+
+.pad:disabled {
+  cursor: default;
+}
+
+.p0 {
+  background: #1a3d1a;
+}
+
+.p1 {
+  background: #3d2a1a;
+}
+
+.p2 {
+  background: #1a2a3d;
+}
+
+.p3 {
+  background: #3d1a2a;
+}
+
+.padActive {
+  filter: brightness(1.45) saturate(1.2);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 35%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pad:not(:disabled):hover {
+    filter: brightness(1.12);
+  }
+}

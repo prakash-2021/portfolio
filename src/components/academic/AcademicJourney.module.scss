@@ -1,0 +1,164 @@
+.academicJourney {
+  width: 100%;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0; // items manage their own spacing via the line
+}
+
+/* Each row: dot column + content column */
+.academicItem {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 1.25rem;
+  padding-bottom: 2.75rem;
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 22px 1fr;
+    gap: 1rem;
+    padding-bottom: 2rem;
+  }
+}
+
+/* Dot + vertical line */
+.indexCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(217, 255, 0, 0.45);
+  flex-shrink: 0;
+}
+
+.line {
+  flex: 1;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgba(217, 255, 0, 0.25),
+    rgba(217, 255, 0, 0.05)
+  );
+  margin-top: 6px;
+}
+
+/* Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.college {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fg);
+  line-height: 1.3;
+}
+
+.university {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  opacity: 0.75;
+  letter-spacing: 0.02em;
+}
+
+.stream {
+  font-size: 0.875rem;
+  color: var(--muted);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Marks badge */
+.marksBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 255, 0, 0.22);
+  background: rgba(217, 255, 0, 0.07);
+  width: fit-content;
+}
+
+.marksLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.marksValue {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Achievements */
+.achievements {
+  margin-top: 0.75rem;
+}
+
+.achieveTitle {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  margin-bottom: 0.55rem;
+}
+
+.achievements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.achievements li {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.5;
+  padding-left: 1rem;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+}
