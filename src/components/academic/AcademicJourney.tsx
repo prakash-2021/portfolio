@@ -6,7 +6,7 @@ import styles from "./AcademicJourney.module.scss";
 const academicData = [
   {
     id: 1,
-    college: "The British College",
+    college: "Herald College Kathmandu",
     university: "University of Wolverhampton",
     stream: "BSc (Hons) in Information Technology",
     marks: "First Class Honors",
@@ -24,7 +24,7 @@ const academicData = [
     marks: "Distinction",
     achievements: [
       "Received scholarship as topper of the entrance examination",
-      "Ranked topper in selected semesters at Coherent Institute",
+      "Ranked topper in selected semesters",
       "Built strong foundations in programming, networking, and computer systems",
     ],
   },

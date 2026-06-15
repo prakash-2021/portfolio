@@ -6,19 +6,19 @@ import styles from "./ProfessionalExperience.module.scss";
 const experienceData = [
   {
     id: 1,
-    jobTitle: "Full Stack Engineer",
-    company: "Ottr Technology",
-    timePeriod: "Sep 2022 – Present",
+    jobTitle: "Full Stack Developer",
+    company: "Ottr Technology (Kathmandu)",
+    timePeriod: "Sep, 2022 - May, 2026",
     description:
-      "Developing scalable full-stack web applications using Next.js, NestJS, React, Node.js, and PostgreSQL. Focused on building responsive user interfaces, optimizing application performance, designing APIs, and delivering maintainable solutions aligned with business goals.",
+      "Contributed as a developer and code reviewer across 20+ client projects, building scalable full-stack web applications using Next.js, React.js, NestJS, and PostgreSQL. Conducted code reviews to maintain code quality, consistency, and adherence to best practices across the team. Developed responsive, high-performance user interfaces, with delivered projects achieving Lighthouse performance scores of 90+. Collaborated with cross-functional teams to deliver and deploy production-ready software solutions for both Nepali and international clients.",
   },
   {
     id: 2,
-    jobTitle: "Lead Front-End Engineer",
-    company: "AsterGaze Technologies",
-    timePeriod: "Sep 2024 – Feb 2025",
+    jobTitle: "Lead Frontend Developer",
+    company: "Astergaze Technologies",
+    timePeriod: "Sep, 2024 - Feb, 2025",
     description:
-      "Led frontend architecture and development for modern web applications, building interactive user interfaces with advanced animations and scalable component systems using React and TypeScript.",
+      "Directed frontend architecture and development decisions as a part-time Lead Frontend Developer. Designed and engineered dynamic, responsive UI components utilizing modern design practices. Integrated smooth animations to create highly engaging user interfaces while enforcing stringent performance, quality, and consistency standards across all frontend systems.",
   },
   {
     id: 3,

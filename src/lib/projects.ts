@@ -18,7 +18,7 @@ export const projects: Project[] = [
     tagline:
       "Full-stack business management platform with CI/CD pipeline, deployment automation, and scalable architecture.",
     description:
-      "Developed a complete production-grade management system for a UK-based client. The project included full-stack development along with DevOps responsibilities such as CI/CD setup, deployment automation, and server configuration. Focused on scalability, performance, and smooth user experience.",
+      "Developed a complete production-grade management system for a UK-based company, achieving a 100 Lighthouse performance score. The project included full-stack development along with DevOps responsibilities such as CI/CD setup, deployment automation, and server configuration. Focused on scalability, performance, and smooth user experience.",
     image: "/projects/invictakent.png",
     heroGradient:
       "linear-gradient(135deg, rgba(217, 255, 0, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
