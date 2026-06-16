@@ -108,12 +108,14 @@ export default function VerticalPortfolio() {
             </div>
 
             {/* Mobile Hamburger Button */}
-            <button 
+            <button
               className={styles.hamburgerBtn}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
-              <div className={`${styles.hamburgerIcon} ${isMobileMenuOpen ? styles.open : ""}`}>
+              <div
+                className={`${styles.hamburgerIcon} ${isMobileMenuOpen ? styles.open : ""}`}
+              >
                 <span></span>
                 <span></span>
                 <span></span>
@@ -123,7 +125,9 @@ export default function VerticalPortfolio() {
         </nav>
 
         {/* Mobile Menu Overlay */}
-        <div className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.open : ""}`}>
+        <div
+          className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.open : ""}`}
+        >
           <div className={styles.mobileMenuLinks}>
             {sections.map((section, index) => (
               <a
@@ -133,7 +137,9 @@ export default function VerticalPortfolio() {
                 data-active={activeSection === index ? "true" : "false"}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <span className={styles.mobileNavNumber}>{pad2(index + 1)}</span>
+                <span className={styles.mobileNavNumber}>
+                  {pad2(index + 1)}
+                </span>
                 {section.label}
               </a>
             ))}
@@ -205,21 +211,29 @@ export default function VerticalPortfolio() {
                       <div className={styles.techGrid}>
                         {[
                           "Next.js",
-                          "React",
-                          "NestJS",
-                          "Node.js",
+                          "React.js",
                           "TypeScript",
-                          "PostgreSQL",
-                          "MySQL",
-                          "Docker",
-                          "Prisma",
-                          "Redis",
                           "Tailwind",
+                          "SASS",
+                          "Web Animation",
+                          "Three.js",
+                          "GSAP",
+                          "Node.js",
+                          "NestJS",
+                          "Express",
                           "REST APIs",
                           "WebSockets",
-                          "Web Animation",
-                          "System Design & Architecture",
-                          "AI Integration & Automation",
+                          "Swagger",
+                          "PostgreSQL",
+                          "MySQL",
+                          "MongoDB",
+                          "Prisma",
+                          "Strapi",
+                          "Directus",
+                          "Docker",
+                          "Git",
+                          "CI/CD",
+                          "Jira",
                         ].map((tech, i) => (
                           <div
                             key={i}
@@ -255,10 +269,10 @@ export default function VerticalPortfolio() {
                             </span>
                             <div className={styles.aiGrid}>
                               {[
-                                { icon: "🤖", name: "GitHub Copilot" },
-                                { icon: "💬", name: "ChatGPT" },
-                                { icon: "🖱️", name: "Cursor" },
                                 { icon: "🦙", name: "Claude Code" },
+                                { icon: "🖱️", name: "Cursor" },
+                                { icon: "🚀", name: "Antigravity" },
+                                { icon: "🤖", name: "GitHub Copilot" },
                               ].map((tool, i) => (
                                 <div
                                   key={i}

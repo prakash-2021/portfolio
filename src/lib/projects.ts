@@ -42,7 +42,7 @@ export const projects: Project[] = [
     tagline:
       "Full-stack travel and trekking platform with dynamic content management and booking features.",
     description:
-      "Built a modern travel and trekking website enabling users to explore packages, itineraries, and travel details. Worked on both frontend and backend systems, ensuring fast performance and SEO optimization for better visibility.",
+      "Built a modern travel and trekking website enabling users to explore packages, itineraries, and travel details. Worked across both frontend and backend, implementing REST APIs and a CMS dashboard for efficient content management. Added localization support for multi-language accessibility and optimized the platform for performance and SEO to improve visibility and user experience.",
     image: "/projects/achievetrek.png",
     heroGradient:
       "linear-gradient(135deg, rgba(100, 190, 255, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
@@ -87,7 +87,7 @@ export const projects: Project[] = [
     tagline:
       "Dynamic website with seamless animations and captivating effects.",
     description:
-      "Created dynamic websites using Next.js, incorporating cutting-edge tools like Three.js and GSAP for seamless animations and captivating effects, enhancing the overall user experience.",
+      "Created a dynamic website using Next.js, Three.js, and GSAP, implementing 3D scroll animations, smooth page transitions, and interactive visual effects. Achieved a 90 Lighthouse performance score while delivering a visually rich and engaging user experience.",
     image: "/projects/cutsandcoffee.png",
     heroGradient:
       "linear-gradient(135deg, rgba(200, 150, 100, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
@@ -161,7 +161,7 @@ export const projects: Project[] = [
     tagline:
       "Event-based cultural website with dynamic content and animations.",
     description:
-      "Developed a visually engaging website for cultural/event presentation. Focused heavily on SEO, smooth UI interactions, and responsive design for better engagement.",
+      "Developed a visually engaging website for cultural/event presentation, achieving a 93 Lighthouse performance score. Focused heavily on SEO, smooth UI interactions, and responsive design for better engagement.",
     image: "/projects/biskajatra.png",
     heroGradient:
       "linear-gradient(135deg, rgba(255, 200, 100, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
