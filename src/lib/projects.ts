@@ -42,7 +42,7 @@ export const projects: Project[] = [
     tagline:
       "Full-stack travel and trekking platform with dynamic content management and booking features.",
     description:
-      "Built a modern travel and trekking website enabling users to explore packages, itineraries, and travel details. Worked across both frontend and backend, implementing REST APIs and a CMS dashboard for efficient content management. Added localization support for multi-language accessibility and optimized the platform for performance and SEO to improve visibility and user experience.",
+      "Built a modern travel and trekking website enabling users to explore packages, itineraries, and travel details. Worked across both frontend and backend, implementing REST APIs and a CMS dashboard for efficient content management. Added localization support for multi-language accessibility and optimized the platform for performance and SEO to improve visibility and user experience. Developed as an Ottr Technology employee.",
     image: "/projects/achievetrek.png",
     heroGradient:
       "linear-gradient(135deg, rgba(100, 190, 255, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
@@ -60,26 +60,25 @@ export const projects: Project[] = [
     link: "https://www.achievetreks.com/en",
   },
   {
-    slug: "csse-australia",
-    title: "CSSE Australia",
+    slug: "orgyen-ling",
+    title: "Orgyen Ling",
     tagline:
-      "Full-stack Catchmentship Simulation Solution with structured content management and responsive design.",
+      "Dynamic web platform with sophisticated GSAP animations and smooth interactions.",
     description:
-      "Developed a professional Catchmentship Simulation Solution focused on clean UI, content delivery, and performance optimization. Utilized Strapi for content management, ensuring smooth navigation, mobile responsiveness, and a scalable architecture.",
-    image: "/projects/CSS.png",
+      "Developed a modern, visually engaging web application leveraging Next.js and Directus. Focused on creating a rich user experience by integrating GSAP for fluid, high-performance animations and seamless page transitions. Utilized Directus REST APIs for scalable and dynamic content management. Added localization support for multi-language accessibility. Developed as an Ottr Technology employee.",
+    image: "/projects/orgyenling.png",
     heroGradient:
-      "linear-gradient(135deg, rgba(155, 120, 255, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
+      "linear-gradient(135deg, rgba(255, 100, 100, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
     role: "Full-Stack Developer",
-    year: "2023",
+    year: "2025",
     technologies: [
-      "React.js",
-      "Node.js",
-      "PostgreSQL",
-      "Strapi",
-      "Tailwind CSS",
+      "Next.js",
+      "Directus",
       "REST APIs",
+      "GSAP",
+      "Localization"
     ],
-    link: "https://csse.com.au",
+    link: "https://www.ogl.world/en",
   },
   {
     slug: "cuts-and-coffee",
@@ -87,7 +86,7 @@ export const projects: Project[] = [
     tagline:
       "Dynamic website with seamless animations and captivating effects.",
     description:
-      "Created a dynamic website using Next.js, Three.js, and GSAP, implementing 3D scroll animations, smooth page transitions, and interactive visual effects. Achieved a 90 Lighthouse performance score while delivering a visually rich and engaging user experience.",
+      "Created a dynamic website using Next.js, Three.js, and GSAP, implementing 3D scroll animations, smooth page transitions, and interactive visual effects. Achieved a 90 Lighthouse performance score while delivering a visually rich and engaging user experience. Developed as an Ottr Technology employee.",
     image: "/projects/cutsandcoffee.png",
     heroGradient:
       "linear-gradient(135deg, rgba(200, 150, 100, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
@@ -102,7 +101,7 @@ export const projects: Project[] = [
     tagline:
       "High-performing, dynamic website optimized for speed and responsiveness.",
     description:
-      "Created high-performing, dynamic websites using Next.js 12, optimizing for speed and responsiveness.",
+      "Created high-performing, dynamic websites using Next.js 12, optimizing for speed and responsiveness. Developed as an Ottr Technology employee.",
     image: "/projects/serangschool.png",
     heroGradient:
       "linear-gradient(135deg, rgba(100, 200, 150, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
@@ -115,9 +114,9 @@ export const projects: Project[] = [
     slug: "fyp-pet-haven",
     title: "FYP Pet Haven",
     tagline:
-      "Final year full-stack project: a pet adoption and management platform.",
+      "Final year full-stack project: a pet adoption and management platform with real-time chat.",
     description:
-      "Designed and developed a complete pet adoption system where users can browse pets, view details, and manage adoption requests. Built full backend logic, database design, and frontend UI from scratch.",
+      "Designed and developed a complete pet adoption system where users can browse pets, view details, and manage adoption requests. Built full backend logic, database design, and frontend UI from scratch. Also integrated a real-time chat system to facilitate direct communication.",
     image: "/projects/pethaven.png",
     heroGradient:
       "linear-gradient(135deg, rgba(255, 155, 120, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
@@ -126,42 +125,23 @@ export const projects: Project[] = [
     technologies: [
       "React.js",
       "Node.js",
+      "Koa.js",
       "Express",
       "PostgreSQL",
+      "Socket.io",
       "REST APIs",
       "JWT",
     ],
     link: "https://fyp-pethaven.netlify.app",
   },
-  {
-    slug: "sincere-travels",
-    title: "Sincere Travels",
-    tagline:
-      "Advanced travel booking platform with payment integration and Amadeus API integration.",
-    description:
-      "Built a production-grade travel booking system integrating Amadeus API for real-time flight data and booking services. Implemented secure payment gateway integration and handled end-to-end booking workflows.",
-    image: "/projects/sinceretravels.png",
-    heroGradient:
-      "linear-gradient(135deg, rgba(120, 255, 155, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",
-    role: "Full-Stack Developer",
-    year: "2024",
-    technologies: [
-      "React.js",
-      "Node.js",
-      "Amadeus API",
-      "PostgreSQL",
-      "REST APIs",
-      "JWT",
-    ],
-    link: "https://www.sinceretravels.com",
-  },
+
   {
     slug: "biskajatra",
     title: "Biskajatra",
     tagline:
       "Event-based cultural website with dynamic content and animations.",
     description:
-      "Developed a visually engaging website for cultural/event presentation, achieving a 93 Lighthouse performance score. Focused heavily on SEO, smooth UI interactions, and responsive design for better engagement.",
+      "Developed a visually engaging website for cultural/event presentation, achieving a 93 Lighthouse performance score. Focused heavily on SEO, smooth UI interactions, and responsive design for better engagement. Developed as an Ottr Technology employee.",
     image: "/projects/biskajatra.png",
     heroGradient:
       "linear-gradient(135deg, rgba(255, 200, 100, 0.4) 0%, rgba(5, 5, 5, 0) 100%)",

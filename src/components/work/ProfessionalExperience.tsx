@@ -10,7 +10,7 @@ const experienceData = [
     company: "Ottr Technology (Kathmandu)",
     timePeriod: "Sep, 2022 - May, 2026",
     description:
-      "Contributed as a developer and code reviewer across 20+ client projects, building scalable full-stack web applications using Next.js, React.js, NestJS, and PostgreSQL. Conducted code reviews to maintain code quality, consistency, and adherence to best practices across the team. Developed responsive, high-performance user interfaces, with delivered projects achieving Lighthouse performance scores of 90+. Collaborated with cross-functional teams to deliver and deploy production-ready software solutions for both Nepali and international clients.",
+      "Contributed as a developer and code reviewer across 16+ client projects, building scalable full-stack web applications using Next.js, React.js, NestJS, and PostgreSQL. Conducted code reviews to maintain code quality, consistency, and adherence to best practices across the team. Developed responsive, high-performance user interfaces, with delivered projects achieving Lighthouse performance scores of 90+. Collaborated with cross-functional teams to deliver and deploy production-ready software solutions for both Nepali and international clients.",
   },
   {
     id: 2,

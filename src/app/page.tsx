@@ -221,6 +221,7 @@ export default function VerticalPortfolio() {
                           "Node.js",
                           "NestJS",
                           "Express",
+                          "Koa.js",
                           "REST APIs",
                           "WebSockets",
                           "Swagger",
