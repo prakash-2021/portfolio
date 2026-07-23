@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "lenis/dist/lenis.css";
 import "@/styles/globals.scss";
 import { site } from "@/lib/site";
+import { LayoutClient } from "./layout-client";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,19 +20,17 @@ export const metadata: Metadata = {
     template: `%s — ${site.name}`,
   },
   description: site.description,
-  icons: {
-    icon: "/favicon.png",
-  },
+  icons: { icon: "/favicon.png" },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <LayoutClient>{children}</LayoutClient>
+      </body>
     </html>
   );
 }

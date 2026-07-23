@@ -1,0 +1,226 @@
+.hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ── Background layers ── */
+
+.blueprintGrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image:
+    linear-gradient(rgba(26,26,46,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,26,46,0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.halftoneBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.015;
+  background-image: radial-gradient(circle, #1a1a2e 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+
+/* ── Crop marks ── */
+
+.cropMark {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.06;
+}
+
+.cropMarkLine {
+  background: var(--color-ink);
+}
+
+/* ── Registration mark ── */
+
+.regMark {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.04;
+}
+
+.regCircle {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 0.5;
+}
+
+.regCross {
+  stroke: var(--color-ink);
+  stroke-width: 0.5;
+}
+
+/* ── Issue label ── */
+
+.issueLabel {
+  position: absolute;
+  pointer-events: none;
+  font-size: 0.4rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  opacity: 0.06;
+}
+
+/* ── Typography ── */
+
+.nameBlock {
+  position: relative;
+}
+
+.nameLetter {
+  display: inline-block;
+  position: relative;
+  will-change: transform;
+}
+
+/* ── ASH ember effect ── */
+
+.ashWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.ashGlow {
+  position: absolute;
+  inset: -4px -6px;
+  border-radius: 2px;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.ashLetter {
+  position: relative;
+  z-index: 1;
+}
+
+.ember {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #e63946;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.smoke {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(230,57,70,0.08);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.emberTrail {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(230,57,70,0.15);
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ── Sticky note ── */
+
+.stickyNote {
+  position: absolute;
+  pointer-events: none;
+  transform: rotate(2deg);
+  background: rgba(244,162,97,0.08);
+  border: 1px solid rgba(244,162,97,0.15);
+  padding: 0.4rem 0.5rem;
+  font-size: 0.45rem;
+  line-height: 1.3;
+  color: rgba(26,26,46,0.25);
+  font-style: italic;
+  max-width: 90px;
+}
+
+/* ── Editorial objects ── */
+
+.coffeeMug {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.06;
+}
+
+.pencil {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.05;
+}
+
+/* ── CTA ink effect ── */
+
+.ctaWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ctaUnderline {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 1.5px;
+  background: var(--color-red);
+  transform-origin: left;
+}
+
+.ctaInk {
+  position: absolute;
+  inset: -4px;
+  border: 1px solid rgba(230,57,70,0.08);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Dust particles ── */
+
+.dust {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--color-ink);
+  pointer-events: none;
+}
+
+/* ── Steam ── */
+
+.steam {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ── Bottom bar ── */
+
+.bottomBar {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.4rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  opacity: 0.04;
+}

@@ -1,0 +1,427 @@
+/* ─── Section ──────────────────────────────────────────── */
+
+.section {
+  position: relative;
+  padding: 6rem 2rem 7rem;
+  overflow: hidden;
+  background: #faf8f3;
+
+  @media (min-width: 640px) {
+    padding: 7rem 3rem 9rem;
+  }
+}
+
+/* ─── Background Decorations ──────────────────────────── */
+
+.blueprintBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: #1a1a2e;
+  opacity: 0.25;
+}
+
+.blueprintSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.halftoneOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.1;
+  background-image: radial-gradient(circle, #1a1a2e 0.8px, transparent 0.8px);
+  background-size: 7px 7px;
+}
+
+/* ─── Section Header ──────────────────────────────────── */
+
+.sectionHeader {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin-bottom: 3rem;
+
+  @media (min-width: 768px) {
+    margin-left: 2rem;
+  }
+}
+
+.sectionLabel {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #e63946;
+  margin-bottom: 0.75rem;
+}
+
+.sectionTitle {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: #1a1a2e;
+  margin-bottom: 0.75rem;
+}
+
+.sectionAccent {
+  color: #e63946;
+}
+
+.sectionDesc {
+  font-size: 0.95rem;
+  color: rgba(26, 26, 46, 0.5);
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+/* ─── Sticky Note ─────────────────────────────────────── */
+
+.noteSticky {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: #f4e4c1;
+  border: 1px solid rgba(26, 26, 46, 0.1);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgba(26, 26, 46, 0.5);
+  margin-bottom: 2.5rem;
+  margin-left: 0.5rem;
+  transform: rotate(-1deg);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.04);
+
+  @media (min-width: 768px) {
+    margin-left: 3rem;
+  }
+}
+
+.noteText {
+  position: relative;
+}
+
+/* ─── Panels Grid ─────────────────────────────────────── */
+
+.panelsGrid {
+  position: relative;
+  z-index: 1;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+
+  @media (min-width: 800px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ─── Category Panel ──────────────────────────────────── */
+
+.categoryPanel {
+  position: relative;
+  border: 2px solid var(--cat-color, #1a1a2e);
+  background: var(--cat-bg, rgba(26, 26, 46, 0.02));
+  padding: 2rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--cat-color, #1a1a2e) 8%, transparent);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 1px solid var(--cat-border, rgba(26, 26, 46, 0.08));
+    pointer-events: none;
+  }
+}
+
+/* ─── Folded Corner ───────────────────────────────────── */
+
+.cornerFold {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 32px 32px 0;
+  border-color: transparent;
+  z-index: 2;
+  filter: brightness(0.85);
+}
+
+/* ─── Tape ────────────────────────────────────────────── */
+
+.tape {
+  position: absolute;
+  top: -8px;
+  left: 20%;
+  width: 50px;
+  height: 18px;
+  background: rgba(244, 228, 193, 0.6);
+  border: 1px solid rgba(26, 26, 46, 0.06);
+  transform: rotate(-2deg);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ─── Panel Header ────────────────────────────────────── */
+
+.panelHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.panelLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.panelNumber {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(26, 26, 46, 0.2);
+}
+
+.panelCategory {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+.panelDesc {
+  font-size: 0.7rem;
+  color: rgba(26, 26, 46, 0.35);
+  font-style: italic;
+  text-align: right;
+  max-width: 180px;
+  line-height: 1.4;
+}
+
+/* ─── Logo Grid ───────────────────────────────────────── */
+
+.logoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+
+  @media (min-width: 400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 1000px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ─── Tool Logo ───────────────────────────────────────── */
+
+.toolLogo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.5rem;
+  border: 1px solid var(--cat-border, rgba(26, 26, 46, 0.08));
+  background: rgba(250, 248, 243, 0.5);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  text-align: center;
+
+  &:hover {
+    border-color: var(--cat-color, #1a1a2e);
+    background: #fff;
+    z-index: 2;
+  }
+}
+
+.toolLogoExpanded {
+  border-color: var(--cat-color, #1a1a2e);
+  background: #fff;
+}
+
+.logoIcon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoImg {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.logoFallback {
+  display: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--cat-color, #1a1a2e);
+}
+
+.logoName {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(26, 26, 46, 0.7);
+  line-height: 1.2;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logoExp {
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: rgba(26, 26, 46, 0.3);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Tool Detail (expanded) ──────────────────────────── */
+
+.toolDetail {
+  overflow: hidden;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--cat-border, rgba(26, 26, 46, 0.08));
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.25rem;
+}
+
+.detailSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.detailFull {
+  grid-column: 1 / -1;
+}
+
+.detailLabel {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 46, 0.3);
+}
+
+.detailValue {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(26, 26, 46, 0.7);
+}
+
+.detailFun {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: rgba(26, 26, 46, 0.55);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.confidenceBar {
+  width: 100%;
+  height: 8px;
+  background: rgba(26, 26, 46, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+
+.confidenceFill {
+  height: 100%;
+  background: var(--cat-color, #1a1a2e);
+  border-radius: 999px;
+}
+
+.projectTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.projectTag {
+  font-size: 0.65rem;
+  font-weight: 500;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--cat-border, rgba(26, 26, 46, 0.08));
+  color: rgba(26, 26, 46, 0.55);
+}
+
+/* ─── Annotation ──────────────────────────────────────── */
+
+.annotation {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(26, 26, 46, 0.15);
+  pointer-events: none;
+}
+
+/* ─── Halftone Corner ─────────────────────────────────── */
+
+.halftoneCorner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  opacity: 0.2;
+  background-image: radial-gradient(circle, var(--cat-color, #1a1a2e) 0.8px, transparent 0.8px);
+  background-size: 3px 3px;
+  mask-image: linear-gradient(135deg, #000 50%, transparent 50%);
+  -webkit-mask-image: linear-gradient(135deg, #000 50%, transparent 50%);
+}
+
+/* ─── Footer Note ─────────────────────────────────────── */
+
+.footerNote {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 3rem;
+  font-size: 0.7rem;
+  color: rgba(26, 26, 46, 0.3);
+  letter-spacing: 0.05em;
+}
+
+.footerIcon {
+  font-size: 0.85rem;
+}

@@ -1,0 +1,126 @@
+.section {
+  position: relative;
+  overflow: hidden;
+}
+
+.backgroundGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26,26,46,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,26,46,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.scene {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sceneCard {
+  position: relative;
+  border: 2px solid var(--color-ink);
+  background: var(--color-paper);
+  transition: box-shadow 0.3s ease;
+}
+.sceneCard:hover {
+  box-shadow: 4px 4px 0px var(--color-ink);
+}
+
+.accentBar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.coverNote {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+.achievementItem {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgba(26,26,46,0.75);
+}
+.achievementItem::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-ink);
+  opacity: 0.25;
+}
+
+.factNote {
+  position: relative;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(26,26,46,0.7);
+  border-left: 2px solid;
+  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+  font-style: italic;
+  cursor: pointer;
+  user-select: none;
+}
+
+.techBadge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(26,26,46,0.12);
+  color: rgba(26,26,46,0.5);
+  background: rgba(26,26,46,0.03);
+  transition: all 0.2s ease;
+}
+.techBadge:hover {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+  background: rgba(26,26,46,0.06);
+}
+
+.mascotPath {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.5rem 0;
+}
+.mascotPathLine {
+  flex: 1;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(26,26,46,0.15) 0,
+    rgba(26,26,46,0.15) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1.5px solid rgba(230,57,70,0.4);
+  color: rgba(230,57,70,0.6);
+  padding: 0.15rem 0.5rem;
+  transform: rotate(-2deg);
+}

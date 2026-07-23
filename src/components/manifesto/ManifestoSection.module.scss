@@ -1,0 +1,516 @@
+/* ─── Section ──────────────────────────────────────────── */
+
+.section {
+  position: relative;
+  padding: 5rem 1.5rem 4rem;
+  overflow: hidden;
+  background: #faf8f3;
+
+  @media (min-width: 768px) {
+    padding: 6rem 3rem 5rem;
+  }
+}
+
+/* ─── Background ──────────────────────────────────────── */
+
+.bgGrid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.halftoneBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: radial-gradient(circle, #1a1a2e 0.6px, transparent 0.6px);
+  background-size: 4px 4px;
+}
+
+/* ─── Header ──────────────────────────────────────────── */
+
+.header {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 2.5rem;
+
+  @media (min-width: 768px) {
+    margin-left: 2rem;
+  }
+}
+
+.headerLabel {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #e63946;
+  margin-bottom: 0.5rem;
+}
+
+.headerTitle {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: #1a1a2e;
+  margin-bottom: 0.5rem;
+}
+
+.headerAccent { color: #e63946; }
+
+.headerMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.headerIssue {
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(26, 26, 46, 0.2);
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.headerTag {
+  font-size: 0.4rem;
+  font-weight: 600;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid rgba(26, 26, 46, 0.06);
+  color: rgba(26, 26, 46, 0.2);
+  letter-spacing: 0.1em;
+}
+
+/* ─── Shared Panel Elements ───────────────────────────── */
+
+.panelCorner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 22px 22px 0;
+  border-color: transparent;
+  opacity: 0.15;
+  z-index: 2;
+}
+
+.panelTape {
+  position: absolute;
+  top: -5px;
+  left: 30%;
+  width: 36px;
+  height: 12px;
+  background: rgba(244, 228, 193, 0.4);
+  border: 1px solid rgba(26, 26, 46, 0.03);
+  transform: rotate(-1deg);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.panelLabel {
+  display: inline-block;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(26, 26, 46, 0.2);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.panelTitle {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Main Grid ───────────────────────────────────────── */
+
+.mainGrid {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @media (min-width: 800px) {
+    grid-template-columns: 1fr 1.3fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ─── LEFT: Stats Panel ───────────────────────────────── */
+
+.statsPanel {
+  position: relative;
+  border: 2px solid rgba(26, 26, 46, 0.08);
+  background: rgba(250, 248, 243, 0.6);
+  padding: 1.5rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(26, 26, 46, 0.04);
+    pointer-events: none;
+  }
+
+  .panelCorner { border-right-color: #e63946; }
+}
+
+.statsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.statLabel {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: rgba(26, 26, 46, 0.4);
+  width: 65px;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+}
+
+.statTrack {
+  flex: 1;
+  height: 6px;
+  background: rgba(26, 26, 46, 0.04);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.statFill {
+  height: 100%;
+  background: #e63946;
+  border-radius: 999px;
+}
+
+.statValue {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: rgba(26, 26, 46, 0.25);
+  width: 28px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.statsFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(26, 26, 46, 0.04);
+}
+
+.statsLevel {
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(26, 26, 46, 0.15);
+}
+
+.statsXp {
+  font-size: 0.45rem;
+  font-weight: 500;
+  color: rgba(26, 26, 46, 0.12);
+}
+
+/* Stats annotations */
+
+.statsArrow {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 0.75rem;
+  pointer-events: none;
+}
+
+.statsAnnot {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.35rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(230, 57, 70, 0.2);
+  pointer-events: none;
+}
+
+/* ─── RIGHT: Origin Panel ─────────────────────────────── */
+
+.originPanel {
+  position: relative;
+  border: 2px solid rgba(26, 26, 46, 0.08);
+  background: rgba(250, 248, 243, 0.6);
+  padding: 1.5rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(26, 26, 46, 0.04);
+    pointer-events: none;
+  }
+
+  .panelCorner { border-right-color: #457b9d; }
+}
+
+.paperLines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  padding: 3.5rem 1.5rem 0;
+}
+
+.paperLine {
+  height: 1px;
+  background: rgba(26, 26, 46, 0.03);
+  margin-bottom: 1.4rem;
+  width: 100%;
+}
+
+.quoteBlock {
+  position: relative;
+  margin: 0.5rem 0 1.25rem;
+}
+
+.quoteText {
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #1a1a2e;
+  margin-bottom: 0.25rem;
+}
+
+.quoteAccent {
+  color: #e63946;
+}
+
+.quoteUnderline {
+  height: 3px;
+  background: #e63946;
+  width: 60%;
+  margin: 0.5rem 0 0.75rem;
+  opacity: 0.3;
+}
+
+.quoteSub {
+  font-size: 0.8rem;
+  color: rgba(26, 26, 46, 0.45);
+  line-height: 1.6;
+}
+
+.markerCircle {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #e63946;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1;
+}
+
+/* ─── Traits ──────────────────────────────────────────── */
+
+.traitsRow {
+  margin-top: 1rem;
+}
+
+.traitsLabel {
+  display: block;
+  font-size: 0.4rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(26, 26, 46, 0.15);
+  margin-bottom: 0.4rem;
+}
+
+.traitsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.traitTag {
+  font-size: 0.5rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(26, 26, 46, 0.06);
+  color: rgba(26, 26, 46, 0.35);
+  letter-spacing: 0.03em;
+}
+
+/* ─── Editor's Note ───────────────────────────────────── */
+
+.editNote {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  background: #f4e4c1;
+  border: 1px solid rgba(26, 26, 46, 0.04);
+  padding: 0.4rem 0.6rem;
+  max-width: 140px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.02);
+  z-index: 3;
+
+  @media (max-width: 500px) {
+    display: none;
+  }
+}
+
+.editNoteLabel {
+  display: block;
+  font-size: 0.35rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(26, 26, 46, 0.2);
+  margin-bottom: 0.15rem;
+}
+
+.editNoteText {
+  font-size: 0.5rem;
+  color: rgba(26, 26, 46, 0.4);
+  line-height: 1.4;
+  font-style: italic;
+}
+
+/* ─── Stamp ───────────────────────────────────────────── */
+
+.stamp {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  border: 2px solid #e63946;
+  padding: 0.2rem 0.5rem;
+  transform: rotate(-8deg);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.stampText {
+  font-size: 0.45rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #e63946;
+}
+
+/* ─── Bottom: Principles ──────────────────────────────── */
+
+.principlesRow {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 3rem auto 0;
+}
+
+.principlesHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+.principlesLabel {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(26, 26, 46, 0.15);
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.principlesGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Principle Note ──────────────────────────────────── */
+
+.principleNote {
+  position: relative;
+  background: #fff;
+  border: 1px solid rgba(26, 26, 46, 0.06);
+  padding: 1rem 1.25rem;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.04);
+    border-color: var(--accent, rgba(26, 26, 46, 0.12));
+  }
+}
+
+.notePin {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgba(26, 26, 46, 0.1);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.noteTape {
+  position: absolute;
+  top: -2px;
+  left: 35%;
+  width: 24px;
+  height: 8px;
+  background: rgba(244, 228, 193, 0.3);
+  border: 1px solid rgba(26, 26, 46, 0.02);
+  transform: rotate(-1deg);
+  pointer-events: none;
+}
+
+.noteTitle {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
+}
+
+.noteText {
+  font-size: 0.65rem;
+  color: rgba(26, 26, 46, 0.4);
+  line-height: 1.5;
+}
+
+/* ─── Responsive ──────────────────────────────────────── */
+
+@media (max-width: 500px) {
+  .statsPanel .panelTape { left: 20%; }
+  .editNote { display: none; }
+  .stamp { bottom: 0.5rem; left: 0.5rem; }
+}
