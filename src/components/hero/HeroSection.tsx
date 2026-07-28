@@ -278,6 +278,8 @@ export const HeroSection = memo(function HeroSection() {
   return (
     <motion.section
       ref={ref}
+      data-chapter={0}
+      data-chapter-id="hero"
       className={cn("px-6 sm:px-10", styles.hero)}
       style={{ opacity: heroOpacity } as unknown as React.CSSProperties}
       onMouseMove={onMouseMove}

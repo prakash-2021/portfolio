@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useInView } from "motion/react";
+import { useInView } from "framer-motion";
 import { academicData } from "@/lib/academic";
 import { Mascot } from "@/components/mascot/Mascot";
 import { HalftoneCorner } from "@/components/comic/ComicElements";
@@ -273,6 +273,8 @@ export function EducationSection() {
   return (
     <motion.section
       ref={sectionRef}
+      data-chapter={5}
+      data-chapter-id="education"
       className={cn("px-6 sm:px-10 py-20 sm:py-28", styles.section)}
       style={{ y } as unknown as React.CSSProperties}
     >

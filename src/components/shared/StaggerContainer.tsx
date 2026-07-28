@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "motion/react";
+import { useInView } from "framer-motion";
 import { useRef } from "react";
 
 export function StaggerContainer({ children, className, delay = 0.1, staggerDelay = 0.06 }: { children: React.ReactNode; className?: string; delay?: number; staggerDelay?: number }) {

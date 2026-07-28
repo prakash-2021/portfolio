@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "motion/react";
+import { useInView } from "framer-motion";
 import { useRef } from "react";
 
 export function FadeIn({ children, className, delay = 0, y = 20 }: { children: React.ReactNode; className?: string; delay?: number; y?: number }) {

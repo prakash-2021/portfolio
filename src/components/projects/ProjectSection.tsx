@@ -3,7 +3,7 @@
 import { useRef, useState, memo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { useInView } from "motion/react";
+import { useInView } from "framer-motion";
 import { projects } from "@/lib/projects";
 import { HalftoneCorner } from "@/components/comic/ComicElements";
 import { cn } from "@/lib/cn";
@@ -34,7 +34,7 @@ function readableAccent(hex: string) {
 function TechIcon({ slug, accent }: { slug: string; accent: string }) {
   const url = `https://cdn.simpleicons.org/${slug.toLowerCase().replace(/\s+/g, "").replace(/\./g, "dot")}/${accent.replace("#", "")}`
   return (
-    <img src={url} alt={slug} className={styles.techIcon} loading="lazy"
+    <img src={url} alt={slug} width={14} height={14} className={styles.techIcon} loading="lazy"
       onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none" }}
     />
   )
@@ -116,7 +116,7 @@ export const ProjectSection = memo(function ProjectSection() {
   const [expanded, setExpanded] = useState<string | null>(null)
 
   return (
-    <section className={styles.root}>
+    <section data-chapter={2} data-chapter-id="projects" className={styles.root}>
       <HalftoneCorner className="top-0 right-0" />
       <HalftoneCorner className="bottom-0 left-0 rotate-180" />
 

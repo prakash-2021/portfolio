@@ -17,7 +17,10 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["framer-motion", "lucide-react"],
+    webpackBuildWorker: true,
+    optimizeServerReact: true,
   },
+  serverExternalPackages: ["nodemailer"],
 };
 
 export default nextConfig;

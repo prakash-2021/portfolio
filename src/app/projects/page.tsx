@@ -3,7 +3,7 @@
 import { useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useInView } from "motion/react";
+import { useInView } from "framer-motion";
 import { projects, type Project } from "@/lib/projects";
 import { cn } from "@/lib/cn";
 import { ScrollProgress } from "@/components/shared";
@@ -40,7 +40,7 @@ function readableAccent(hex: string) {
 function TechIcon({ slug, accent }: { slug: string; accent: string }) {
   const url = `https://cdn.simpleicons.org/${slug.toLowerCase().replace(/\s+/g, "").replace(/\./g, "dot")}/${accent.replace("#", "")}`
   return (
-    <img src={url} alt={slug} className={styles.techIcon} loading="lazy"
+    <img src={url} alt={slug} width={14} height={14} className={styles.techIcon} loading="lazy"
       onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none" }}
     />
   )
@@ -56,7 +56,7 @@ function ArchiveCard({ project, index }: { project: Project; index: number }) {
   const rotate = [-0.3, 0.2, -0.1, 0.4, -0.2, 0.3, -0.4, 0.1][index % 8]
 
   return (
-    <motion.div
+    <motion.article
       ref={ref}
       className={`${styles.archiveCard} ${wide ? styles.cardWide : ""} ${tall ? styles.cardTall : ""}`}
       style={{ "--accent": project.accent, "--accent-text": contrastText(project.accent) } as React.CSSProperties}
@@ -99,7 +99,7 @@ function ArchiveCard({ project, index }: { project: Project; index: number }) {
         {/* Content */}
         <div className={styles.arcContent}>
           <span className={styles.arcYear}>{project.year}</span>
-          <h3 className={styles.arcTitle}>{project.title}</h3>
+          <h2 className={styles.arcTitle}>{project.title}</h2>
           <p className={styles.arcTagline}>{project.tagline}</p>
 
           <div className={styles.arcTech}>
@@ -119,7 +119,7 @@ function ArchiveCard({ project, index }: { project: Project; index: number }) {
         {/* Halftone corner */}
         <div className={styles.arcHalftone} />
       </Link>
-    </motion.div>
+    </motion.article>
   )
 }
 
@@ -156,7 +156,7 @@ export default function ProjectsPage() {
   return (
     <>
       <ScrollProgress />
-      <div className={styles.page}>
+      <main className={styles.page}>
         {/* Navigation */}
         <nav className={styles.nav}>
           <Link href="/" className={styles.backBtn}>
@@ -200,11 +200,12 @@ export default function ProjectsPage() {
 
           {/* Search */}
           <div className={styles.searchWrap}>
-            <span className={styles.searchIcon}>🔍</span>
+            <span className={styles.searchIcon} aria-hidden>🔍</span>
             <input
               type="text"
               className={styles.searchInput}
               placeholder="Search projects..."
+              aria-label="Search projects"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -215,8 +216,8 @@ export default function ProjectsPage() {
 
           {/* Sort */}
           <div className={styles.sortWrap}>
-            <span className={styles.sortLabel}>Sort</span>
-            <select className={styles.sortSelect} value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <label className={styles.sortLabel} htmlFor="projects-sort">Sort</label>
+            <select id="projects-sort" className={styles.sortSelect} value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               {sortOptions.map((opt) => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
               ))}
@@ -250,7 +251,8 @@ export default function ProjectsPage() {
             </div>
           )}
         </div>
-      </div>
+      </main>
     </>
   )
 }
+

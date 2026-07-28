@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useScrollProgress } from "@/lib/scroll-provider";
 import { cn } from "@/lib/cn";
 import styles from "./NavSpineMobile.module.scss";
 
@@ -15,13 +16,8 @@ const chapters = [
   { id: "contact", issue: "07", label: "Connect" },
 ];
 
-let lenisInstance: { scrollTo: (target: string | number, opts?: any) => void } | null = null;
-
-export function setLenisMobile(l: typeof lenisInstance) {
-  lenisInstance = l;
-}
-
 export const NavSpineMobile = memo(function NavSpineMobile() {
+  const { lenis } = useScrollProgress();
   const [activeIdx, setActiveIdx] = useState(0);
   const prevActive = useRef(0);
 
@@ -52,10 +48,10 @@ export const NavSpineMobile = memo(function NavSpineMobile() {
 
   const scrollTo = (id: string) => {
     const el = document.querySelector(`[data-chapter-id="${id}"]`);
-    if (el && lenisInstance) {
+    if (el && lenis) {
       const rect = el.getBoundingClientRect();
       const top = rect.top + window.scrollY - 80;
-      lenisInstance.scrollTo(top, {
+      lenis.scrollTo(top, {
         duration: 0.3,
         easing: (t: number) => t,
       });
