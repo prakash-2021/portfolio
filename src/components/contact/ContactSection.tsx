@@ -2,7 +2,7 @@
 
 import { useRef, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { useInView } from "motion/react";
+import { useInView } from "framer-motion";
 import { site } from "@/lib/site";
 import { Mascot } from "@/components/mascot/Mascot";
 import { HalftoneCorner } from "@/components/comic/ComicElements";
@@ -205,9 +205,12 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
       transition={{ duration: 0.5 }}
     >
       <div className={styles.fieldWrap}>
-        <label className={styles.label}>Agent Name</label>
+        <label className={styles.label} htmlFor="contact-name">Agent Name</label>
         <div className={styles.inputWrap}>
           <input
+            id="contact-name"
+            name="name"
+            autoComplete="name"
             className={inputClass("name")}
             placeholder="Your name"
             value={name}
@@ -230,9 +233,12 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
       </div>
 
       <div className={styles.fieldWrap}>
-        <label className={styles.label}>Mission Email</label>
+        <label className={styles.label} htmlFor="contact-email">Mission Email</label>
         <div className={styles.inputWrap}>
           <input
+            id="contact-email"
+            name="email"
+            autoComplete="email"
             className={inputClass("email")}
             type="email"
             placeholder="your@email.com"
@@ -256,9 +262,12 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
       </div>
 
       <div className={styles.fieldWrap}>
-        <label className={styles.label}>Mission Details</label>
+        <label className={styles.label} htmlFor="contact-details">Mission Details</label>
         <div className={styles.inputWrap}>
           <textarea
+            id="contact-details"
+            name="details"
+            autoComplete="off"
             className={cn(inputClass("details"), styles.textarea)}
             placeholder="Tell me about your project..."
             rows={3}
@@ -367,6 +376,8 @@ export function ContactSection() {
   return (
     <motion.section
       ref={ref}
+      data-chapter={6}
+      data-chapter-id="contact"
       className={cn("px-6 sm:px-10 py-14 sm:py-20 relative", styles.section)}
       style={{ y, opacity } as unknown as React.CSSProperties}
     >
@@ -495,7 +506,7 @@ export function ContactSection() {
               <div className={styles.cardHeader}>
                 <div>
                   <span className={styles.cardLabel}>/// MISSION BRIEF</span>
-                  <h3 className={styles.cardTitle}>Operation: Collaborate</h3>
+                  <h2 className={styles.cardTitle}>Operation: Collaborate</h2>
                 </div>
                 <Stamp text="DRAFT v2" color="var(--color-yellow)" />
               </div>

@@ -2,7 +2,7 @@
 
 import { useState, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useInView } from "motion/react";
+import { useInView } from "framer-motion";
 import { toolCategories, type Tool, type ToolCategory } from "@/lib/tools";
 import { cn } from "@/lib/cn";
 import styles from "./ToolkitSection.module.scss";
@@ -38,7 +38,7 @@ const ToolLogo = memo(function ToolLogo({
         <img
           src={logoUrl}
           alt={tool.name}
-          className={styles.logoImg}
+          width={40} height={40} className={styles.logoImg}
           loading="lazy"
           onError={(e) => {
             (e.currentTarget as HTMLImageElement).style.display = "none";
@@ -199,7 +199,7 @@ export function ToolkitSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
-    <section className={styles.section} ref={ref}>
+    <section data-chapter={3} data-chapter-id="toolkit" className={styles.section} ref={ref}>
       <BlueprintBg />
 
       {/* Halftone overlay */}

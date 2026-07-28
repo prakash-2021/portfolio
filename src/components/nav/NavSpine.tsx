@@ -7,6 +7,7 @@ import {
   useSpring,
 } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useScrollProgress } from "@/lib/scroll-provider";
 import { cn } from "@/lib/cn";
 import styles from "./NavSpine.module.scss";
 
@@ -26,14 +27,9 @@ const chapters: Chapter[] = [
   { id: "contact", issue: "07", label: "Next Mission" },
 ];
 
-let lenisInstance: { scrollTo: (target: string | number, opts?: any) => void } | null = null;
-
-export function setLenis(l: typeof lenisInstance) {
-  lenisInstance = l;
-}
-
 export const NavSpine = memo(function NavSpine() {
   const reduced = useReducedMotion();
+  const { lenis } = useScrollProgress();
   const [activeIdx, setActiveIdx] = useState(0);
   const [navHovered, setNavHovered] = useState(false);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
@@ -82,16 +78,16 @@ export const NavSpine = memo(function NavSpine() {
 
   const scrollTo = useCallback((id: string, idx: number) => {
     const el = document.querySelector(`[data-chapter-id="${id}"]`);
-    if (el && lenisInstance) {
+    if (el && lenis) {
       setClickedIdx(idx);
       setTimeout(() => setClickedIdx(null), 500);
       const top = el.getBoundingClientRect().top + window.scrollY - 80;
-      lenisInstance.scrollTo(top, {
+      lenis.scrollTo(top, {
         duration: reduced ? 0 : 0.3,
         easing: (t: number) => t,
       });
     }
-  }, [reduced]);
+  }, [reduced, lenis]);
 
   return (
     <nav
@@ -139,8 +135,9 @@ export const NavSpine = memo(function NavSpine() {
               onMouseLeave={() => setHoveredIdx(null)}
               role="button"
               tabIndex={0}
+              aria-label={`Scroll to ${ch.label}`}
               onKeyDown={(e) => {
-                if (e.key === "Enter") scrollTo(ch.id, i);
+                if (e.key === "Enter" || e.key === " ") scrollTo(ch.id, i);
               }}
               data-cursor-nav
             >

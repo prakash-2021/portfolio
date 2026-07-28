@@ -159,7 +159,7 @@ export function ManifestoSection() {
   const bgInView = useInView(bgRef, { once: true, margin: "-200px" })
 
   return (
-    <section ref={ref} className={styles.section}>
+    <section ref={ref} data-chapter={1} data-chapter-id="origin" className={styles.section}>
       {/* Blueprint background */}
       <svg className={styles.bgGrid} viewBox="0 0 1200 800" fill="none">
         <pattern id="man-grid" width="30" height="30" patternUnits="userSpaceOnUse">

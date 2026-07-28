@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useReducedMotionRef } from "@/hooks/useReducedMotion";
+import { useScrollProgress } from "@/lib/scroll-provider";
 import { cn } from "@/lib/cn";
 import { useTheme } from "@/lib/theme-context";
 import styles from "./CursorSystem.module.scss";
@@ -68,18 +69,25 @@ export function CursorSystem() {
   const sy = useSpring(my, { stiffness: 350, damping: 28, mass: 0.5 });
 
   const rAF = useRef<number>(0);
-  const isScrolling = useRef(false);
   const scrollTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const isVisible = useRef(true);
   const isTouchDevice = useRef(false);
+  const { lenis } = useScrollProgress();
 
-  /* ── rAF render loop (optimized) ── */
+  /* ── rAF render loop ── */
   const render = () => {
     const el = cursorRef.current;
-    if (!el || isTouchDevice.current) return;
+    if (!el || isTouchDevice.current) {
+      rAF.current = requestAnimationFrame(render);
+      return;
+    }
     
     const x = sx.get();
     const y = sy.get();
+    if (x === -100 && y === -100) {
+      rAF.current = requestAnimationFrame(render);
+      return;
+    }
     const s = isReduced.current ? 1 : mScale.get();
     const o = isReduced.current || !isVisible.current ? 0 : mOpacity.get();
     
@@ -90,22 +98,8 @@ export function CursorSystem() {
   };
 
   useEffect(() => {
-    if (!isTouchDevice.current) {
-      rAF.current = requestAnimationFrame(render);
-    }
+    rAF.current = requestAnimationFrame(render);
     return () => cancelAnimationFrame(rAF.current);
-  }, [isTouchDevice]);
-
-  /* ── Detect touch device ── */
-  useEffect(() => {
-    isTouchDevice.current = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  }, []);
-
-  /* ── Visibility change ── */
-  useEffect(() => {
-    const handler = () => { isVisible.current = !document.hidden; };
-    document.addEventListener("visibilitychange", handler);
-    return () => document.removeEventListener("visibilitychange", handler);
   }, []);
 
   /* ── Mouse handler (optimized with passive listeners) ── */
@@ -178,25 +172,21 @@ export function CursorSystem() {
     };
   }, [mx, my, mScale, mOpacity]);
 
-  /* ── Scroll dim ── */
+  /* ── Scroll dim (via Lenis) ── */
   useEffect(() => {
+    if (!lenis) return;
     const handleScroll = () => {
-      if (!isScrolling.current) {
-        isScrolling.current = true;
-        mOpacity.set(0.5);
-        mScale.set(0.92);
-      }
+      mOpacity.set(0.5);
+      mScale.set(0.92);
       clearTimeout(scrollTimer.current);
       scrollTimer.current = setTimeout(() => {
-        isScrolling.current = false;
         mOpacity.set(1);
         mScale.set(MODE_CONFIG[modeRef.current].scale);
       }, 150);
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [mOpacity, mScale]);
+    const unsub = lenis.on('scroll', handleScroll);
+    return () => { unsub(); clearTimeout(scrollTimer.current); };
+  }, [lenis, mOpacity, mScale]);
 
   /* ── Section accent colors ── */
   useEffect(() => {

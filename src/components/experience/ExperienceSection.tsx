@@ -2,7 +2,7 @@
 
 import { useRef, useState, memo, useMemo } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { useInView } from "motion/react";
+import { useInView } from "framer-motion";
 import { experienceData } from "@/lib/experience";
 import { Mascot } from "@/components/mascot/Mascot";
 import { HalftoneCorner } from "@/components/comic/ComicElements";
@@ -330,6 +330,8 @@ export function ExperienceSection() {
   return (
     <motion.section
       ref={sectionRef}
+      data-chapter={4}
+      data-chapter-id="experience"
       className={cn("px-6 sm:px-10 py-20 sm:py-28", styles.section)}
       style={{ opacity } as unknown as React.CSSProperties}
     >
