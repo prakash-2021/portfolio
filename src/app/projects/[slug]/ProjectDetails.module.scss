@@ -1,7 +1,7 @@
 .container {
   min-height: 100vh;
-  background: #faf8f3;
-  color: #1a1a2e;
+  background: var(--color-paper);
+  color: var(--color-ink);
   padding-bottom: 8rem;
 }
 
@@ -15,7 +15,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(26, 26, 46, 0.5);
+  color: var(--color-muted);
   text-decoration: none;
   font-weight: 500;
   font-size: 0.85rem;
@@ -30,7 +30,7 @@
   }
 
   &:hover {
-    color: #e63946;
+    color: var(--color-red);
     transform: translateX(-4px);
     
     svg {
@@ -58,7 +58,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(250, 248, 243, 0.3) 0%, rgba(250, 248, 243, 1) 100%);
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--color-paper) 30%, transparent) 0%, var(--color-paper) 100%);
   }
 }
 
@@ -93,12 +93,12 @@
   line-height: 1.05;
   margin-bottom: 1rem;
   letter-spacing: -0.03em;
-  color: #1a1a2e;
+  color: var(--color-ink);
 }
 
 .tagline {
   font-size: clamp(1rem, 2vw, 1.4rem);
-  color: rgba(26, 26, 46, 0.5);
+  color: var(--color-muted);
   font-weight: 400;
   max-width: 700px;
   margin: 0 auto;
@@ -134,7 +134,7 @@
     font-size: 1.3rem;
     font-weight: 800;
     margin-bottom: 1.25rem;
-    color: #1a1a2e;
+    color: var(--color-ink);
     display: inline-block;
     position: relative;
     letter-spacing: -0.02em;
@@ -146,7 +146,7 @@
       bottom: -0.4rem;
       width: 30px;
       height: 3px;
-      background: #e63946;
+      background: var(--color-red);
     }
   }
 }
@@ -154,7 +154,7 @@
 .description {
   font-size: 1rem;
   line-height: 1.8;
-  color: rgba(26, 26, 46, 0.6);
+  color: var(--text-tertiary);
   white-space: pre-wrap;
 }
 
@@ -162,14 +162,14 @@
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  background: #e63946;
-  color: #fff;
+  background: var(--color-red);
+  color: var(--color-paper);
   padding: 1rem 2rem;
   font-weight: 700;
   font-size: 0.85rem;
   text-decoration: none;
   width: fit-content;
-  border: 2px solid #1a1a2e;
+  border: 2px solid var(--color-ink);
   transition: all 0.2s ease;
 
   svg {
@@ -179,7 +179,7 @@
   }
 
   &:hover {
-    background: #1a1a2e;
+    background: var(--color-ink);
     transform: translateY(-2px);
     
     svg {
@@ -194,8 +194,8 @@
 }
 
 .metaCard {
-  border: 2px solid #1a1a2e;
-  background: rgba(26, 26, 46, 0.02);
+  border: 2px solid var(--color-ink);
+  background: var(--color-panel);
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -206,7 +206,7 @@
     content: "";
     position: absolute;
     inset: 3px;
-    border: 1px solid rgba(26, 26, 46, 0.08);
+    border: 1px solid var(--color-border);
     pointer-events: none;
   }
 }
@@ -221,14 +221,14 @@
   font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: rgba(26, 26, 46, 0.4);
+  color: var(--text-muted);
   font-weight: 700;
 }
 
 .metaValue {
   font-size: 0.95rem;
   font-weight: 500;
-  color: #1a1a2e;
+  color: var(--color-ink);
 }
 
 .techStack {
@@ -241,7 +241,7 @@
 .techBadge {
   font-size: 0.65rem;
   padding: 0.2rem 0.6rem;
-  border: 1px solid rgba(26, 26, 46, 0.12);
-  color: rgba(26, 26, 46, 0.6);
+  border: 1px solid var(--color-border);
+  color: var(--text-tertiary);
   font-weight: 600;
 }

@@ -26,7 +26,7 @@ function Tape({ className }: { className?: string }) {
 function PaperClip({ className }: { className?: string }) {
   return (
     <svg className={cn(styles.paperClip, className)} width="12" height="28" viewBox="0 0 12 28" fill="none">
-      <path d="M2 2v20a4 4 0 008 0V6a2 2 0 00-4 0v16" stroke="#1a1a2e" strokeWidth="1.2" strokeLinecap="round" fill="none" opacity="0.2" />
+      <path d="M2 2v20a4 4 0 008 0V6a2 2 0 00-4 0v16" stroke="var(--color-ink)" strokeWidth="1.2" strokeLinecap="round" fill="none" opacity="0.2" />
     </svg>
   );
 }
@@ -50,19 +50,20 @@ function Stamp({ text, color, className }: { text: string; color: string; classN
 /* ─── SOCIAL CARD ─────────────────────────────────────────── */
 
 const socialLinks = [
-  { label: "GitHub", href: site.links.github, color: "#1a1a2e" },
-  { label: "LinkedIn", href: site.links.linkedin, color: "#457b9d" },
-  { label: "Email", href: `mailto:${site.email}`, color: "#e63946" },
-  { label: "Resume", href: site.links.resume, color: "#f4a261" },
+  { label: "GitHub", href: site.links.github, color: "var(--color-ink)", highlight: false },
+  { label: "LinkedIn", href: site.links.linkedin, color: "var(--color-blue)", highlight: false },
+  { label: "Instagram", href: site.links.instagram, color: "var(--color-purple)", highlight: false },
+  { label: "Email", href: `mailto:${site.email}`, color: "var(--color-red)", highlight: true },
+  { label: "Resume", href: site.links.resume, color: "var(--color-yellow)", highlight: true },
 ];
 
-function SocialCard({ label, href, color, index }: { label: string; href: string; color: string; index: number }) {
+function SocialCard({ label, href, color, index, highlight }: { label: string; href: string; color: string; index: number; highlight?: boolean }) {
   const [hovered, setHovered] = useState(false);
   return (
     <motion.a
       href={href}
       target="_blank" rel="noopener noreferrer"
-      className={styles.socialCard}
+      className={cn(styles.socialCard, highlight && styles.socialCardHighlight)}
       style={{ "--card-color": color } as React.CSSProperties}
       initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -72,6 +73,7 @@ function SocialCard({ label, href, color, index }: { label: string; href: string
       onHoverEnd={() => setHovered(false)}
       whileHover={{ y: -4 }}
       whileTap={{ scale: 0.97 }}
+      data-cursor-link
     >
       <motion.div
         className={styles.socialCardGlow}
@@ -100,16 +102,21 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
   const [focused, setFocused] = useState<string | null>(null);
   const [state, setState] = useState<"idle" | "submitting" | "done">("idle");
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email) return;
     setState("submitting");
     onStateChange("submitting");
-    setTimeout(() => {
-      setState("done");
-      onStateChange("done");
-    }, 2500);
-  }, [name, email, onStateChange]);
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, details, priority }),
+      });
+    } catch {}
+    setState("done");
+    onStateChange("done");
+  }, [name, email, details, priority, onStateChange]);
 
   if (state === "done") {
     return (
@@ -119,7 +126,7 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <Stamp text="CONFIDENTIAL" color="#e63946" className="mb-4" />
+        <Stamp text="CONFIDENTIAL" color="var(--color-red)" className="mb-4" />
         <motion.div
           className={styles.doneIcon}
           initial={{ scale: 0 }}
@@ -129,7 +136,7 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
             <motion.path
               d="M6 18l7 7 13-13"
-              stroke="#2d9b4e"
+              stroke="var(--color-green)"
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -146,6 +153,14 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
           transition={{ duration: 0.4, delay: 0.6 }}
         >
           MISSION RECEIVED
+          <motion.span
+            className={styles.doneStamp}
+            initial={{ opacity: 0, rotate: -12, scale: 0.6 }}
+            animate={{ opacity: 1, rotate: -4, scale: 1 }}
+            transition={{ type: "spring", stiffness: 160, damping: 12, delay: 0.8 }}
+          >
+            ✓
+          </motion.span>
         </motion.h3>
         <motion.p
           className={styles.doneText}
@@ -173,6 +188,13 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
     focused === field && styles.inputFocused
   );
 
+  const hasValue = (field: string) => {
+    if (field === "name") return name.length > 0;
+    if (field === "email") return email.length > 0;
+    if (field === "details") return details.length > 0;
+    return false;
+  };
+
   return (
     <motion.form
       className={styles.form}
@@ -192,6 +214,12 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
             onChange={(e) => setName(e.target.value)}
             onFocus={() => setFocused("name")}
             onBlur={() => setFocused(null)}
+            data-cursor-input
+          />
+          <motion.div
+            className={styles.inputGlow}
+            animate={focused === "name" ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.3 }}
           />
           <motion.div
             className={styles.inputLine}
@@ -212,6 +240,12 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
             onChange={(e) => setEmail(e.target.value)}
             onFocus={() => setFocused("email")}
             onBlur={() => setFocused(null)}
+            data-cursor-input
+          />
+          <motion.div
+            className={styles.inputGlow}
+            animate={focused === "email" ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.3 }}
           />
           <motion.div
             className={styles.inputLine}
@@ -232,6 +266,12 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
             onChange={(e) => setDetails(e.target.value)}
             onFocus={() => setFocused("details")}
             onBlur={() => setFocused(null)}
+            data-cursor-input
+          />
+          <motion.div
+            className={styles.inputGlow}
+            animate={focused === "details" ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.3 }}
           />
           <motion.div
             className={styles.inputLine}
@@ -244,16 +284,23 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
       <div className={styles.fieldWrap}>
         <label className={styles.label}>Priority</label>
         <div className={styles.priorityWrap}>
-          {PRIORITIES.map((p) => (
-            <button
-              key={p}
-              type="button"
-              className={cn(styles.priorityBtn, priority === p && styles.priorityActive)}
-              onClick={() => setPriority(p)}
-            >
-              {p}
-            </button>
-          ))}
+          {PRIORITIES.map((p) => {
+            const isActive = priority === p;
+            return (
+              <motion.button
+                key={p}
+                type="button"
+                className={cn(styles.priorityBtn, isActive && styles.priorityActive)}
+                onClick={() => setPriority(p)}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                layout
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                {p}
+              </motion.button>
+            );
+          })}
         </div>
       </div>
 
@@ -261,15 +308,23 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
         type="submit"
         className={styles.submitBtn}
         disabled={state === "submitting"}
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.98 }}
+        whileHover={{ scale: 1.02, borderColor: "var(--color-red)" }}
+        whileTap={{ scale: 0.97 }}
       >
         {state === "submitting" ? (
           <motion.span
+            className={styles.submittingText}
             animate={{ opacity: [1, 0.3, 1] }}
-            transition={{ repeat: Infinity, duration: 1 }}
+            transition={{ repeat: Infinity, duration: 1.2 }}
           >
-            TRANSMITTING...
+            TRANSMITTING
+            <motion.span
+              className={styles.dots}
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
+            >
+              ...
+            </motion.span>
           </motion.span>
         ) : (
           <span>TRANSMIT MESSAGE →</span>
@@ -312,7 +367,7 @@ export function ContactSection() {
   return (
     <motion.section
       ref={ref}
-      className={cn("px-6 sm:px-10 py-20 sm:py-28 relative", styles.section)}
+      className={cn("px-6 sm:px-10 py-14 sm:py-20 relative", styles.section)}
       style={{ y, opacity } as unknown as React.CSSProperties}
     >
       <div className={styles.blueprintBg} />
@@ -398,7 +453,7 @@ export function ContactSection() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <Stamp text="RECEIVED" color="#2d9b4e" />
+                  <Stamp text="RECEIVED" color="var(--color-green)" />
                   <p className={styles.endingText}>
                     &ldquo;See you in the next issue.&rdquo;
                   </p>
@@ -431,7 +486,7 @@ export function ContactSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            <div className={styles.missionCard}>
+            <div className={styles.missionCard} data-cursor-card>
               <Tape className="top-0 left-[20%]" />
               <Tape className="top-0 right-[20%]" />
               <Tape className="bottom-0 left-[30%] rotate-180" />
@@ -442,7 +497,7 @@ export function ContactSection() {
                   <span className={styles.cardLabel}>/// MISSION BRIEF</span>
                   <h3 className={styles.cardTitle}>Operation: Collaborate</h3>
                 </div>
-                <Stamp text="DRAFT v2" color="#f4a261" />
+                <Stamp text="DRAFT v2" color="var(--color-yellow)" />
               </div>
 
               <div className={styles.cardMeta}>

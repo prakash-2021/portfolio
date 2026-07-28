@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, memo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "motion/react";
@@ -40,10 +40,9 @@ function TechIcon({ slug, accent }: { slug: string; accent: string }) {
   )
 }
 
-function FeaturedCard({ project, index, onExpand }: { project: typeof featured[number]; index: number; onExpand: (slug: string) => void }) {
+const FeaturedCard = memo(function FeaturedCard({ project, index, onExpand }: { project: typeof featured[number]; index: number; onExpand: (slug: string) => void }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-60px" })
-  const [hovered, setHovered] = useState(false)
   const rotations = [-0.4, 0.3, -0.2]
 
   return (
@@ -54,28 +53,17 @@ function FeaturedCard({ project, index, onExpand }: { project: typeof featured[n
       initial={{ opacity: 0, y: 30, rotate: rotations[index] }}
       animate={isInView ? { opacity: 1, y: 0, rotate: 0 } : {}}
       transition={{ duration: 0.5, delay: 0.1 * index }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       onClick={() => onExpand(project.slug)}
+      data-cursor-card
     >
-      {/* Cover area */}
       <div className={styles.featuredCover}>
-        <motion.div
-          className={styles.featuredImg}
-          style={{ backgroundImage: `url(${project.image})` }}
-          animate={hovered ? { scale: 1.04 } : { scale: 1 }}
-          transition={{ duration: 0.4 }}
-        />
+        <div className={styles.featuredImgWrap}>
+          <div className={styles.featuredImg} style={{ backgroundImage: `url(${project.image})` }} />
+        </div>
         <div className={styles.featuredOverlay} />
       </div>
-
-      {/* Issue number */}
       <div className={styles.featuredIssue}>{String(index + 1).padStart(2, "0")}</div>
-
-      {/* Year badge */}
       <div className={styles.featuredYear} style={{ background: project.accent, color: contrastText(project.accent) }}>{project.year}</div>
-
-      {/* Content */}
       <div className={styles.featuredContent}>
         <h3 className={styles.featuredTitle}>{project.title}</h3>
         <p className={styles.featuredTagline}>{project.tagline}</p>
@@ -84,18 +72,16 @@ function FeaturedCard({ project, index, onExpand }: { project: typeof featured[n
             <TechIcon key={t} slug={t} accent={project.accent} />
           ))}
         </div>
-        <motion.span className={styles.featuredCta} animate={hovered ? { gap: "0.6rem" } : { gap: "0.3rem" }} style={{ color: readableAccent(project.accent) }}>
+        <span className={styles.featuredCta} style={{ color: readableAccent(project.accent) }}>
           View Project →
-        </motion.span>
+        </span>
       </div>
-
-      {/* Decorative corner */}
       <div className={styles.featuredCorner} style={{ borderLeftColor: project.accent }} />
     </motion.div>
-  )
-}
+  );
+});
 
-function ExpandOverlay({ slug, onClose }: { slug: string; onClose: () => void }) {
+const ExpandOverlay = memo(function ExpandOverlay({ slug, onClose }: { slug: string; onClose: () => void }) {
   const project = projects.find((p) => p.slug === slug)
   if (!project) return null
 
@@ -116,17 +102,17 @@ function ExpandOverlay({ slug, onClose }: { slug: string; onClose: () => void })
             <span className={styles.expandLabel} style={{ color: readableAccent(project.accent) }}>{project.year} · {project.role}</span>
             <h2 className={styles.expandTitle}>{project.title}</h2>
             <p className={styles.expandTagline}>{project.tagline}</p>
-            <Link href={`/projects/${project.slug}`} className={styles.expandCta} style={{ background: project.accent, color: contrastText(project.accent) }}>
+            <Link href={`/projects/${project.slug}`} className={styles.expandCta} style={{ background: project.accent, color: contrastText(project.accent) }} data-cursor-link>
               Read Full Case Study →
             </Link>
           </div>
         </div>
       </motion.div>
     </motion.div>
-  )
-}
+  );
+});
 
-export function ProjectSection() {
+export const ProjectSection = memo(function ProjectSection() {
   const [expanded, setExpanded] = useState<string | null>(null)
 
   return (
@@ -135,9 +121,33 @@ export function ProjectSection() {
       <HalftoneCorner className="bottom-0 left-0 rotate-180" />
 
       <div className={styles.rootHeader}>
-        <span className={styles.rootLabel}>/// Chapter 06 — Mission Archive</span>
-        <h2 className={styles.rootTitle}>Featured <span className={styles.rootAccent}>Projects</span></h2>
-        <p className={styles.rootDesc}>Three featured issues. Each one a different mission.</p>
+        <motion.span
+          className={styles.rootLabel}
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+        >
+          /// Chapter 06 — Mission Archive
+        </motion.span>
+        <motion.h2
+          className={styles.rootTitle}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.08 }}
+        >
+          Featured <span className={styles.rootAccent}>Projects</span>
+        </motion.h2>
+        <motion.p
+          className={styles.rootDesc}
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+        >
+          Three featured issues. Each one a different mission.
+        </motion.p>
       </div>
 
       <div className={styles.featuredGrid}>
@@ -154,10 +164,16 @@ export function ProjectSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.4, delay: 0.3 }}
       >
-        <Link href="/projects" className={styles.viewAllCta}>
-          <span className={styles.viewAllIcon}>◆</span>
-          <span className={styles.viewAllText}>VIEW ALL PROJECTS</span>
-          <span className={styles.viewAllArrow}>→</span>
+<Link href="/projects" className={styles.viewAllCta} data-cursor-link>
+          <motion.span className={styles.viewAllIcon}
+            whileTap={{ scale: 0.85 }}
+          >◆</motion.span>
+          <motion.span className={styles.viewAllText}
+            whileTap={{ scale: 0.95 }}
+          >VIEW ALL MISSIONS</motion.span>
+          <motion.span className={styles.viewAllArrow}
+            whileTap={{ x: -2 }}
+          >→</motion.span>
         </Link>
         <p className={styles.viewAllSub}>Browse the complete archive — 8 issues</p>
       </motion.div>
@@ -166,5 +182,5 @@ export function ProjectSection() {
         {expanded && <ExpandOverlay slug={expanded} onClose={() => setExpanded(null)} />}
       </AnimatePresence>
     </section>
-  )
-}
+  );
+});

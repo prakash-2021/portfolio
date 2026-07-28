@@ -19,15 +19,242 @@
   margin: 0 auto;
 }
 
+/* ── Section Header ── */
+
+.header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.headerLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--color-red);
+  display: inline-block;
+}
+
+.issueLabel {
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 0.35rem;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  justify-content: center;
+}
+
+.headerDivider {
+  height: 2px;
+  background: var(--color-red);
+  flex: 0 1 60px;
+  transform-origin: center;
+}
+
+.headerTitle {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 900;
+  color: var(--color-ink);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.headerAccent {
+  color: var(--color-red);
+}
+
+.headerArrow {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-red);
+  font-size: 1.2rem;
+  line-height: 1;
+  margin-left: 0.25rem;
+}
+
+.headerDesc {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  margin-top: 0.75rem;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+/* ── Connector Lines ── */
+
+.connector {
+  position: relative;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.connectorLine {
+  width: 1px;
+  background: var(--color-red);
+  opacity: 0.2;
+  transform-origin: top;
+}
+
+.connectorDots {
+  display: flex;
+  gap: 3px;
+  position: absolute;
+  bottom: 0;
+}
+
+.connectorDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--color-red);
+  opacity: 0.3;
+}
+
+/* ── Card ── */
+
 .sceneCard {
   position: relative;
   border: 2px solid var(--color-ink);
   background: var(--color-paper);
-  transition: box-shadow 0.3s ease;
+  transition: transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
+              border-color 0.18s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
+
 .sceneCard:hover {
-  box-shadow: 4px 4px 0px var(--color-ink);
+  transform: translateY(-4px);
+  border-color: var(--accent-color, var(--color-ink));
 }
+
+.sceneCardShadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s cubic-bezier(0.25, 0.1, 0.25, 1);
+  box-shadow: 4px 6px 0 rgba(26,26,46,0.08),
+              6px 8px 20px rgba(0,0,0,0.04);
+}
+
+.sceneCard:hover .sceneCardShadow {
+  opacity: 1;
+}
+
+/* ── Tape strip ── */
+
+.tapeStrip {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 6px;
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%);
+}
+
+.tapeStrip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-ink);
+  opacity: 0.06;
+}
+
+.sceneCard:hover .tapeStrip {
+  opacity: 0.6;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* ── Card number ── */
+
+.cardNumber {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  font-size: 0.45rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Registration mark ── */
+
+.registrationMark {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.12;
+}
+
+.registrationMark::before,
+.registrationMark::after {
+  content: "";
+  position: absolute;
+  background: var(--color-ink);
+}
+
+.registrationMarkTopRight {
+  top: 8px;
+  right: 8px;
+}
+.registrationMarkTopRight::before {
+  width: 6px;
+  height: 1px;
+  top: 3px;
+  left: -3px;
+}
+.registrationMarkTopRight::after {
+  width: 1px;
+  height: 6px;
+  top: 0;
+  left: 0;
+}
+
+.registrationMarkBottomLeft {
+  bottom: 8px;
+  left: 8px;
+}
+.registrationMarkBottomLeft::before {
+  width: 6px;
+  height: 1px;
+  top: -3px;
+  left: -3px;
+}
+.registrationMarkBottomLeft::after {
+  width: 1px;
+  height: 6px;
+  top: -6px;
+  left: 0;
+}
+
+/* ── Page coordinate ── */
+
+.pageCoord {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+  font-size: 0.35rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Accent bar ── */
 
 .accentBar {
   position: absolute;
@@ -35,7 +262,15 @@
   top: 0;
   bottom: 0;
   width: 4px;
+  transition: transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transform-origin: top;
 }
+
+.sceneCard:hover .accentBar {
+  transform: scaleY(1.08);
+}
+
+/* ── Cover note ── */
 
 .coverNote {
   font-size: 0.75rem;
@@ -44,13 +279,16 @@
   font-style: italic;
 }
 
+/* ── Achievement ── */
+
 .achievementItem {
   position: relative;
   padding-left: 1.25rem;
   font-size: 0.875rem;
   line-height: 1.5;
-  color: rgba(26,26,46,0.75);
+  color: var(--text-secondary);
 }
+
 .achievementItem::before {
   content: "";
   position: absolute;
@@ -63,11 +301,22 @@
   opacity: 0.25;
 }
 
+.achievementCounter {
+  font-size: 0.45rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-right: 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Fact note ── */
+
 .factNote {
   position: relative;
   font-size: 0.8rem;
   line-height: 1.5;
-  color: rgba(26,26,46,0.7);
+  color: var(--text-secondary);
   border-left: 2px solid;
   padding: 0.5rem 0.5rem 0.5rem 0.75rem;
   font-style: italic;
@@ -75,41 +324,28 @@
   user-select: none;
 }
 
+/* ── Tech badge ── */
+
 .techBadge {
   display: inline-block;
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   padding: 0.2rem 0.5rem;
-  border: 1px solid rgba(26,26,46,0.12);
-  color: rgba(26,26,46,0.5);
-  background: rgba(26,26,46,0.03);
-  transition: all 0.2s ease;
+  border: 1px solid var(--border-default);
+  color: var(--text-tertiary);
+  background: var(--surface-hover);
+  transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.18s ease;
 }
+
 .techBadge:hover {
   border-color: var(--color-ink);
   color: var(--color-ink);
-  background: rgba(26,26,46,0.06);
+  background: var(--color-panel);
+  transform: translateY(-1px);
 }
 
-.mascotPath {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 0.5rem 0;
-}
-.mascotPathLine {
-  flex: 1;
-  height: 1px;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(26,26,46,0.15) 0,
-    rgba(26,26,46,0.15) 4px,
-    transparent 4px,
-    transparent 8px
-  );
-}
+/* ── Stamp on card ── */
 
 .stamp {
   display: inline-flex;
@@ -123,4 +359,163 @@
   color: rgba(230,57,70,0.6);
   padding: 0.15rem 0.5rem;
   transform: rotate(-2deg);
+}
+
+.stampAnimate {
+  animation: stampIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes stampIn {
+  0% { opacity: 0; transform: rotate(-8deg) scale(0.6); }
+  60% { transform: rotate(-1deg) scale(1.05); }
+  100% { opacity: 1; transform: rotate(-2deg) scale(1); }
+}
+
+/* ── Mascot path ── */
+
+.mascotPath {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.5rem 0;
+}
+
+.mascotPathLine {
+  flex: 1;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(26,26,46,0.15) 0,
+    rgba(26,26,46,0.15) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+/* ── Year underline (micro interaction) ── */
+
+.yearLabel {
+  position: relative;
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.18s ease;
+}
+
+.yearLabel::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--color-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.sceneCard:hover .yearLabel::after {
+  transform: scaleX(1);
+}
+
+.sceneCard:hover .yearLabel {
+  color: var(--text-primary);
+}
+
+/* ── Company hover rotate ── */
+
+.companyName {
+  display: inline-block;
+  transition: transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.sceneCard:hover .companyName {
+  transform: rotate(-0.5deg);
+}
+
+/* ── Background scanning line ── */
+
+.scanLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  pointer-events: none;
+  opacity: 0;
+  animation: scanPulse 20s ease-in-out infinite;
+}
+
+@keyframes scanPulse {
+  0%, 97% { opacity: 0; transform: translateY(0); }
+  98% { opacity: 0.06; transform: translateY(0); }
+  99% { opacity: 0.06; transform: translateY(100vh); }
+  100% { opacity: 0; transform: translateY(100vh); }
+}
+
+/* ── Corner bracket ── */
+
+.cornerBracket {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.08;
+}
+
+.cornerBracketTopLeft {
+  top: 6px;
+  left: 6px;
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid var(--color-ink);
+  border-left: 1px solid var(--color-ink);
+}
+
+.cornerBracketBottomRight {
+  bottom: 6px;
+  right: 6px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 1px solid var(--color-ink);
+  border-right: 1px solid var(--color-ink);
+}
+
+/* ── Paper texture enhancement on hover ── */
+
+.paperTexture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+.sceneCard:hover .paperTexture {
+  opacity: 0.02;
+}
+
+/* ── Status indicator ── */
+
+.statusDot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+  background: var(--color-green);
+  transition: opacity 0.18s ease;
+}
+
+.sceneCard:hover .statusDot {
+  animation: pulseOnce 0.4s ease;
+}
+
+@keyframes pulseOnce {
+  0% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+  100% { opacity: 0.6; transform: scale(1); }
 }

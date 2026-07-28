@@ -2,9 +2,10 @@
 
 import { useState, useMemo, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useInView } from "motion/react";
 import { projects, type Project } from "@/lib/projects";
+import { cn } from "@/lib/cn";
 import { ScrollProgress } from "@/components/shared";
 import styles from "./ProjectsList.module.scss";
 
@@ -191,7 +192,7 @@ export default function ProjectsPage() {
               >
                 {cat}
                 {activeCategory === cat && (
-                  <motion.div className={styles.categoryUnderline} layoutId="cat" />
+                  <div className={styles.categoryUnderline} />
                 )}
               </motion.button>
             ))}
@@ -231,30 +232,24 @@ export default function ProjectsPage() {
         </div>
 
         {/* Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory + sortBy + search}
-            className={styles.archiveGrid}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {filtered.length > 0 ? (
-              filtered.map((p, i) => (
-                <ArchiveCard key={p.slug} project={p} index={projects.indexOf(p)} />
-              ))
-            ) : (
-              <div className={styles.emptyState}>
-                <span className={styles.emptyIcon}>📭</span>
-                <p className={styles.emptyText}>No projects match your search.</p>
-                <button className={styles.emptyReset} onClick={() => { setSearch(""); setActiveCategory("All") }}>
-                  Reset filters
-                </button>
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+        <div
+          key={activeCategory + sortBy + search}
+          className={styles.archiveGrid}
+        >
+          {filtered.length > 0 ? (
+            filtered.map((p, i) => (
+              <ArchiveCard key={p.slug} project={p} index={projects.indexOf(p)} />
+            ))
+          ) : (
+            <div className={styles.emptyState}>
+              <span className={styles.emptyIcon}>📭</span>
+              <p className={styles.emptyText}>No projects match your search.</p>
+              <button className={styles.emptyReset} onClick={() => { setSearch(""); setActiveCategory("All") }}>
+                Reset filters
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </>
   )

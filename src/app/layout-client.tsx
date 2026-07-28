@@ -1,28 +1,66 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { LazyMotion, domAnimation } from "framer-motion";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { ThemeProvider } from "@/lib/theme-context";
+import { ScrollProvider } from "@/lib/scroll-provider";
+import { NavSpine, setLenis } from "@/components/nav/NavSpine";
+import { NavSpineMobile, setLenisMobile } from "@/components/nav/NavSpineMobile";
+import { CursorSystem } from "@/components/cursor/CursorSystem";
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
+  const lenisRef = useRef<Lenis | null>(null);
+  const rafRef = useRef<number>(0);
+
   useEffect(() => {
-    const lenis = new Lenis({ duration: 1.1, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-    function raf(time: number) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
+    const lenis = new Lenis({
+      lerp: 0.14,
+      orientation: "vertical",
+      gestureOrientation: "vertical",
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 0.6,
+      infinite: false,
+    });
+    
+    lenisRef.current = lenis;
+    setLenis(lenis);
+    setLenisMobile(lenis);
+
+    function raf(time: number) {
+      lenis.raf(time);
+      rafRef.current = requestAnimationFrame(raf);
+    }
+    
+    rafRef.current = requestAnimationFrame(raf);
+    
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      lenis.destroy();
+      setLenis(null);
+      setLenisMobile(null);
+      lenisRef.current = null;
+    };
   }, []);
 
-  const { scrollYProgress } = useScroll();
-  const bgColor = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["#faf8f3", "#f5f2ea"]
-  );
-
   return (
-    <motion.div style={{ background: bgColor } as unknown as React.CSSProperties}>
-      {children}
-    </motion.div>
+      <LazyMotion features={domAnimation}>
+      <ThemeProvider>
+        <ScrollProvider>
+          <div style={{ background: "var(--color-paper)" }}>
+            {children}
+            <div className="hidden lg:block">
+              <NavSpine />
+            </div>
+            <div className="block lg:hidden">
+              <NavSpineMobile />
+            </div>
+            <CursorSystem />
+          </div>
+        </ScrollProvider>
+      </ThemeProvider>
+    </LazyMotion>
   );
 }

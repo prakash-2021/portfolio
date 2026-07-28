@@ -16,6 +16,29 @@ export type ExperienceItem = {
 export const experienceData: ExperienceItem[] = [
   {
     id: 1,
+    jobTitle: "Mid Full Stack Developer",
+    company: "Dobaato",
+    slug: "dobaato",
+    timePeriod: "Jun 2026 – Present",
+    description:
+      "Building scalable web apps end-to-end — system architecture, backend APIs, database design, auth, payments, and frontend.",
+    achievements: [
+      "Architected system design and backend infrastructure with NestJS & Node.js",
+      "Designed and optimized database schemas for performance and security",
+      "Integrated secure auth flows and payment gateways",
+    ],
+    techStack: ["NestJS", "Node.js", "PostgreSQL", "Next.js", "React", "TypeScript"],
+    facts: [
+      "Wears the system architect hat daily",
+      "Backend-heavy role with full-stack ownership",
+      "Security and payment logic are my primary zone",
+    ],
+    color: "#06b6d4",
+    iconSlug: "nestjs",
+    coverNote: "Where I architect systems",
+  },
+  {
+    id: 2,
     jobTitle: "Full Stack Developer",
     company: "Ottr Technology",
     slug: "ottr",
@@ -38,7 +61,7 @@ export const experienceData: ExperienceItem[] = [
     coverNote: "Where I learned to ship at scale",
   },
   {
-    id: 2,
+    id: 3,
     jobTitle: "Lead Frontend Developer",
     company: "Astergaze Technologies",
     slug: "astergaze",
@@ -59,28 +82,5 @@ export const experienceData: ExperienceItem[] = [
     color: "#7c3aed",
     iconSlug: "react",
     coverNote: "Where I owned the frontend",
-  },
-  {
-    id: 3,
-    jobTitle: "Freelance Full Stack Engineer",
-    company: "Self-Employed",
-    slug: "freelance",
-    timePeriod: "2023 – Present",
-    description:
-      "Designing and building full-stack applications, SaaS platforms, dashboards, APIs, and automation systems for clients worldwide.",
-    achievements: [
-      "Built SaaS platforms handling 10k+ monthly users",
-      "Designed and deployed automated CI/CD pipelines",
-      "Delivered end-to-end solutions from concept to production",
-    ],
-    techStack: ["React", "Next.js", "NestJS", "Node.js", "PostgreSQL", "TypeScript"],
-    facts: [
-      "My first freelance client found me through a GitHub issue comment",
-      "I've built everything from booking systems to analytics dashboards",
-      "Every project taught me something I didn't know I needed",
-    ],
-    color: "#e63946",
-    iconSlug: "freelancer",
-    coverNote: "Where I build what I want",
   },
 ];

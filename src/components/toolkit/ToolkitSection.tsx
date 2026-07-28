@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, AnimatePresence, type Transition } from "framer-motion";
+import { useState, useRef, memo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "motion/react";
 import { toolCategories, type Tool, type ToolCategory } from "@/lib/tools";
 import { cn } from "@/lib/cn";
@@ -9,24 +9,7 @@ import styles from "./ToolkitSection.module.scss";
 
 /* ─── Tool Logo ─────────────────────────────────────────────── */
 
-function microAnimation(type: Tool["microAnim"]) {
-  switch (type) {
-    case "spin":    return { rotate: [0, 360] }
-    case "float":   return { y: [0, -4, 0] }
-    case "pulse":   return { scale: [1, 1.04, 1] }
-    case "glow":    return { opacity: [0.7, 1, 0.7] }
-    case "stretch": return { scaleX: [1, 1.06, 1], scaleY: [1, 0.96, 1] }
-    case "wobble":  return { rotate: [-2, 2, -2] }
-    default:        return undefined
-  }
-}
-
-function microTransition(type: Tool["microAnim"]): Transition | undefined {
-  if (!type) return undefined
-  return { repeat: Infinity, duration: type === "spin" ? 8 : 3, ease: "easeInOut" } as Transition
-}
-
-function ToolLogo({
+const ToolLogo = memo(function ToolLogo({
   tool,
   isExpanded,
   onClick,
@@ -37,23 +20,21 @@ function ToolLogo({
   onClick: () => void
   accentColor: string
 }) {
-  const logoUrl = `https://cdn.simpleicons.org/${tool.simpleIconSlug}/${accentColor.replace("#", "")}`
+  const logoUrl = tool.localIcon
+    ? `/icons/${tool.localIcon}.svg`
+    : `https://cdn.simpleicons.org/${tool.simpleIconSlug}/${accentColor.replace("#", "")}`
 
   return (
     <motion.button
-      layout
       onClick={onClick}
       className={cn(styles.toolLogo, isExpanded && styles.toolLogoExpanded)}
-      whileHover={{ y: -6, scale: 1.05 }}
+      whileHover={{ y: -3, scale: 1.04 }}
       whileTap={{ scale: 0.97 }}
       transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
       style={{ "--accent": accentColor } as React.CSSProperties}
+      data-cursor-toolkit
     >
-      <motion.div
-        className={styles.logoIcon}
-        animate={microAnimation(tool.microAnim)}
-        transition={microTransition(tool.microAnim)}
-      >
+      <div className={styles.logoIcon}>
         <img
           src={logoUrl}
           alt={tool.name}
@@ -65,19 +46,18 @@ function ToolLogo({
           }}
         />
         <span className={styles.logoFallback}>{tool.name[0]}</span>
-      </motion.div>
+      </div>
       <span className={styles.logoName}>{tool.name}</span>
       <span className={styles.logoExp}>{tool.experience}</span>
     </motion.button>
   )
-}
+})
 
 /* ─── Tool Detail (expanded) ─────────────────────────────────── */
 
-function ToolDetail({ tool, accentColor }: { tool: Tool; accentColor: string }) {
+const ToolDetail = memo(function ToolDetail({ tool, accentColor }: { tool: Tool; accentColor: string }) {
   return (
     <motion.div
-      layout
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: "auto", opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
@@ -121,11 +101,11 @@ function ToolDetail({ tool, accentColor }: { tool: Tool; accentColor: string }) 
       </div>
     </motion.div>
   )
-}
+})
 
 /* ─── Category Panel ─────────────────────────────────────────── */
 
-function CategoryPanel({
+const CategoryPanel = memo(function CategoryPanel({
   category,
   index,
   expandedTool,
@@ -154,13 +134,8 @@ function CategoryPanel({
       animate={isInView ? { opacity: 1, y: 0, rotate: 0 } : { opacity: 0, y: 40 }}
       transition={{ duration: 0.5, delay: 0.06 * index, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      {/* Folded corner decoration */}
       <div className={styles.cornerFold} style={{ borderRightColor: category.color, borderTopColor: "transparent" }} />
-
-      {/* Tape */}
       <div className={styles.tape} />
-
-      {/* Header */}
       <div className={styles.panelHeader}>
         <div className={styles.panelLabel}>
           <span className={styles.panelNumber}>{String(index + 1).padStart(2, "0")}</span>
@@ -168,8 +143,6 @@ function CategoryPanel({
         </div>
         <p className={styles.panelDesc}>{category.description}</p>
       </div>
-
-      {/* Logo Grid */}
       <div className={styles.logoGrid}>
         {category.tools.map((tool) => (
           <ToolLogo
@@ -181,8 +154,6 @@ function CategoryPanel({
           />
         ))}
       </div>
-
-      {/* Expanded Detail */}
       <AnimatePresence mode="wait">
         {expandedTool &&
           (() => {
@@ -190,15 +161,11 @@ function CategoryPanel({
             return t ? <ToolDetail key={t.slug} tool={t} accentColor={category.color} /> : null
           })()}
       </AnimatePresence>
-
-      {/* Hand-drawn annotation */}
       <span className={styles.annotation}>{category.tools.length} tools</span>
-
-      {/* Halftone corner */}
       <div className={styles.halftoneCorner} />
     </motion.div>
   )
-}
+})
 
 /* ─── Background Decorations ────────────────────────────────── */
 
@@ -241,11 +208,20 @@ export function ToolkitSection() {
       {/* Section header */}
       <motion.div
         className={styles.sectionHeader}
-        initial={{ opacity: 0, x: -20 }}
-        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-        transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <span className={styles.sectionLabel}>/// Equipment Inventory</span>
+        <motion.span
+          className={styles.sectionLabel}
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.05 }}
+        >
+          /// Equipment Inventory
+        </motion.span>
         <h2 className={styles.sectionTitle}>
           Engineering <span className={styles.sectionAccent}>Toolkit</span>
         </h2>

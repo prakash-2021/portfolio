@@ -1,16 +1,18 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, lazy, Suspense } from "react";
 import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { useInView } from "motion/react";
 import { cn } from "@/lib/cn";
+import { EditionSwitch } from "@/components/edition/EditionSwitch";
 import { HeroSection } from "@/components/hero/HeroSection";
-import { ToolkitSection } from "@/components/toolkit/ToolkitSection";
 import { ProjectSection } from "@/components/projects/ProjectSection";
 import { ManifestoSection } from "@/components/manifesto/ManifestoSection";
 import { ExperienceSection } from "@/components/experience/ExperienceSection";
 import { EducationSection } from "@/components/education/EducationSection";
-import { ContactSection } from "@/components/contact/ContactSection";
+
+const ToolkitSection = lazy(() => import("@/components/toolkit/ToolkitSection").then(m => ({ default: m.ToolkitSection })));
+const ContactSection = lazy(() => import("@/components/contact/ContactSection").then(m => ({ default: m.ContactSection })));
 
 /* ─── HOOKS ────────────────────────────────────────────────── */
 
@@ -42,14 +44,12 @@ function ComicLoading({ done }: { done: () => void }) {
       exit={{ clipPath: "inset(0 0 100% 0)" }}
       transition={{ duration: 0.7, ease: [0.65, 0, 0.35, 1] }}
     >
-      {/* Paper texture base */}
       <div className="absolute inset-0 opacity-[0.015]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
         }}
       />
 
-      {/* Halftone bloom */}
       <motion.div
         className="absolute inset-0"
         initial={{ opacity: 0 }}
@@ -61,7 +61,6 @@ function ComicLoading({ done }: { done: () => void }) {
         }}
       />
 
-      {/* Panel border drawing */}
       <motion.div
         className="absolute"
         style={{ width: "60%", height: "50%" }}
@@ -73,7 +72,6 @@ function ComicLoading({ done }: { done: () => void }) {
         <div className="absolute inset-[4px] border border-ink/10" />
       </motion.div>
 
-      {/* Typography revealing */}
       <div className="relative z-10 text-center">
         <motion.h1
           className="text-[clamp(2rem,8vw,6rem)] font-black leading-[0.85] tracking-[-0.04em] text-ink select-none"
@@ -99,7 +97,6 @@ function ComicLoading({ done }: { done: () => void }) {
         </motion.h1>
       </div>
 
-      {/* Red accent streak */}
       <motion.div
         className="absolute bottom-[20%] left-0 h-[3px] bg-red"
         initial={{ scaleX: 0, originX: 0 }}
@@ -124,41 +121,11 @@ function ScrollBar() {
   );
 }
 
-/* ─── PHILOSOPHY ───────────────────────────────────────────── */
-
-/* ─── PROJECTS ─────────────────────────────────────────────── */
-
-/* ─── TOOLS ────────────────────────────────────────────────── */
-
-function ToolsSection() {
-  return <ToolkitSection />;
-}
-
-/* ─── JOURNEY ──────────────────────────────────────────────── */
-
-/* ─── MAIN ─────────────────────────────────────────────────── */
-
 /* ─── SECTION DIVIDER ───────────────────────────────────────── */
 
 function SectionDivider({ label }: { label?: string }) {
   return (
     <div className="px-6 sm:px-10 max-w-[1200px] mx-auto relative py-2">
-      {/* Floating ink dots */}
-      <motion.div
-        className="absolute left-1/4 top-0 w-1 h-1 rounded-full bg-ink/10"
-        animate={{ y: [-4, 4, -4], opacity: [0.1, 0.2, 0.1] }}
-        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute right-1/3 top-1 w-1.5 h-1.5 rounded-full bg-red/10"
-        animate={{ y: [0, -5, 0], opacity: [0.08, 0.18, 0.08] }}
-        transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-      />
-      <motion.div
-        className="absolute left-2/3 -bottom-1 w-[3px] h-[3px] rounded-full bg-blue/10"
-        animate={{ y: [-3, 3, -3], opacity: [0.06, 0.15, 0.06] }}
-        transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.5 }}
-      />
       <motion.div
         className="ink-drip"
         initial={{ opacity: 0, scaleX: 0.8 }}
@@ -209,7 +176,6 @@ function DrawingArrow({
           animate={isInView ? { pathLength: 1 } : {}}
           transition={{ duration: 0.8, delay, ease: "easeOut" }}
         />
-        {/* Arrowhead */}
         <motion.polygon
           points="0,-4 8,0 0,4"
           fill="#e63946"
@@ -264,14 +230,23 @@ export default function Home() {
         <SectionDivider label="Projects" />
         <ProjectSection />
         <SectionDivider label="Toolkit" />
-        <ToolsSection />
+        <Suspense fallback={null}>
+          <ToolsSection />
+        </Suspense>
         <SectionDivider label="Experience" />
         <ExperienceSection />
         <SectionDivider label="Education" />
         <EducationSection />
         <SectionDivider label="Connect" />
-        <ContactSection />
+        <Suspense fallback={null}>
+          <ContactSection />
+        </Suspense>
       </main>
+      <EditionSwitch />
     </>
   );
+}
+
+function ToolsSection() {
+  return <ToolkitSection />;
 }

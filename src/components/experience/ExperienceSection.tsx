@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, memo, useMemo } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useInView } from "motion/react";
 import { experienceData } from "@/lib/experience";
@@ -9,7 +9,9 @@ import { HalftoneCorner } from "@/components/comic/ComicElements";
 import { cn } from "@/lib/cn";
 import styles from "./ExperienceSection.module.scss";
 
-function FactNote({ text, color, delay }: { text: string; color: string; delay: number }) {
+/* ─── Fact Note ──────────────────────────────────────────── */
+
+const FactNote = memo(function FactNote({ text, color, delay }: { text: string; color: string; delay: number }) {
   const [open, setOpen] = useState(false);
   return (
     <motion.div
@@ -42,7 +44,8 @@ function FactNote({ text, color, delay }: { text: string; color: string; delay: 
       </AnimatePresence>
       {!open && (
         <motion.span
-          className="block text-ink/30"
+          className="block"
+          style={{ color: "rgba(var(--ink-rgb), 0.3)" }}
           initial={{ opacity: 0.3 }}
           whileHover={{ opacity: 0.6, x: 2 }}
         >
@@ -51,7 +54,9 @@ function FactNote({ text, color, delay }: { text: string; color: string; delay: 
       )}
     </motion.div>
   );
-}
+});
+
+/* ─── Experience Card ────────────────────────────────────── */
 
 function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index: number }) {
   const ref = useRef(null);
@@ -61,11 +66,37 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
     <motion.div
       ref={ref}
       className={styles.sceneCard}
+      style={{ "--accent-color": item.color } as React.CSSProperties}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration: 0.45, delay: 0.1 * index, ease: [0.25, 0.1, 0.25, 1] }}
     >
+      {/* Deeper shadow layer (opacity-based for performance) */}
+      <div className={styles.sceneCardShadow} />
+
+      {/* Paper texture overlay */}
+      <div className={styles.paperTexture} />
+
+      {/* Tape strip */}
+      <div className={styles.tapeStrip} />
+
+      {/* Card number */}
+      <span className={styles.cardNumber}>
+        {(index + 1).toString().padStart(3, "0")}
+      </span>
+
+      {/* Registration marks */}
+      <div className={cn(styles.registrationMark, styles.registrationMarkTopRight)} />
+      <div className={cn(styles.registrationMark, styles.registrationMarkBottomLeft)} />
+
+      {/* Corner brackets */}
+      <div className={cn(styles.cornerBracket, styles.cornerBracketTopLeft)} />
+      <div className={cn(styles.cornerBracket, styles.cornerBracketBottomRight)} />
+
+      {/* Page coordinate */}
+      <span className={styles.pageCoord}>pos: {String(index + 1).padStart(2, "0")},0</span>
+
       {/* Accent bar */}
       <div className={styles.accentBar} style={{ background: item.color }} />
 
@@ -83,7 +114,8 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
               {item.jobTitle}
             </motion.div>
             <motion.h3
-              className="text-xl sm:text-2xl font-black text-ink tracking-tight mt-0.5"
+              className={cn("text-xl sm:text-2xl font-black tracking-tight mt-0.5", styles.companyName)}
+              style={{ color: "var(--color-ink)" }}
               initial={{ opacity: 0, x: -10 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.15 }}
@@ -97,8 +129,18 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.4, delay: 0.25 }}
           >
-            <span className="text-[0.65rem] font-medium text-ink/50">{item.timePeriod}</span>
-            <div className={styles.stamp}>Verified</div>
+            <span className={cn(styles.yearLabel)}>
+              <span className={styles.statusDot} />
+              {item.timePeriod}
+            </span>
+            <motion.div
+              className={cn(styles.stamp, isInView && styles.stampAnimate)}
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.01, delay: 0.5 }}
+            >
+              Verified
+            </motion.div>
           </motion.div>
         </div>
 
@@ -115,7 +157,8 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
               &ldquo;{item.coverNote}&rdquo;
             </motion.div>
             <motion.p
-              className="text-base text-ink/70 mt-2 leading-relaxed"
+              className="text-base leading-relaxed mt-2"
+              style={{ color: "var(--text-secondary)" }}
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.4, delay: 0.25 }}
@@ -129,10 +172,16 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.4, delay: 0.3 }}
           >
-            {item.techStack.map((t) => (
-              <span key={t} className={styles.techBadge}>
+            {item.techStack.map((t, ti) => (
+              <motion.span
+                key={t}
+                className={styles.techBadge}
+                initial={{ opacity: 0, y: 6 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.25, delay: 0.35 + ti * 0.04 }}
+              >
                 {t}
-              </span>
+              </motion.span>
             ))}
           </motion.div>
         </div>
@@ -144,7 +193,9 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.4, delay: 0.35 }}
         >
-          <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-ink/40 block mb-2">
+          <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase block mb-2"
+            style={{ color: "rgba(var(--ink-rgb), 0.4)" }}
+          >
             Key achievements
           </span>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
@@ -156,6 +207,9 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.3, delay: 0.4 + 0.08 * i }}
               >
+                <span className={styles.achievementCounter}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 {a}
               </motion.div>
             ))}
@@ -168,6 +222,105 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
     </motion.div>
   );
 }
+
+/* ─── Header ─────────────────────────────────────────────── */
+
+function SectionHeader() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+
+  return (
+    <div ref={ref} className={styles.header}>
+      <motion.span
+        className={styles.headerLabel}
+        initial={{ opacity: 0, y: 8 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+      >
+        /// Chapter 03
+      </motion.span>
+
+      <motion.span
+        className={styles.issueLabel}
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.35, delay: 0.08 }}
+      >
+        ISSUE #05
+      </motion.span>
+
+      <div className={styles.headerRow}>
+        <motion.div
+          className={styles.headerDivider}
+          initial={{ scaleX: 0 }}
+          animate={isInView ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.4, delay: 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+        />
+        <motion.h2
+          className={styles.headerTitle}
+          initial={{ opacity: 0, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.4, delay: 0.16, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          The <span className={styles.headerAccent}>experience</span>
+          <span className={styles.headerArrow}>↘</span>
+        </motion.h2>
+        <motion.div
+          className={styles.headerDivider}
+          initial={{ scaleX: 0 }}
+          animate={isInView ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.4, delay: 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+        />
+      </div>
+
+      <motion.p
+        className={styles.headerDesc}
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.4, delay: 0.22 }}
+      >
+        Walking through my career — one scene at a time
+      </motion.p>
+    </div>
+  );
+}
+
+/* ─── Connector ──────────────────────────────────────────── */
+
+function ConnectorLines() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      className={styles.connector}
+      initial={{ opacity: 0 }}
+      animate={isInView ? { opacity: 1 } : {}}
+      transition={{ duration: 0.4, delay: 0.2 }}
+    >
+      <motion.div
+        className={styles.connectorLine}
+        initial={{ scaleY: 0 }}
+        animate={isInView ? { scaleY: 1 } : {}}
+        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+      />
+      <div className={styles.connectorDots}>
+        {[0, 1, 2].map((i) => (
+          <motion.div
+            key={i}
+            className={styles.connectorDot}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={isInView ? { opacity: 0.3, scale: 1 } : {}}
+            transition={{ duration: 0.2, delay: 0.3 + i * 0.06 }}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Main Section ───────────────────────────────────────── */
 
 export function ExperienceSection() {
   const sectionRef = useRef(null);
@@ -182,24 +335,18 @@ export function ExperienceSection() {
     >
       <div className={styles.backgroundGrid} />
 
+      {/* Scanning line */}
+      <div className={styles.scanLine} style={{ background: "var(--color-red)" }} />
+
       <div className={styles.scene}>
-        {/* Chapter header */}
-        <div className="text-center mb-14">
-          <span className="comic-caption">/// Chapter 03</span>
-          <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-bold text-ink mt-2">
-            The <span className="text-purple">experience</span>
-          </h2>
-          <p className="text-xs text-ink/40 mt-2 max-w-[300px] mx-auto">
-            Walking through my career — one scene at a time
-          </p>
-        </div>
+        <SectionHeader />
+        <ConnectorLines />
 
         <div className="space-y-10 sm:space-y-14">
           {experienceData.map((item, i) => (
             <div key={item.id}>
               <ExperienceCard item={item} index={i} />
 
-              {/* Mascot walks to next — only between items */}
               {i < experienceData.length - 1 && (
                 <motion.div
                   className={styles.mascotPath}
