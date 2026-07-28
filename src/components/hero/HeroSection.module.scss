@@ -1,0 +1,321 @@
+.hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ── Background layers ── */
+
+.blueprintGrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image:
+    linear-gradient(var(--color-ink) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-ink) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.halftoneBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.015;
+  background-image: radial-gradient(circle, var(--color-ink) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+
+/* ── Crop marks ── */
+
+.cropMark {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.06;
+}
+
+.cropMarkLine {
+  background: var(--color-ink);
+}
+
+/* ── Registration mark ── */
+
+.regMark {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.04;
+}
+
+.regCircle {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 0.5;
+}
+
+.regCross {
+  stroke: var(--color-ink);
+  stroke-width: 0.5;
+}
+
+/* ── Watermark layer ── */
+
+.watermarkLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+  gap: 2rem;
+}
+
+.watermarkText {
+  font-size: clamp(6rem, 15vw, 12rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: var(--color-ink);
+  opacity: 0.025;
+  line-height: 1;
+  user-select: none;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.watermarkConfidential {
+  transform: rotate(-4deg);
+  opacity: 0.02;
+  letter-spacing: 0.12em;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 3px,
+    var(--color-ink) 3px,
+    var(--color-ink) 5px
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ── Mugshot case file ── */
+
+.mugshot {
+  position: absolute;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.mugshotTape {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 28px;
+  height: 10px;
+  background: rgba(var(--yellow-rgb), 0.5);
+  border: 1px solid var(--border-default);
+  z-index: 2;
+}
+
+.mugshotInner {
+  border: 2px solid var(--border-strong);
+  background: var(--surface-card);
+  padding: 0.5rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.mugshotImage {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-hover);
+  border: 1px solid var(--border-default);
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.mugshotFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.35rem;
+  padding-top: 0.3rem;
+  border-top: 1px solid var(--border-default);
+  transition: border-color 0.4s ease;
+}
+
+.mugshotId {
+  font-size: 0.35rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  transition: color 0.4s ease;
+}
+
+.mugshotStatus {
+  font-size: 0.3rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--text-tertiary);
+  transition: color 0.4s ease;
+}
+
+.mugshotClip {
+  position: absolute;
+  top: 0.25rem;
+  right: -6px;
+  z-index: 3;
+}
+
+/* ── Issue label ── */
+
+.issueLabel {
+  position: absolute;
+  pointer-events: none;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.4s ease;
+}
+
+/* ── Typography ── */
+
+.nameBlock {
+  position: relative;
+}
+
+.nameLetter {
+  display: inline-block;
+  position: relative;
+  will-change: transform;
+}
+
+/* ── Prakash Word ── */
+
+.prakashWord {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+}
+
+.prakashLetter {
+  display: inline-block;
+  position: relative;
+  will-change: transform, color;
+}
+
+.prakashSweep {
+  position: absolute;
+  inset: -20% -20%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--accent-rgb), 0.06) 30%,
+    rgba(var(--accent-rgb), 0.1) 50%,
+    rgba(var(--accent-rgb), 0.06) 70%,
+    transparent 100%
+  );
+  z-index: 0;
+  width: 40%;
+  height: 140%;
+  border-radius: 50%;
+  filter: blur(8px);
+}
+
+/* ── Ash Particles (CSS only, GPU) ── */
+
+@keyframes particle-rise {
+  0%   { opacity: 0; transform: translateY(0) scale(0); }
+  15%  { opacity: 0.3; transform: translateY(-6px) scale(1); }
+  100% { opacity: 0; transform: translateY(-50px) translateX(8px) scale(0); }
+}
+
+.ashParticles {
+  position: absolute;
+  inset: -40px -30px -20px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ashParticle {
+  position: absolute;
+  bottom: 20%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--color-red);
+  animation: particle-rise 2.5s ease-out infinite;
+  pointer-events: none;
+}
+
+/* ── CTA ink effect ── */
+
+.ctaWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ctaUnderline {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 1.5px;
+  background: var(--color-red);
+  transform-origin: left;
+}
+
+.ctaInk {
+  position: absolute;
+  inset: -4px;
+  border: 1px solid rgba(var(--accent-rgb), 0.08);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Dust particles ── */
+
+.dust {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--color-ink);
+  pointer-events: none;
+}
+
+/* ── Steam ── */
+
+.steam {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ── Bottom bar ── */
+
+.bottomBar {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.4rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  opacity: 0.04;
+}

@@ -1,0 +1,275 @@
+.root {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 44px;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: width 0.4s ease;
+}
+.rootHovered {
+  width: 160px;
+}
+
+.items {
+  position: relative;
+  height: 70vh;
+  max-height: 520px;
+  width: 100%;
+  pointer-events: auto;
+  cursor: default;
+}
+
+.item {
+  position: absolute;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  height: 32px;
+  z-index: 3;
+  border-radius: 2px;
+}
+.item:focus-visible {
+  outline: 1.5px solid var(--color-red);
+  outline-offset: 3px;
+}
+.itemQuiet {
+  transition: opacity 0.35s ease;
+}
+
+.itemInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 6px;
+  width: 100%;
+  height: 100%;
+}
+
+.issueNum {
+  font-size: 0.5rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 14px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.2;
+  color: var(--text-muted);
+  transition: opacity 0.35s ease, color 0.35s ease;
+}
+.issueNumHovered {
+  opacity: 0.65;
+  color: rgba(var(--accent-rgb), 0.5);
+}
+
+.horzLine {
+  height: 1px;
+  flex-shrink: 0;
+  background: var(--surface-accent);
+  transform-origin: left;
+  border-radius: 1px;
+  width: 16px;
+  opacity: 0.06;
+  transition: width 0.35s ease, opacity 0.35s ease;
+}
+.horzLineHovered {
+  width: 32px;
+  opacity: 0.35;
+}
+
+.itemLabel {
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  line-height: 1;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.hoverArrow {
+  font-size: 0.5rem;
+  color: var(--color-red);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.paperBg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--text-faint) 20%,
+    rgba(var(--paper-rgb), 0.55) 60%,
+    rgba(var(--paper-rgb), 0.7) 100%
+  );
+  border-left: 1px solid var(--border-default);
+  pointer-events: none;
+}
+
+.inkTrack {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  height: 70vh;
+  max-height: 520px;
+  width: 1px;
+  background: var(--surface-hover);
+  transform: translateY(-50%);
+  pointer-events: none;
+  border-radius: 1px;
+  overflow: hidden;
+  transition: background 0.4s ease;
+}
+
+.inkStroke {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    var(--color-red) 0%,
+    rgba(var(--accent-rgb), 0.3) 100%
+  );
+  transform-origin: top;
+  border-radius: 1px;
+  box-shadow: 0 0 3px rgba(var(--accent-rgb), 0.08);
+}
+
+.activeContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 4px 6px;
+  width: 100%;
+}
+
+.connectorTop {
+  height: 1.5px;
+  background: var(--color-red);
+  width: 100%;
+  transform-origin: left;
+  border-radius: 1px;
+  opacity: 0.5;
+}
+
+.connectorBottom {
+  height: 1px;
+  background: var(--surface-hover);
+  width: 65%;
+  transform-origin: left;
+  border-radius: 1px;
+  transition: background 0.4s ease;
+}
+
+.activeLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-ink);
+  line-height: 1.2;
+  position: relative;
+  display: inline-block;
+}
+
+.labelUnderline {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: var(--color-red);
+  transform-origin: left;
+  border-radius: 1px;
+  opacity: 0.6;
+}
+
+.activeIssue {
+  font-size: 0.4rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  line-height: 1;
+}
+
+.paperHighlight {
+  position: absolute;
+  inset: -3px -6px;
+  background: rgba(var(--paper-rgb), 0.5);
+  border: 1px solid var(--border-default);
+  border-radius: 3px;
+  z-index: -1;
+  pointer-events: none;
+  transition: border-color 0.4s ease;
+}
+
+.paperShadow {
+  position: absolute;
+  inset: -2px -4px;
+  background: var(--surface-hover);
+  border-radius: 3px;
+  z-index: -1;
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+
+.flash {
+  position: absolute;
+  inset: -4px -8px;
+  background: rgba(var(--accent-rgb), 0.08);
+  border-radius: 3px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.editorialDetails {
+  position: absolute;
+  right: 4px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+  opacity: 0.06;
+  transition: opacity 0.4s ease;
+}
+.rootHovered .editorialDetails {
+  opacity: 0.1;
+}
+
+.editorialMark {
+  font-size: 0.3rem;
+  color: var(--color-ink);
+  line-height: 1;
+}
+
+@media (max-width: 1024px) {
+  .root {
+    width: 36px;
+  }
+  .rootHovered {
+    width: 140px;
+  }
+  .items {
+    height: 60vh;
+    max-height: 400px;
+  }
+  .inkTrack {
+    height: 60vh;
+    max-height: 400px;
+  }
+}

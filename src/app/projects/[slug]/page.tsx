@@ -1,15 +1,19 @@
+"use client";
+
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { use } from "react";
+import { motion } from "framer-motion";
 import { projects } from "@/lib/projects";
+import { FadeIn, ScrollProgress } from "@/components/shared";
 import styles from "./ProjectDetails.module.scss";
-import CustomCursor from "@/components/ui/CustomCursor";
 
-export default async function ProjectPage({
+export default function ProjectPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
+  const { slug } = use(params);
   const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
@@ -18,7 +22,7 @@ export default async function ProjectPage({
 
   return (
     <>
-      <CustomCursor />
+      <ScrollProgress />
       <div className={styles.container}>
         <nav className={styles.nav}>
           <Link href="/projects" className={styles.backButton}>
@@ -36,7 +40,12 @@ export default async function ProjectPage({
         </nav>
 
         <header className={styles.header}>
-          <div className={styles.heroImageContainer}>
+          <motion.div
+            className={styles.heroImageContainer}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <img
               src={project.image}
               alt={project.title}
@@ -46,16 +55,21 @@ export default async function ProjectPage({
               className={styles.heroOverlay}
               style={{ background: project.heroGradient }}
             />
-          </div>
+          </motion.div>
 
-          <div className={styles.headerContent}>
+          <FadeIn className={styles.headerContent} y={30}>
             <h1 className={styles.title}>{project.title}</h1>
             <p className={styles.tagline}>{project.tagline}</p>
-          </div>
+          </FadeIn>
         </header>
 
         <main className={styles.mainContent}>
-          <div className={styles.layout}>
+          <motion.div
+            className={styles.layout}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <div className={styles.leftCol}>
               <section className={styles.section}>
                 <h2>Overview</h2>
@@ -63,11 +77,13 @@ export default async function ProjectPage({
               </section>
 
               {project.link && (
-                <a
+                <motion.a
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.primaryButton}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   View Live Site
                   <svg viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -79,12 +95,17 @@ export default async function ProjectPage({
                       strokeLinejoin="round"
                     />
                   </svg>
-                </a>
+                </motion.a>
               )}
             </div>
 
             <aside className={styles.rightCol}>
-              <div className={styles.metaCard}>
+              <motion.div
+                className={styles.metaCard}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+              >
                 <div className={styles.metaItem}>
                   <span className={styles.metaLabel}>Role</span>
                   <span className={styles.metaValue}>{project.role}</span>
@@ -103,9 +124,9 @@ export default async function ProjectPage({
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </aside>
-          </div>
+          </motion.div>
         </main>
       </div>
     </>
