@@ -175,6 +175,7 @@ export function CursorSystem() {
   /* ── Scroll dim (via Lenis) ── */
   useEffect(() => {
     if (!lenis) return;
+    if (typeof lenis !== 'object' || !('on' in lenis)) return;
     const handleScroll = () => {
       mOpacity.set(0.5);
       mScale.set(0.92);
@@ -184,7 +185,7 @@ export function CursorSystem() {
         mScale.set(MODE_CONFIG[modeRef.current].scale);
       }, 150);
     };
-    const unsub = lenis.on('scroll', handleScroll);
+    const unsub = (lenis as any).on('scroll', handleScroll);
     return () => { unsub(); clearTimeout(scrollTimer.current); };
   }, [lenis, mOpacity, mScale]);
 

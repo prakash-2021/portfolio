@@ -112,6 +112,20 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: color 0.4s ease, background 0.4s ease;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+  }
+
+  section[data-chapter] {
+    content-visibility: auto;
+    contain-intrinsic-size: 600px;
   }
 
   body::after {
@@ -175,6 +189,32 @@
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .speed-lines-bg {
+      animation: none !important;
+    }
+
+    .animate-drift {
+      animation: none !important;
+    }
+
+    body::after {
+      opacity: 0.015;
+    }
+
+    .section-connector::after {
+      display: none;
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a, button, [role="button"], input, textarea, select {
+      touch-action: manipulation;
     }
   }
 }

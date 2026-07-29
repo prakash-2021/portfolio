@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useRef } from "react";
 import { cn } from "@/lib/cn";
 
 type Action = "wave" | "point" | "sit" | "walk";
@@ -58,6 +58,15 @@ function MascotComponent({
   size?: number
   action?: Action
 }) {
+  const groupRef = useRef<SVGGElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(pointer: coarse)").matches && groupRef.current) {
+      const anims = groupRef.current.querySelectorAll("animate, animateTransform");
+      anims.forEach((a) => a.remove());
+    }
+  }, []);
+
   return (
     <svg
       viewBox="0 0 40 50"
@@ -66,7 +75,7 @@ function MascotComponent({
       fill="none"
       className={cn("overflow-visible", className)}
     >
-      <g>
+      <g ref={groupRef}>
         {getBodyAnimation(action)}
         {/* Body */}
         <rect x="14" y="20" width="12" height="18" rx="2.5" fill="var(--color-ink)" />

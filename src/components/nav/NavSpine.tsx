@@ -78,14 +78,18 @@ export const NavSpine = memo(function NavSpine() {
 
   const scrollTo = useCallback((id: string, idx: number) => {
     const el = document.querySelector(`[data-chapter-id="${id}"]`);
-    if (el && lenis) {
+    if (el) {
       setClickedIdx(idx);
       setTimeout(() => setClickedIdx(null), 500);
       const top = el.getBoundingClientRect().top + window.scrollY - 80;
-      lenis.scrollTo(top, {
-        duration: reduced ? 0 : 0.3,
-        easing: (t: number) => t,
-      });
+      if (lenis) {
+        lenis.scrollTo(top, {
+          duration: reduced ? 0 : 0.3,
+          easing: (t: number) => t,
+        });
+      } else {
+        window.scrollTo({ top, behavior: reduced ? "instant" : "smooth" });
+      }
     }
   }, [reduced, lenis]);
 

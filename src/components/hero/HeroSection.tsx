@@ -240,14 +240,17 @@ export const HeroSection = memo(function HeroSection() {
   const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : -30]);
   const bgOpacity = useTransform(scrollYProgress, [0, 0.5], [0.025, 0.05]);
 
-  /* ── Mouse tracking (throttled) ── */
+  /* -- Mouse tracking (desktop only) -- */
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const mouseRAF = useRef<number>(0);
   const mouseRect = useRef({ left: 0, width: 1, top: 0, height: 1 });
   const mouseNeedsRect = useRef(true);
+  const isTouchRef = useRef(false);
+
   const onMouseMove = useCallback(
     (e: React.MouseEvent) => {
+      if (isTouchRef.current) return;
       if (mouseRAF.current) return;
       mouseRAF.current = requestAnimationFrame(() => {
         mouseRAF.current = 0;
@@ -267,6 +270,10 @@ export const HeroSection = memo(function HeroSection() {
     },
     [mouseX, mouseY],
   );
+
+  useEffect(() => {
+    isTouchRef.current = window.matchMedia("(pointer: coarse)").matches;
+  }, []);
 
   const nameX = useTransform(mouseX, [-0.5, 0.5], [-8, 8]);
   const nameY = useTransform(mouseY, [-0.5, 0.5], [-5, 5]);
