@@ -48,13 +48,17 @@ export const NavSpineMobile = memo(function NavSpineMobile() {
 
   const scrollTo = (id: string) => {
     const el = document.querySelector(`[data-chapter-id="${id}"]`);
-    if (el && lenis) {
+    if (el) {
       const rect = el.getBoundingClientRect();
       const top = rect.top + window.scrollY - 80;
-      lenis.scrollTo(top, {
-        duration: 0.3,
-        easing: (t: number) => t,
-      });
+      if (lenis) {
+        lenis.scrollTo(top, {
+          duration: 0.3,
+          easing: (t: number) => t,
+        });
+      } else {
+        window.scrollTo({ top, behavior: "smooth" });
+      }
     }
   };
 
@@ -63,7 +67,8 @@ export const NavSpineMobile = memo(function NavSpineMobile() {
       <div className={styles.track}>
         <motion.div
           className={styles.fill}
-          animate={{ width: `${(activeIdx / (chapters.length - 1)) * 100}%` }}
+          style={{ transformOrigin: "left" }}
+          animate={{ scaleX: activeIdx / (chapters.length - 1) }}
           transition={{ type: "spring", stiffness: 60, damping: 14 }}
         />
       </div>

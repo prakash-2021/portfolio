@@ -19,13 +19,19 @@ const ContactSection = dynamic(() => import("@/components/contact/ContactSection
 
 function ComicLoading({ done }: { done: () => void }) {
   const reduced = useReducedMotion();
+  const isTouchRef = useRef(false);
+
   useEffect(() => {
-    if (reduced) { done(); return; }
+    isTouchRef.current = window.matchMedia("(pointer: coarse)").matches;
+  }, []);
+
+  useEffect(() => {
+    if (reduced || isTouchRef.current) { done(); return; }
     const t = setTimeout(done, 2600);
     return () => clearTimeout(t);
   }, [reduced, done]);
 
-  if (reduced) return null;
+  if (reduced || isTouchRef.current) return null;
 
   return (
     <motion.div

@@ -4,9 +4,8 @@ import { memo } from "react";
 export const SpeedLines = memo(function SpeedLines() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.06]">
-      <div className="absolute inset-0" style={{
+      <div className="absolute inset-0 speed-lines-bg" style={{
         background: "repeating-linear-gradient(90deg, transparent 0, transparent 20px, var(--color-ink) 20px, var(--color-ink) 21px)",
-        animation: "speed-line 0.6s linear infinite",
       }} />
     </div>
   );
