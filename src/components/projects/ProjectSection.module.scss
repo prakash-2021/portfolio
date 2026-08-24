@@ -109,10 +109,12 @@
   background-size: cover;
   background-position: center;
   transition: transform 0.4s ease;
-  will-change: transform;
 
+  /* Promoted only while the card is under the pointer — as a static rule this
+   * held a full-size texture per card for the whole session. */
   .featuredCard:hover & {
     transform: scale(1.04);
+    will-change: transform;
   }
 }
 

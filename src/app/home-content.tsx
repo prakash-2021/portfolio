@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { cn } from "@/lib/cn";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -34,7 +34,7 @@ function ComicLoading({ done }: { done: () => void }) {
   if (reduced || isTouchRef.current) return null;
 
   return (
-    <motion.div
+    <m.div
       className="fixed inset-0 z-[200] bg-paper flex items-center justify-center overflow-hidden"
       exit={{ clipPath: "inset(0 0 100% 0)" }}
       transition={{ duration: 0.7, ease: [0.65, 0, 0.35, 1] }}
@@ -45,7 +45,7 @@ function ComicLoading({ done }: { done: () => void }) {
         }}
       />
 
-      <motion.div
+      <m.div
         className="absolute inset-0"
         initial={{ opacity: 0 }}
         animate={{ opacity: [0, 0, 1] }}
@@ -56,7 +56,7 @@ function ComicLoading({ done }: { done: () => void }) {
         }}
       />
 
-      <motion.div
+      <m.div
         className="absolute"
         style={{ width: "60%", height: "50%" }}
         initial={{ clipPath: "inset(50% 50% 50% 50%)" }}
@@ -65,10 +65,10 @@ function ComicLoading({ done }: { done: () => void }) {
       >
         <div className="w-full h-full border-2 border-ink/20" />
         <div className="absolute inset-[4px] border border-ink/10" />
-      </motion.div>
+      </m.div>
 
       <div className="relative z-10 text-center">
-        <motion.h1
+        <m.h1
           className="text-[clamp(2rem,8vw,6rem)] font-black leading-[0.85] tracking-[-0.04em] text-ink select-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -77,7 +77,7 @@ function ComicLoading({ done }: { done: () => void }) {
           {"PRAKASH\nSHRESTHA".split("\n").map((line, li) => (
             <div key={li}>
               {line.split("").map((char, i) => (
-                <motion.span
+                <m.span
                   key={i}
                   className="inline-block"
                   initial={{ opacity: 0, y: 20 }}
@@ -85,28 +85,28 @@ function ComicLoading({ done }: { done: () => void }) {
                   transition={{ duration: 0.3, delay: 1.4 + li * 0.15 + 0.025 * i }}
                 >
                   {char === " " ? "\u00A0" : char}
-                </motion.span>
+                </m.span>
               ))}
             </div>
           ))}
-        </motion.h1>
+        </m.h1>
       </div>
 
-      <motion.div
+      <m.div
         className="absolute bottom-[20%] left-0 h-[3px] bg-red"
         initial={{ scaleX: 0, originX: 0 }}
         animate={{ scaleX: [0, 1, 0] }}
         transition={{ duration: 2.6, times: [0, 0.5, 1], ease: [0.25, 0.1, 0.25, 1] }}
         style={{ width: "100%" }}
       />
-    </motion.div>
+    </m.div>
   );
 }
 
 function ScrollBar() {
   const { springProgress } = useScrollProgress();
   return (
-    <motion.div
+    <m.div
       className="fixed top-0 left-0 right-0 h-[3px] bg-red/80 origin-left z-[100]"
       style={{ scaleX: springProgress }}
     />
@@ -116,7 +116,7 @@ function ScrollBar() {
 function SectionDivider({ label }: { label?: string }) {
   return (
     <div className="px-6 sm:px-10 max-w-[1200px] mx-auto relative py-2">
-      <motion.div
+      <m.div
         className="ink-drip"
         initial={{ opacity: 0, scaleX: 0.8 }}
         whileInView={{ opacity: 1, scaleX: 1 }}
@@ -124,7 +124,7 @@ function SectionDivider({ label }: { label?: string }) {
         transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
       >
         {label && <span>{label}</span>}
-      </motion.div>
+      </m.div>
     </div>
   );
 }
@@ -154,7 +154,7 @@ function DrawingArrow({
   return (
     <div ref={ref} className={cn("absolute pointer-events-none", className)} style={{ width: Math.abs(fromX - toX) + 40, height: Math.abs(fromY - toY) + 40 }}>
       <svg width="100%" height="100%" viewBox={`0 0 ${Math.abs(fromX - toX) + 40} ${Math.abs(fromY - toY) + 40}`} fill="none" className="overflow-visible">
-        <motion.path
+        <m.path
           d={d}
           stroke="#e63946"
           strokeWidth="1.5"
@@ -164,7 +164,7 @@ function DrawingArrow({
           animate={isInView ? { pathLength: 1 } : {}}
           transition={{ duration: 0.8, delay, ease: "easeOut" }}
         />
-        <motion.polygon
+        <m.polygon
           points="0,-4 8,0 0,4"
           fill="#e63946"
           initial={{ opacity: 0 }}
@@ -174,7 +174,7 @@ function DrawingArrow({
         />
       </svg>
       {label && (
-        <motion.span
+        <m.span
           className="absolute text-[0.5rem] font-bold tracking-[0.15em] uppercase text-red"
           style={{ left: midX + 12, top: midY - 14 }}
           initial={{ opacity: 0 }}
@@ -182,7 +182,7 @@ function DrawingArrow({
           transition={{ duration: 0.4, delay: delay + 0.4 }}
         >
           {label}
-        </motion.span>
+        </m.span>
       )}
     </div>
   );

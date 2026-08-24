@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useEffect, useMemo } from "react";
+import { useMotionValue, useSpring } from "framer-motion";
 import { useReducedMotionRef } from "@/hooks/useReducedMotion";
 import { useScrollProgress } from "@/lib/scroll-provider";
 import { cn } from "@/lib/cn";
@@ -69,52 +69,94 @@ export function CursorSystem() {
   const sy = useSpring(my, { stiffness: 350, damping: 28, mass: 0.5 });
 
   const rAF = useRef<number>(0);
+  const running = useRef(false);
+  const idleFrames = useRef(0);
+  const clickScale = useRef(1);
+  const lastFrame = useRef({ x: 0, y: 0, s: 0, o: -1 });
   const scrollTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const isVisible = useRef(true);
   const isTouchDevice = useRef(false);
   const { lenis } = useScrollProgress();
 
-  /* ── rAF render loop ── */
-  const render = () => {
-    const el = cursorRef.current;
-    if (!el || isTouchDevice.current) {
+  /* ── rAF render loop ──
+   * Parks itself once the springs settle and nothing has changed, and is woken
+   * again by any input that mutates a motion value. Without this it repaints
+   * the cursor 60x/sec for the entire session, competing with scroll. */
+  const wake = useMemo(() => {
+    const render = () => {
+      const el = cursorRef.current;
+      const x = sx.get();
+      const y = sy.get();
+
+      if (el && !(x === -100 && y === -100)) {
+        const s = (isReduced.current ? 1 : mScale.get()) * clickScale.current;
+        const o = isReduced.current || !isVisible.current ? 0 : Math.max(0, Math.min(1, mOpacity.get()));
+        const prev = lastFrame.current;
+
+        if (x !== prev.x || y !== prev.y || s !== prev.s) {
+          el.style.transform = `translate3d(${x - CURSOR_SIZE / 2}px, ${y - CURSOR_SIZE / 2}px, 0) scale(${s})`;
+        }
+        if (o !== prev.o) el.style.opacity = String(o);
+
+        const settled = x === prev.x && y === prev.y && s === prev.s && o === prev.o;
+        idleFrames.current = settled ? idleFrames.current + 1 : 0;
+        prev.x = x; prev.y = y; prev.s = s; prev.o = o;
+      } else {
+        idleFrames.current++;
+      }
+
+      if (idleFrames.current > 4) {
+        running.current = false;
+        rAF.current = 0;
+        return;
+      }
       rAF.current = requestAnimationFrame(render);
-      return;
-    }
-    
-    const x = sx.get();
-    const y = sy.get();
-    if (x === -100 && y === -100) {
+    };
+
+    return () => {
+      idleFrames.current = 0;
+      if (running.current || isTouchDevice.current) return;
+      running.current = true;
       rAF.current = requestAnimationFrame(render);
-      return;
-    }
-    const s = isReduced.current ? 1 : mScale.get();
-    const o = isReduced.current || !isVisible.current ? 0 : mOpacity.get();
-    
-    el.style.transform = `translate3d(${x - CURSOR_SIZE / 2}px, ${y - CURSOR_SIZE / 2}px, 0) scale(${s})`;
-    el.style.opacity = String(Math.max(0, Math.min(1, o)));
-    
-    rAF.current = requestAnimationFrame(render);
-  };
+    };
+  }, [sx, sy, mScale, mOpacity, isReduced]);
 
   useEffect(() => {
-    rAF.current = requestAnimationFrame(render);
-    return () => cancelAnimationFrame(rAF.current);
-  }, []);
+    if (isTouchDevice.current) return;
+    wake();
+    return () => {
+      cancelAnimationFrame(rAF.current);
+      running.current = false;
+    };
+  }, [wake]);
 
   /* ── Mouse handler (optimized with passive listeners) ── */
   useEffect(() => {
     if (isTouchDevice.current) return;
 
     let rectCache = { left: 0, width: 1, top: 0, height: 1 };
+    let rectOwner: Element | null = null;
     let rectStale = true;
-    let rectTimer: ReturnType<typeof setTimeout> | undefined;
+    const invalidateRect = () => { rectStale = true; };
+
+    /* getCursorMode/getMagnetTarget walk the ancestor chain with closest();
+     * the pointer sits on the same element for most of a gesture, so resolve
+     * once per element rather than once per mousemove event. */
+    let lastTarget: Element | null = null;
+    let lastMode: CursorMode = "default";
+    let lastMagnet: Element | null = null;
 
     const handleMouse = (e: MouseEvent) => {
       mOpacity.set(1);
+      wake();
 
       const target = e.target as Element;
-      const mode = getCursorMode(target);
+      if (target !== lastTarget) {
+        lastTarget = target;
+        lastMode = getCursorMode(target);
+        lastMagnet = getMagnetTarget(target);
+      }
+      const mode = lastMode;
       if (mode !== modeRef.current) {
         modeRef.current = mode;
         const cfg = MODE_CONFIG[mode];
@@ -123,16 +165,15 @@ export function CursorSystem() {
         cursorRef.current?.style.setProperty("--cursor-accent", mode === "default" ? defaultAccent.current : cfg.accent);
       }
 
-      const newMagnet = getMagnetTarget(target);
+      const newMagnet = lastMagnet;
       magnetRef.current = newMagnet;
       let mxVal = e.clientX;
       let myVal = e.clientY;
       if (newMagnet) {
-        if (rectStale) {
+        if (rectStale || newMagnet !== rectOwner) {
           rectCache = newMagnet.getBoundingClientRect();
+          rectOwner = newMagnet;
           rectStale = false;
-          clearTimeout(rectTimer);
-          rectTimer = setTimeout(() => { rectStale = true; }, 200);
         }
         const cx = rectCache.left + rectCache.width / 2;
         const cy = rectCache.top + rectCache.height / 2;
@@ -150,44 +191,53 @@ export function CursorSystem() {
       my.set(myVal);
     };
 
-    const handleLeave = () => { mOpacity.set(0); };
+    const handleLeave = () => { mOpacity.set(0); wake(); };
 
+    /* Folded into the rAF transform instead of string-patching el.style.transform,
+     * which raced the loop rewriting that same property every frame. */
+    let clickTimer: ReturnType<typeof setTimeout> | undefined;
     const handleClick = () => {
-      const el = cursorRef.current;
-      if (!el) return;
-      el.style.transform += " scale(0.85)";
-      setTimeout(() => {
-        el.style.transform = el.style.transform.replace(" scale(0.85)", "");
+      clickScale.current = 0.85;
+      wake();
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => {
+        clickScale.current = 1;
+        wake();
       }, 120);
     };
 
     document.addEventListener("mousemove", handleMouse, { passive: true });
     document.addEventListener("mouseleave", handleLeave, { passive: true });
     document.addEventListener("mousedown", handleClick, { passive: true });
+    window.addEventListener("scroll", invalidateRect, { passive: true });
+    window.addEventListener("resize", invalidateRect, { passive: true });
     return () => {
       document.removeEventListener("mousemove", handleMouse);
       document.removeEventListener("mouseleave", handleLeave);
       document.removeEventListener("mousedown", handleClick);
-      clearTimeout(rectTimer);
+      window.removeEventListener("scroll", invalidateRect);
+      window.removeEventListener("resize", invalidateRect);
+      clearTimeout(clickTimer);
     };
-  }, [mx, my, mScale, mOpacity]);
+  }, [mx, my, mScale, mOpacity, wake]);
 
   /* ── Scroll dim (via Lenis) ── */
   useEffect(() => {
-    if (!lenis) return;
-    if (typeof lenis !== 'object' || !('on' in lenis)) return;
+    if (!lenis?.on) return;
     const handleScroll = () => {
       mOpacity.set(0.5);
       mScale.set(0.92);
+      wake();
       clearTimeout(scrollTimer.current);
       scrollTimer.current = setTimeout(() => {
         mOpacity.set(1);
         mScale.set(MODE_CONFIG[modeRef.current].scale);
+        wake();
       }, 150);
     };
-    const unsub = (lenis as any).on('scroll', handleScroll);
+    const unsub = lenis.on('scroll', handleScroll);
     return () => { unsub(); clearTimeout(scrollTimer.current); };
-  }, [lenis, mOpacity, mScale]);
+  }, [lenis, mOpacity, mScale, wake]);
 
   /* ── Section accent colors ── */
   useEffect(() => {

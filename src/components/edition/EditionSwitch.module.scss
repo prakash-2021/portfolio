@@ -209,7 +209,6 @@
   pointer-events: none;
   z-index: 3;
   transform-origin: center;
-  will-change: transform;
   transition:
     background 0.4s ease,
     border-color 0.4s ease;
@@ -234,7 +233,6 @@
   border-color: transparent transparent var(--border-strong) transparent;
   pointer-events: none;
   z-index: 2;
-  will-change: border-width;
   transition: border-color 0.4s ease;
 
   @media (max-width: 500px) {

@@ -194,10 +194,12 @@
   position: relative;
 }
 
+/* No static will-change on the letters: Framer applies it for the duration of
+ * each transform animation. Declaring it here promotes 15 permanent layers
+ * that the compositor carries through every scroll frame. */
 .nameLetter {
   display: inline-block;
   position: relative;
-  will-change: transform;
 }
 
 /* ── Prakash Word ── */
@@ -211,7 +213,6 @@
 .prakashLetter {
   display: inline-block;
   position: relative;
-  will-change: transform, color;
 }
 
 .prakashSweep {

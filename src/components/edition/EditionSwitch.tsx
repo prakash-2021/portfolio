@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { cn } from "@/lib/cn";
 import styles from "./EditionSwitch.module.scss";
@@ -89,32 +89,61 @@ export function EditionSwitch() {
     }
   }, [state, hovered]);
 
-  /* ── Mouse proximity ── */
+  /* ── Mouse proximity ──
+   * The switch is fixed in a corner, so the rect only moves on resize. Values
+   * are rounded before hitting state: the tilt is +-3deg, so anything finer
+   * than 1/64th of the range is sub-pixel and only costs a re-render. */
   const [prox, setProx] = useState({ x: 0, y: 0, active: false });
   const proxRaf = useRef(0);
+  const proxRef = useRef(prox);
+  const stateRef = useRef(state);
+  useEffect(() => { proxRef.current = prox; }, [prox]);
+  useEffect(() => { stateRef.current = state; }, [state]);
+
   useEffect(() => {
+    let rect: DOMRect | null = null;
+    const invalidate = () => { rect = null; };
+
+    const deactivate = () => {
+      if (proxRef.current.active) setProx((p) => ({ ...p, active: false }));
+    };
+
     const onMove = (e: MouseEvent) => {
-      if (state !== "idle" || !comicRef.current) {
-        if (prox.active) setProx((p) => ({ ...p, active: false }));
+      if (stateRef.current !== "idle" || !comicRef.current) {
+        deactivate();
         return;
       }
       if (proxRaf.current) return;
+      const px = e.clientX, py = e.clientY;
       proxRaf.current = requestAnimationFrame(() => {
         proxRaf.current = 0;
-        const r = comicRef.current!.getBoundingClientRect();
-        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-        const dx = e.clientX - cx, dy = e.clientY - cy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          setProx({ x: dx / 120, y: dy / 120, active: true });
-        } else if (prox.active) {
-          setProx((p) => ({ ...p, active: false }));
+        const el = comicRef.current;
+        if (!el) return;
+        if (!rect) rect = el.getBoundingClientRect();
+        const dx = px - (rect.left + rect.width / 2);
+        const dy = py - (rect.top + rect.height / 2);
+        if (dx * dx + dy * dy < 120 * 120) {
+          const x = Math.round((dx / 120) * 64) / 64;
+          const y = Math.round((dy / 120) * 64) / 64;
+          const cur = proxRef.current;
+          if (!cur.active || cur.x !== x || cur.y !== y) setProx({ x, y, active: true });
+        } else {
+          deactivate();
         }
       });
     };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [state, prox.active]);
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("scroll", invalidate, { passive: true });
+    window.addEventListener("resize", invalidate, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("scroll", invalidate);
+      window.removeEventListener("resize", invalidate);
+      cancelAnimationFrame(proxRaf.current);
+      proxRaf.current = 0;
+    };
+  }, []);
 
   const isAnimating = state !== "idle";
 
@@ -142,7 +171,7 @@ export function EditionSwitch() {
   };
 
   return (
-    <motion.div
+    <m.div
       className={cn(styles.root, isMidnight && styles.rootMidnight)}
       onMouseEnter={() => { if (idle) setHovered(true); if (stickyTimerRef.current) { clearTimeout(stickyTimerRef.current); stickyTimerRef.current = null; } setShowSticky(false); }}
       onMouseLeave={() => setHovered(false)}
@@ -153,7 +182,7 @@ export function EditionSwitch() {
       {/* Sticky note — first visit, after 4s idle */}
       <AnimatePresence>
         {showSticky && (
-          <motion.div
+          <m.div
             className={styles.stickyNote}
             initial={{ opacity: 0, x: -8, rotate: -2 }}
             animate={{ opacity: 1, x: 0, rotate: 0 }}
@@ -162,14 +191,14 @@ export function EditionSwitch() {
           >
             <div className={styles.stickyPin} />
             <span className={styles.stickyText}>→ Flip the Issue</span>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       {/* Hover tooltip — printed comic style */}
       <AnimatePresence>
         {hovered && idle && !showSticky && (
-          <motion.div
+          <m.div
             className={styles.tooltip}
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
@@ -181,12 +210,12 @@ export function EditionSwitch() {
               <span className={styles.tooltipLabel}>click to</span>{" "}
               {isMidnight ? "flip to Print" : "flip to Midnight"}
             </span>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       {/* Proximity tilt wrapper */}
-      <motion.div
+      <m.div
         animate={idle && prox.active && !hovered ? {
           rotateX: prox.y * -3,
           rotateY: prox.x * 3,
@@ -194,7 +223,7 @@ export function EditionSwitch() {
         transition={{ duration: 0.15, ease: "easeOut" }}
       >
         {/* Shadow */}
-        <motion.div
+        <m.div
           className={styles.shadow}
           animate={{
             opacity: hovered || isAnimating ? 0.18 : wobblePhase !== 0 ? 0.09 : 0.05,
@@ -205,7 +234,7 @@ export function EditionSwitch() {
         />
 
         {/* Light sweep overlay */}
-        <motion.div
+        <m.div
           className={styles.lightSweep}
           key={sweep}
           initial={{ left: "-30%", opacity: 0 }}
@@ -215,7 +244,7 @@ export function EditionSwitch() {
         />
 
         {/* Comic book button */}
-        <motion.button
+        <m.button
           ref={comicRef}
           className={cn(styles.comic, isMidnight && styles.comicMidnight)}
           onClick={handleClick}
@@ -228,14 +257,14 @@ export function EditionSwitch() {
           data-cursor-theme
         >
           {/* Tape */}
-          <motion.div
+          <m.div
             className={styles.tape}
             animate={hovered ? { rotate: -6 } : { rotate: -2 }}
             transition={{ duration: 0.25 }}
           />
 
           {/* Folded corner */}
-          <motion.div
+          <m.div
             className={styles.foldedCorner}
             animate={
               hovered ? { borderWidth: "0 0 14px 14px" } as any
@@ -274,8 +303,8 @@ export function EditionSwitch() {
             <span className={styles.price}>$0.00</span>
             <span className={styles.classMark}>✦</span>
           </div>
-        </motion.button>
-      </motion.div>
-    </motion.div>
+        </m.button>
+      </m.div>
+    </m.div>
   );
 }

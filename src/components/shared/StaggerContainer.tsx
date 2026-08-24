@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 
@@ -10,7 +10,7 @@ export function StaggerContainer({ children, className, delay = 0.1, staggerDela
 
   return (
     <div ref={ref} className={className}>
-      <motion.div
+      <m.div
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         variants={{
@@ -19,14 +19,14 @@ export function StaggerContainer({ children, className, delay = 0.1, staggerDela
         }}
       >
         {children}
-      </motion.div>
+      </m.div>
     </div>
   );
 }
 
 export function StaggerItem({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <motion.div
+    <m.div
       className={className}
       variants={{
         hidden: { opacity: 0, y: 15 },
@@ -34,6 +34,6 @@ export function StaggerItem({ children, className }: { children: React.ReactNode
       }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

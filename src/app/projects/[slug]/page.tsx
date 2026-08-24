@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { use } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { projects } from "@/lib/projects";
 import { FadeIn, ScrollProgress } from "@/components/shared";
 import styles from "./ProjectDetails.module.scss";
@@ -40,7 +40,7 @@ export default function ProjectPage({
         </nav>
 
         <header className={styles.header}>
-          <motion.div
+          <m.div
             className={styles.heroImageContainer}
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -55,7 +55,7 @@ export default function ProjectPage({
               className={styles.heroOverlay}
               style={{ background: project.heroGradient }}
             />
-          </motion.div>
+          </m.div>
 
           <FadeIn className={styles.headerContent} y={30}>
             <h1 className={styles.title}>{project.title}</h1>
@@ -64,7 +64,7 @@ export default function ProjectPage({
         </header>
 
         <main className={styles.mainContent}>
-          <motion.div
+          <m.div
             className={styles.layout}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -77,7 +77,7 @@ export default function ProjectPage({
               </section>
 
               {project.link && (
-                <motion.a
+                <m.a
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -95,12 +95,12 @@ export default function ProjectPage({
                       strokeLinejoin="round"
                     />
                   </svg>
-                </motion.a>
+                </m.a>
               )}
             </div>
 
             <aside className={styles.rightCol}>
-              <motion.div
+              <m.div
                 className={styles.metaCard}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -124,9 +124,9 @@ export default function ProjectPage({
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             </aside>
-          </motion.div>
+          </m.div>
         </main>
       </div>
     </>

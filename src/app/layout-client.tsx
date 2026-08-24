@@ -17,8 +17,11 @@ function ClientSideCursor() {
 }
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
+  /* domAnimation covers animate/exit/hover/tap/inView — everything this site
+   * uses — and is ~13KB gzip lighter than the drag+layout bundle. strict throws
+   * if a `motion.*` sneaks back in, which would re-bundle the full feature set. */
   return (
-    <LazyMotion features={domAnimation}>
+    <LazyMotion features={domAnimation} strict>
       <ThemeProvider>
         <ScrollProvider>
           <div style={{ background: "var(--color-paper)" }}>

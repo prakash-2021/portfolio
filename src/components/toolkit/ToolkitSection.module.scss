@@ -2,7 +2,7 @@
 
 .section {
   position: relative;
-  padding: 4rem 2rem 5rem;
+  padding: 3.5rem 1.25rem 4rem;
   overflow: hidden;
   background: var(--color-paper);
 
@@ -41,7 +41,11 @@
   position: relative;
   z-index: 1;
   max-width: 700px;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+
+  @media (min-width: 640px) {
+    margin-bottom: 3rem;
+  }
 
   @media (min-width: 768px) {
     margin-left: 2rem;
@@ -92,10 +96,15 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   color: var(--text-tertiary);
-  margin-bottom: 2.5rem;
-  margin-left: 0.5rem;
+  margin-bottom: 1.75rem;
+  margin-left: 0.25rem;
   transform: rotate(-1deg);
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.04);
+
+  @media (min-width: 640px) {
+    margin-bottom: 2.5rem;
+    margin-left: 0.5rem;
+  }
 
   @media (min-width: 768px) {
     margin-left: 3rem;
@@ -115,7 +124,11 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3rem;
+  gap: 2rem;
+
+  @media (min-width: 640px) {
+    gap: 3rem;
+  }
 
   @media (min-width: 800px) {
     grid-template-columns: 1fr 1fr;
@@ -129,8 +142,14 @@
   position: relative;
   border: 2px solid var(--cat-color, var(--color-ink));
   background: var(--cat-bg, var(--surface-hover));
-  padding: 2rem;
+  /* Extra bottom padding leaves room for the absolutely-positioned "N tools"
+     annotation now that the panel is tighter on phones. */
+  padding: 1.1rem 1.1rem 1.75rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease-out;
+
+  @media (min-width: 640px) {
+    padding: 2rem;
+  }
 
   &:hover {
     box-shadow: 4px 4px 0px var(--cat-color, var(--color-ink));
@@ -155,11 +174,15 @@
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 0 32px 32px 0;
+  border-width: 0 22px 22px 0;
   border-color: transparent;
   z-index: 2;
   filter: brightness(0.85);
   transition: border-width 0.2s ease-out;
+
+  @media (min-width: 640px) {
+    border-width: 0 32px 32px 0;
+  }
 }
 .categoryPanel:hover .cornerFold {
   border-width: 0 38px 38px 0;
@@ -182,12 +205,23 @@
 
 /* ─── Panel Header ────────────────────────────────────── */
 
+/* Phones stack label over description and read left-aligned; from 640px the
+   original two-column header returns. */
 .panelHeader {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+  padding-right: 1.5rem; /* clear the folded corner */
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-right: 0;
+  }
 }
 
 .panelLabel {
@@ -213,50 +247,66 @@
   font-size: 0.7rem;
   color: var(--text-tertiary);
   font-style: italic;
-  text-align: right;
-  max-width: 180px;
+  text-align: left;
   line-height: 1.4;
+
+  @media (min-width: 640px) {
+    text-align: right;
+    max-width: 180px;
+  }
 }
 
 /* ─── Logo Grid ───────────────────────────────────────── */
 
+/* Explicit column counts. The previous flex version combined a percentage width
+   with a larger `min-width`, so the min always won and every phone width
+   collapsed to two very wide columns instead of the intended four.
+   `minmax(0, …)` lets tracks shrink below their content on narrow screens
+   instead of overflowing the panel. */
 .logoGrid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
 
-  & > * {
-    width: calc(33.33% - 0.5rem);
-    min-width: 80px;
-    max-width: 130px;
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.6rem;
   }
 
-  @media (min-width: 400px) {
+  /* From 640px up this is the original centred flex-wrap, unchanged — grid
+     would left-align a partially-filled last row where flex centres it. */
+  @media (min-width: 640px) {
+    display: flex;
+    grid-template-columns: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+
     & > * {
       width: calc(25% - 0.6rem);
       min-width: 85px;
       max-width: 120px;
     }
-    gap: 0.8rem;
   }
 
   @media (min-width: 1000px) {
+    gap: 0.75rem;
+
     & > * {
       width: calc(33.33% - 0.5rem);
       min-width: 90px;
       max-width: 140px;
     }
-    gap: 0.75rem;
   }
 
   @media (min-width: 1200px) {
+    gap: 0.8rem;
+
     & > * {
       width: calc(25% - 0.6rem);
       min-width: 100px;
       max-width: 150px;
     }
-    gap: 0.8rem;
   }
 }
 
@@ -267,8 +317,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 0.5rem;
+  justify-content: flex-start;
+  gap: 0.3rem;
+  padding: 0.55rem 0.25rem 0.5rem;
   border: 1px solid var(--cat-border, var(--border-strong));
   background: rgba(var(--paper-rgb), 0.5);
   cursor: pointer;
@@ -280,6 +331,11 @@
     background: var(--color-paper);
     z-index: 2;
   }
+
+  @media (min-width: 640px) {
+    gap: 0.5rem;
+    padding: 0.75rem 0.5rem;
+  }
 }
 
 .toolLogoExpanded {
@@ -288,46 +344,81 @@
 }
 
 .logoIcon {
-  width: 48px;
-  height: 48px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (min-width: 640px) {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 .logoImg {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   object-fit: contain;
+
+  @media (min-width: 640px) {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .logoFallback {
   display: none;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 800;
   color: var(--cat-color, var(--color-ink));
+
+  @media (min-width: 640px) {
+    width: 40px;
+    height: 40px;
+    font-size: 0.85rem;
+  }
 }
 
+/* On phones the name wraps instead of truncating — the old ellipsis turned
+   "TypeScript" into "TypeScri…". From 640px the original single-line
+   treatment returns, where the cards are wide enough for it. */
 .logoName {
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.25;
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+
+  @media (min-width: 640px) {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .logoExp {
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 500;
   color: var(--text-tertiary);
   letter-spacing: 0.02em;
+  /* Pins the years to the bottom so cards in a grid row with a two-line name
+     still line up. Not needed once names are single-line. */
+  margin-top: auto;
+  padding-top: 0.1rem;
+
+  @media (min-width: 640px) {
+    font-size: 0.6rem;
+    margin-top: 0;
+    padding-top: 0;
+  }
 }
 
 /* ─── Tool Detail (expanded) ──────────────────────────── */
@@ -341,8 +432,13 @@
 
 .detailGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem 1.25rem;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+
+  @media (min-width: 420px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem 1.25rem;
+  }
 }
 
 .detailSection {
@@ -444,10 +540,17 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin-top: 3rem;
-  font-size: 0.7rem;
+  margin-top: 2rem;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  text-align: center;
   color: var(--text-muted);
   letter-spacing: 0.05em;
+
+  @media (min-width: 640px) {
+    margin-top: 3rem;
+    font-size: 0.7rem;
+  }
 }
 
 .footerIcon {

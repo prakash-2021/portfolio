@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, memo, useMemo } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { m, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { experienceData } from "@/lib/experience";
 import { Mascot } from "@/components/mascot/Mascot";
@@ -14,7 +14,7 @@ import styles from "./ExperienceSection.module.scss";
 const FactNote = memo(function FactNote({ text, color, delay }: { text: string; color: string; delay: number }) {
   const [open, setOpen] = useState(false);
   return (
-    <motion.div
+    <m.div
       className={styles.factNote}
       style={{ borderLeftColor: color }}
       initial={{ opacity: 0, x: -10 }}
@@ -23,15 +23,15 @@ const FactNote = memo(function FactNote({ text, color, delay }: { text: string; 
       transition={{ duration: 0.4, delay }}
       onClick={() => setOpen(!open)}
     >
-      <motion.span
+      <m.span
         className="block text-[0.6rem] font-bold tracking-[0.15em] uppercase mb-1"
         style={{ color }}
       >
         {open ? "▼" : "▶"} Fun fact
-      </motion.span>
+      </m.span>
       <AnimatePresence>
         {open && (
-          <motion.span
+          <m.span
             className="block"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
@@ -39,20 +39,20 @@ const FactNote = memo(function FactNote({ text, color, delay }: { text: string; 
             transition={{ duration: 0.3 }}
           >
             {text}
-          </motion.span>
+          </m.span>
         )}
       </AnimatePresence>
       {!open && (
-        <motion.span
+        <m.span
           className="block"
           style={{ color: "rgba(var(--ink-rgb), 0.3)" }}
           initial={{ opacity: 0.3 }}
           whileHover={{ opacity: 0.6, x: 2 }}
         >
           Click to reveal
-        </motion.span>
+        </m.span>
       )}
-    </motion.div>
+    </m.div>
   );
 });
 
@@ -63,7 +63,7 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       className={styles.sceneCard}
       style={{ "--accent-color": item.color } as React.CSSProperties}
@@ -104,7 +104,7 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
         {/* Header */}
         <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
           <div>
-            <motion.div
+            <m.div
               className="text-[0.6rem] font-bold tracking-[0.2em] uppercase"
               style={{ color: item.color }}
               initial={{ opacity: 0, x: -10 }}
@@ -112,8 +112,8 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
               transition={{ duration: 0.4, delay: 0.1 }}
             >
               {item.jobTitle}
-            </motion.div>
-            <motion.h3
+            </m.div>
+            <m.h3
               className={cn("text-xl sm:text-2xl font-black tracking-tight mt-0.5", styles.companyName)}
               style={{ color: "var(--color-ink)" }}
               initial={{ opacity: 0, x: -10 }}
@@ -121,9 +121,9 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
               transition={{ duration: 0.4, delay: 0.15 }}
             >
               {item.company}
-            </motion.h3>
+            </m.h3>
           </div>
-          <motion.div
+          <m.div
             className="flex items-center gap-2 shrink-0"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
@@ -133,21 +133,21 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
               <span className={styles.statusDot} />
               {item.timePeriod}
             </span>
-            <motion.div
+            <m.div
               className={cn(styles.stamp, isInView && styles.stampAnimate)}
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.01, delay: 0.5 }}
             >
               Verified
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
 
         {/* Cover note + description */}
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 sm:gap-6 mb-5">
           <div className="sm:col-span-3">
-            <motion.div
+            <m.div
               className={styles.coverNote}
               style={{ color: item.color }}
               initial={{ opacity: 0 }}
@@ -155,8 +155,8 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
               transition={{ duration: 0.4, delay: 0.2 }}
             >
               &ldquo;{item.coverNote}&rdquo;
-            </motion.div>
-            <motion.p
+            </m.div>
+            <m.p
               className="text-base leading-relaxed mt-2"
               style={{ color: "var(--text-secondary)" }}
               initial={{ opacity: 0 }}
@@ -164,16 +164,16 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
               transition={{ duration: 0.4, delay: 0.25 }}
             >
               {item.description}
-            </motion.p>
+            </m.p>
           </div>
-          <motion.div
+          <m.div
             className="sm:col-span-2 flex flex-wrap gap-1.5 content-start"
             initial={{ opacity: 0, y: 10 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.4, delay: 0.3 }}
           >
             {item.techStack.map((t, ti) => (
-              <motion.span
+              <m.span
                 key={t}
                 className={styles.techBadge}
                 initial={{ opacity: 0, y: 6 }}
@@ -181,13 +181,13 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
                 transition={{ duration: 0.25, delay: 0.35 + ti * 0.04 }}
               >
                 {t}
-              </motion.span>
+              </m.span>
             ))}
-          </motion.div>
+          </m.div>
         </div>
 
         {/* Achievements */}
-        <motion.div
+        <m.div
           className="mb-4"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
@@ -200,7 +200,7 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
           </span>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
             {item.achievements.map((a, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 className={styles.achievementItem}
                 initial={{ opacity: 0, x: -8 }}
@@ -211,15 +211,15 @@ function ExperienceCard({ item, index }: { item: typeof experienceData[0]; index
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 {a}
-              </motion.div>
+              </m.div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Fun fact */}
         <FactNote text={item.facts[0]} color={item.color} delay={0.5} />
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -231,32 +231,32 @@ function SectionHeader() {
 
   return (
     <div ref={ref} className={styles.header}>
-      <motion.span
+      <m.span
         className={styles.headerLabel}
         initial={{ opacity: 0, y: 8 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
       >
         /// Chapter 03
-      </motion.span>
+      </m.span>
 
-      <motion.span
+      <m.span
         className={styles.issueLabel}
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 0.35, delay: 0.08 }}
       >
         ISSUE #05
-      </motion.span>
+      </m.span>
 
       <div className={styles.headerRow}>
-        <motion.div
+        <m.div
           className={styles.headerDivider}
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
           transition={{ duration: 0.4, delay: 0.12, ease: [0.25, 0.1, 0.25, 1] }}
         />
-        <motion.h2
+        <m.h2
           className={styles.headerTitle}
           initial={{ opacity: 0, y: 10 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -264,8 +264,8 @@ function SectionHeader() {
         >
           The <span className={styles.headerAccent}>experience</span>
           <span className={styles.headerArrow}>↘</span>
-        </motion.h2>
-        <motion.div
+        </m.h2>
+        <m.div
           className={styles.headerDivider}
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
@@ -273,14 +273,14 @@ function SectionHeader() {
         />
       </div>
 
-      <motion.p
+      <m.p
         className={styles.headerDesc}
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 0.4, delay: 0.22 }}
       >
         Walking through my career — one scene at a time
-      </motion.p>
+      </m.p>
     </div>
   );
 }
@@ -292,14 +292,14 @@ function ConnectorLines() {
   const isInView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       className={styles.connector}
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : {}}
       transition={{ duration: 0.4, delay: 0.2 }}
     >
-      <motion.div
+      <m.div
         className={styles.connectorLine}
         initial={{ scaleY: 0 }}
         animate={isInView ? { scaleY: 1 } : {}}
@@ -307,7 +307,7 @@ function ConnectorLines() {
       />
       <div className={styles.connectorDots}>
         {[0, 1, 2].map((i) => (
-          <motion.div
+          <m.div
             key={i}
             className={styles.connectorDot}
             initial={{ opacity: 0, scale: 0 }}
@@ -316,7 +316,7 @@ function ConnectorLines() {
           />
         ))}
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -328,7 +328,7 @@ export function ExperienceSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0]);
 
   return (
-    <motion.section
+    <m.section
       ref={sectionRef}
       data-chapter={4}
       data-chapter-id="experience"
@@ -350,7 +350,7 @@ export function ExperienceSection() {
               <ExperienceCard item={item} index={i} />
 
               {i < experienceData.length - 1 && (
-                <motion.div
+                <m.div
                   className={styles.mascotPath}
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
@@ -360,7 +360,7 @@ export function ExperienceSection() {
                   <div className={styles.mascotPathLine} />
                   <Mascot size={22} action="walk" className="opacity-40" />
                   <div className={styles.mascotPathLine} />
-                </motion.div>
+                </m.div>
               )}
             </div>
           ))}
@@ -368,6 +368,6 @@ export function ExperienceSection() {
       </div>
 
       <HalftoneCorner className="bottom-0 right-0 rotate-180" />
-    </motion.section>
+    </m.section>
   );
 }

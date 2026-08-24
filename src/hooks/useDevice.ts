@@ -2,16 +2,20 @@
 
 import { useState, useEffect } from "react";
 
-export function useDevice() {
-  const [isTouch, setIsTouch] = useState(false);
+export function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(pointer: coarse)");
-    setIsTouch(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches);
+    const mq = window.matchMedia(query);
+    setMatches(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
-  }, []);
+  }, [query]);
 
-  return { isTouch };
+  return matches;
+}
+
+export function useDevice() {
+  return { isTouch: useMediaQuery("(pointer: coarse)") };
 }

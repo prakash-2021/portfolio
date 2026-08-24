@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { cn } from "@/lib/cn";
 import styles from "./ManifestoSection.module.scss";
 
@@ -55,18 +55,22 @@ function MeasurementBar({ label, value, delay }: { label: string; value: number;
             <div key={i} className={styles.measTick} style={{ left: `${i * 10}%` }} />
           ))}
         </div>
-        <motion.div
+        <m.div
           className={styles.measFill}
-          initial={{ width: 0 }}
-          animate={isInView ? { width: `${value}%` } : { width: 0 }}
+          initial={{ scaleX: 0 }}
+          animate={isInView ? { scaleX: value / 100 } : { scaleX: 0 }}
           transition={{ duration: 0.8, delay, ease: [0.25, 0.1, 0.25, 1] }}
         />
-        <motion.div
-          className={styles.measArrow}
-          initial={{ left: 0 }}
-          animate={isInView ? { left: `${value}%` } : { left: 0 }}
+        {/* Full-track wrapper so the marker's x can be a percentage of the
+            track rather than of its own 8px width. */}
+        <m.div
+          className={styles.measArrowTrack}
+          initial={{ x: 0 }}
+          animate={isInView ? { x: `${value}%` } : { x: 0 }}
           transition={{ duration: 0.8, delay, ease: [0.25, 0.1, 0.25, 1] }}
-        />
+        >
+          <div className={styles.measArrow} />
+        </m.div>
       </div>
       <span className={styles.measValue}>{value}%</span>
     </div>
@@ -80,7 +84,7 @@ function PrincipleNote({ principle, index }: { principle: typeof principles[numb
   const rotations = [-1.5, 1, -0.5, 1.5]
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       className={styles.principleNote}
       style={{ "--accent": principle.accent } as React.CSSProperties}
@@ -104,37 +108,37 @@ function PrincipleNote({ principle, index }: { principle: typeof principles[numb
 
       {/* Unique micro-interaction per card */}
       {index === 0 && (
-        <motion.div
+        <m.div
           className={styles.pixelGrid}
           animate={cardHovered ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.3 }}
         />
       )}
       {index === 1 && (
-        <motion.div className={styles.motionTimeline} aria-hidden>
+        <m.div className={styles.motionTimeline} aria-hidden>
           {[0, 1, 2].map((d) => (
-            <motion.span
+            <m.span
               key={d}
               className={styles.timelineDot}
               animate={cardHovered ? { opacity: 1, scale: 1 } : { opacity: 0.3, scale: 0.6 }}
               transition={{ duration: 0.2, delay: d * 0.08 }}
             />
           ))}
-        </motion.div>
+        </m.div>
       )}
       {index === 2 && (
-        <motion.div className={styles.blueprintCorner} aria-hidden>
-          <motion.svg width="30" height="30" viewBox="0 0 30 30" fill="none"
+        <m.div className={styles.blueprintCorner} aria-hidden>
+          <m.svg width="30" height="30" viewBox="0 0 30 30" fill="none"
             animate={cardHovered ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             <path d="M2 28V2h26" stroke="var(--color-blue)" strokeWidth="0.8" strokeDasharray="2 2" opacity="0.4" />
             <circle cx="2" cy="2" r="2" fill="var(--color-blue)" opacity="0.15" />
-          </motion.svg>
-        </motion.div>
+          </m.svg>
+        </m.div>
       )}
       {index === 3 && (
-        <motion.div
+        <m.div
           className={styles.memoryBookmark}
           animate={cardHovered ? { x: 0, opacity: 1 } : { x: 8, opacity: 0 }}
           transition={{ type: "spring", stiffness: 200, damping: 16 }}
@@ -142,12 +146,12 @@ function PrincipleNote({ principle, index }: { principle: typeof principles[numb
           <svg width="8" height="16" viewBox="0 0 8 16" fill="none">
             <path d="M1 1v14l3-2 3 2V1H1z" stroke="var(--color-purple)" strokeWidth="0.8" fill="none" opacity="0.4" />
           </svg>
-        </motion.div>
+        </m.div>
       )}
 
       <span className={styles.noteTitle} style={{ color: principle.accent }}>{principle.title}</span>
       <p className={styles.noteText}>{principle.text}</p>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -172,7 +176,7 @@ export function ManifestoSection() {
       </svg>
 
       {/* Halftone accent */}
-      <motion.div
+      <m.div
         ref={bgRef}
         className={styles.halftoneBg}
         animate={bgInView ? { opacity: 0.04 } : { opacity: 0.01 }}
@@ -180,14 +184,14 @@ export function ManifestoSection() {
       />
 
       {/* Section header */}
-      <motion.div
+      <m.div
         className={styles.header}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <motion.span
+        <m.span
           className={styles.headerLabel}
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -195,7 +199,7 @@ export function ManifestoSection() {
           transition={{ duration: 0.4, delay: 0.05 }}
         >
           /// Manifesto
-        </motion.span>
+        </m.span>
         <h2 className={styles.headerTitle}>
           Developer <span className={styles.headerAccent}>DNA</span>
         </h2>
@@ -203,7 +207,7 @@ export function ManifestoSection() {
           <span className={styles.headerIssue}>ISSUE #00</span>
           <span className={styles.headerTag}>ORIGIN STORY</span>
         </div>
-      </motion.div>
+      </m.div>
 
       {/* Main content area — two columns */}
       <div className={styles.mainGrid}>
@@ -255,7 +259,7 @@ export function ManifestoSection() {
             </h3>
 
             {/* Animated underline */}
-            <motion.div
+            <m.div
               className={styles.quoteUnderline}
               initial={{ scaleX: 0 }}
               animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
@@ -269,14 +273,14 @@ export function ManifestoSection() {
             </p>
 
             {/* Red marker circle on hover */}
-            <motion.div
+            <m.div
               className={styles.markerCircle}
               animate={hoveredQuote ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
               transition={{ duration: 0.3 }}
             />
 
             {/* Editorial margin note */}
-            <motion.div
+            <m.div
               className={styles.marginNote}
               initial={{ opacity: 0, x: 10 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -286,7 +290,7 @@ export function ManifestoSection() {
                 <path d="M38 7H4M4 7l4-4M4 7l4 4" stroke="var(--color-red)" strokeWidth="0.8" strokeLinecap="round" opacity="0.5" />
               </svg>
               <span className={styles.marginNoteText}>bold claim.</span>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Traits as comic annotation tags */}
@@ -294,7 +298,7 @@ export function ManifestoSection() {
             <span className={styles.traitsLabel}>PERSONALITY</span>
             <div className={styles.traitsList}>
               {traits.map((t, i) => (
-                <motion.span
+                <m.span
                   key={t}
                   className={styles.traitTag}
                   initial={{ opacity: 0, x: -8 }}
@@ -302,13 +306,13 @@ export function ManifestoSection() {
                   transition={{ duration: 0.3, delay: 0.6 + i * 0.08 }}
                 >
                   {t}
-                </motion.span>
+                </m.span>
               ))}
             </div>
           </div>
 
           {/* Editor's note sticker */}
-          <motion.div
+          <m.div
             className={styles.editNote}
             initial={{ opacity: 0, rotate: 3, scale: 0.9 }}
             animate={isInView ? { opacity: 1, rotate: 2, scale: 1 } : {}}
@@ -316,10 +320,10 @@ export function ManifestoSection() {
           >
             <span className={styles.editNoteLabel}>EDITOR&apos;S NOTE</span>
             <p className={styles.editNoteText}>This is the kind of engineer you want on your team.</p>
-          </motion.div>
+          </m.div>
 
           {/* Approved stamp */}
-          <motion.div
+          <m.div
             className={styles.stamp}
             initial={{ opacity: 0, rotate: -15, scale: 0.5 }}
             whileInView={{ opacity: 1, rotate: -8, scale: 1 }}
@@ -327,7 +331,7 @@ export function ManifestoSection() {
             transition={{ type: "spring", stiffness: 160, damping: 12, delay: 1.2 }}
           >
             <span className={styles.stampText}>APPROVED</span>
-          </motion.div>
+          </m.div>
         </div>
       </div>
 

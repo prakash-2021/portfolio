@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 
@@ -10,13 +10,13 @@ export function FadeIn({ children, className, delay = 0, y = 20 }: { children: R
 
   return (
     <div ref={ref} className={className}>
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y }}
         transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1], delay }}
       >
         {children}
-      </motion.div>
+      </m.div>
     </div>
   );
 }

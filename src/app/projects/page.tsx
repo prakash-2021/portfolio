@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useInView } from "framer-motion";
 import { projects, type Project } from "@/lib/projects";
 import { cn } from "@/lib/cn";
@@ -56,7 +56,7 @@ function ArchiveCard({ project, index }: { project: Project; index: number }) {
   const rotate = [-0.3, 0.2, -0.1, 0.4, -0.2, 0.3, -0.4, 0.1][index % 8]
 
   return (
-    <motion.article
+    <m.article
       ref={ref}
       className={`${styles.archiveCard} ${wide ? styles.cardWide : ""} ${tall ? styles.cardTall : ""}`}
       style={{ "--accent": project.accent, "--accent-text": contrastText(project.accent) } as React.CSSProperties}
@@ -72,7 +72,7 @@ function ArchiveCard({ project, index }: { project: Project; index: number }) {
 
         {/* Card image */}
         <div className={styles.arcImageWrap}>
-          <motion.div
+          <m.div
             className={styles.arcImage}
             style={{ backgroundImage: `url(${project.image})` }}
             animate={hovered ? { scale: 1.04 } : { scale: 1 }}
@@ -111,15 +111,15 @@ function ArchiveCard({ project, index }: { project: Project; index: number }) {
             )}
           </div>
 
-          <motion.span className={styles.arcCta} animate={hovered ? { gap: "0.6rem" } : { gap: "0.3rem" }} style={{ color: readableAccent(project.accent) }}>
+          <m.span className={styles.arcCta} animate={hovered ? { gap: "0.6rem" } : { gap: "0.3rem" }} style={{ color: readableAccent(project.accent) }}>
             Open Case File →
-          </motion.span>
+          </m.span>
         </div>
 
         {/* Halftone corner */}
         <div className={styles.arcHalftone} />
       </Link>
-    </motion.article>
+    </m.article>
   )
 }
 
@@ -183,7 +183,7 @@ export default function ProjectsPage() {
           {/* Category tabs */}
           <div className={styles.categories}>
             {categories.map((cat) => (
-              <motion.button
+              <m.button
                 key={cat}
                 className={`${styles.categoryTab} ${activeCategory === cat ? styles.categoryActive : ""}`}
                 onClick={() => setActiveCategory(cat)}
@@ -194,7 +194,7 @@ export default function ProjectsPage() {
                 {activeCategory === cat && (
                   <div className={styles.categoryUnderline} />
                 )}
-              </motion.button>
+              </m.button>
             ))}
           </div>
 

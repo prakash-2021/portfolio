@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, useState, useEffect, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useScrollProgress } from "@/lib/scroll-provider";
+import { useMediaQuery } from "@/hooks/useDevice";
 import { cn } from "@/lib/cn";
 import styles from "./NavSpineMobile.module.scss";
 
@@ -18,10 +19,13 @@ const chapters = [
 
 export const NavSpineMobile = memo(function NavSpineMobile() {
   const { lenis } = useScrollProgress();
+  /* Mirror of the guard in NavSpine — the desktop variant is mounted here too. */
+  const visible = useMediaQuery("(max-width: 1023.98px)");
   const [activeIdx, setActiveIdx] = useState(0);
   const prevActive = useRef(0);
 
   useEffect(() => {
+    if (!visible) return;
     const els = document.querySelectorAll("[data-chapter]");
     if (!els.length) return;
     const observer = new IntersectionObserver(
@@ -37,6 +41,7 @@ export const NavSpineMobile = memo(function NavSpineMobile() {
             }
           }
         }
+        if (bestIdx === prevActive.current) return;
         prevActive.current = bestIdx;
         setActiveIdx(bestIdx);
       },
@@ -44,7 +49,7 @@ export const NavSpineMobile = memo(function NavSpineMobile() {
     );
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [visible]);
 
   const scrollTo = (id: string) => {
     const el = document.querySelector(`[data-chapter-id="${id}"]`);
@@ -65,7 +70,7 @@ export const NavSpineMobile = memo(function NavSpineMobile() {
   return (
     <nav className={styles.root}>
       <div className={styles.track}>
-        <motion.div
+        <m.div
           className={styles.fill}
           style={{ transformOrigin: "left" }}
           animate={{ scaleX: activeIdx / (chapters.length - 1) }}
@@ -89,7 +94,7 @@ export const NavSpineMobile = memo(function NavSpineMobile() {
               <div className={styles.dash} />
               <AnimatePresence mode="wait">
                 {isActive && (
-                  <motion.span
+                  <m.span
                     className={styles.label}
                     initial={{ opacity: 0, x: 6, filter: "blur(3px)" }}
                     animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
@@ -97,7 +102,7 @@ export const NavSpineMobile = memo(function NavSpineMobile() {
                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
                   >
                     {ch.label}
-                  </motion.span>
+                  </m.span>
                 )}
               </AnimatePresence>
             </button>

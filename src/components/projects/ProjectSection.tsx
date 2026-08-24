@@ -2,7 +2,7 @@
 
 import { useRef, useState, memo, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { projects } from "@/lib/projects";
 import { HalftoneCorner } from "@/components/comic/ComicElements";
@@ -46,7 +46,7 @@ const FeaturedCard = memo(function FeaturedCard({ project, index, onExpand }: { 
   const rotations = [-0.4, 0.3, -0.2]
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       className={styles.featuredCard}
       style={{ "--accent": project.accent } as React.CSSProperties}
@@ -77,7 +77,7 @@ const FeaturedCard = memo(function FeaturedCard({ project, index, onExpand }: { 
         </span>
       </div>
       <div className={styles.featuredCorner} style={{ borderLeftColor: project.accent }} />
-    </motion.div>
+    </m.div>
   );
 });
 
@@ -86,8 +86,8 @@ const ExpandOverlay = memo(function ExpandOverlay({ slug, onClose }: { slug: str
   if (!project) return null
 
   return (
-    <motion.div className={styles.expandOverlay} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-      <motion.div
+    <m.div className={styles.expandOverlay} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+      <m.div
         className={styles.expandCard}
         style={{ "--accent": project.accent } as React.CSSProperties}
         initial={{ scale: 0.85, y: 30, opacity: 0 }}
@@ -107,8 +107,8 @@ const ExpandOverlay = memo(function ExpandOverlay({ slug, onClose }: { slug: str
             </Link>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   );
 });
 
@@ -121,7 +121,7 @@ export const ProjectSection = memo(function ProjectSection() {
       <HalftoneCorner className="bottom-0 left-0 rotate-180" />
 
       <div className={styles.rootHeader}>
-        <motion.span
+        <m.span
           className={styles.rootLabel}
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -129,8 +129,8 @@ export const ProjectSection = memo(function ProjectSection() {
           transition={{ duration: 0.4 }}
         >
           /// Chapter 06 — Mission Archive
-        </motion.span>
-        <motion.h2
+        </m.span>
+        <m.h2
           className={styles.rootTitle}
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -138,8 +138,8 @@ export const ProjectSection = memo(function ProjectSection() {
           transition={{ duration: 0.5, delay: 0.08 }}
         >
           Featured <span className={styles.rootAccent}>Projects</span>
-        </motion.h2>
-        <motion.p
+        </m.h2>
+        <m.p
           className={styles.rootDesc}
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -147,7 +147,7 @@ export const ProjectSection = memo(function ProjectSection() {
           transition={{ duration: 0.4, delay: 0.15 }}
         >
           Three featured issues. Each one a different mission.
-        </motion.p>
+        </m.p>
       </div>
 
       <div className={styles.featuredGrid}>
@@ -157,7 +157,7 @@ export const ProjectSection = memo(function ProjectSection() {
       </div>
 
       {/* View All CTA */}
-      <motion.div
+      <m.div
         className={styles.viewAllWrap}
         initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -165,18 +165,18 @@ export const ProjectSection = memo(function ProjectSection() {
         transition={{ duration: 0.4, delay: 0.3 }}
       >
 <Link href="/projects" className={styles.viewAllCta} data-cursor-link>
-          <motion.span className={styles.viewAllIcon}
+          <m.span className={styles.viewAllIcon}
             whileTap={{ scale: 0.85 }}
-          >◆</motion.span>
-          <motion.span className={styles.viewAllText}
+          >◆</m.span>
+          <m.span className={styles.viewAllText}
             whileTap={{ scale: 0.95 }}
-          >VIEW ALL MISSIONS</motion.span>
-          <motion.span className={styles.viewAllArrow}
+          >VIEW ALL MISSIONS</m.span>
+          <m.span className={styles.viewAllArrow}
             whileTap={{ x: -2 }}
-          >→</motion.span>
+          >→</m.span>
         </Link>
         <p className={styles.viewAllSub}>Browse the complete archive — 8 issues</p>
-      </motion.div>
+      </m.div>
 
       <AnimatePresence>
         {expanded && <ExpandOverlay slug={expanded} onClose={() => setExpanded(null)} />}

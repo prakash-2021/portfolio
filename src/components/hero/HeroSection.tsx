@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback, useMemo, useEffect, memo } from "react";
-import { motion, useTransform, useMotionValue } from "framer-motion";
+import { m, useTransform, useMotionValue } from "framer-motion";
 import { useScrollProgress } from "@/lib/scroll-provider";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { site } from "@/lib/site";
@@ -91,7 +91,7 @@ function PrakashWord() {
       {letters.split("").map((char, i) => {
         const isAsh = i >= 4;
         return (
-          <motion.span
+          <m.span
             key={i}
             className={styles.prakashLetter}
             initial={{ opacity: 0, y: 30 }}
@@ -113,7 +113,7 @@ function PrakashWord() {
             }}
           >
             {char}
-          </motion.span>
+          </m.span>
         );
       })}
       {hovered && <AshParticles />}
@@ -156,7 +156,7 @@ function AshParticles() {
 
 function ScrollIndicator() {
   return (
-    <motion.div
+    <m.div
       className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -168,7 +168,7 @@ function ScrollIndicator() {
       >
         Scroll to begin
       </span>
-      <motion.svg
+      <m.svg
         width="14"
         height="20"
         viewBox="0 0 14 20"
@@ -184,14 +184,14 @@ function ScrollIndicator() {
           strokeLinejoin="round"
           opacity="0.15"
         />
-      </motion.svg>
-    </motion.div>
+      </m.svg>
+    </m.div>
   );
 }
 
 function CaseFileMugshot() {
   return (
-    <motion.div
+    <m.div
       className={cn(
         styles.mugshot,
         "hidden md:flex absolute right-[8%] top-[18%]",
@@ -226,7 +226,7 @@ function CaseFileMugshot() {
           opacity="0.3"
         />
       </svg>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -244,28 +244,27 @@ export const HeroSection = memo(function HeroSection() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const mouseRAF = useRef<number>(0);
-  const mouseRect = useRef({ left: 0, width: 1, top: 0, height: 1 });
-  const mouseNeedsRect = useRef(true);
+  const mouseRect = useRef<DOMRect | null>(null);
+  const mousePos = useRef({ x: 0, y: 0 });
   const isTouchRef = useRef(false);
 
   const onMouseMove = useCallback(
     (e: React.MouseEvent) => {
       if (isTouchRef.current) return;
+      /* Sample the pointer synchronously; only the motion-value write is
+       * deferred, so a coalesced burst of moves costs one rAF, not one rect
+       * read and one write each. */
+      mousePos.current.x = e.clientX;
+      mousePos.current.y = e.clientY;
       if (mouseRAF.current) return;
       mouseRAF.current = requestAnimationFrame(() => {
         mouseRAF.current = 0;
-        if (mouseNeedsRect.current && ref.current) {
-          mouseRect.current = ref.current.getBoundingClientRect();
-          mouseNeedsRect.current = false;
-          setTimeout(() => {
-            mouseNeedsRect.current = true;
-          }, 300);
-        }
+        const el = ref.current;
+        if (!el) return;
+        if (!mouseRect.current) mouseRect.current = el.getBoundingClientRect();
         const r = mouseRect.current;
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        mouseX.set(x);
-        mouseY.set(y);
+        mouseX.set((mousePos.current.x - r.left) / r.width - 0.5);
+        mouseY.set((mousePos.current.y - r.top) / r.height - 0.5);
       });
     },
     [mouseX, mouseY],
@@ -273,17 +272,27 @@ export const HeroSection = memo(function HeroSection() {
 
   useEffect(() => {
     isTouchRef.current = window.matchMedia("(pointer: coarse)").matches;
+    const invalidate = () => { mouseRect.current = null; };
+    window.addEventListener("scroll", invalidate, { passive: true });
+    window.addEventListener("resize", invalidate, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", invalidate);
+      window.removeEventListener("resize", invalidate);
+      cancelAnimationFrame(mouseRAF.current);
+      mouseRAF.current = 0;
+    };
   }, []);
 
   const nameX = useTransform(mouseX, [-0.5, 0.5], [-8, 8]);
   const nameY = useTransform(mouseY, [-0.5, 0.5], [-5, 5]);
   const surnameX = useTransform(mouseX, [-0.5, 0.5], [6, -6]);
+  const surnameY = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : -20]);
 
   /* ── Mascot once ── */
   const mascotAction = "sit";
 
   return (
-    <motion.section
+    <m.section
       ref={ref}
       data-chapter={0}
       data-chapter-id="hero"
@@ -292,7 +301,7 @@ export const HeroSection = memo(function HeroSection() {
       onMouseMove={onMouseMove}
     >
       {/* ── Background layers ── */}
-      <motion.div
+      <m.div
         className={styles.blueprintGrid}
         style={{ opacity: bgOpacity } as unknown as React.CSSProperties}
       />
@@ -340,11 +349,11 @@ export const HeroSection = memo(function HeroSection() {
       <div className="w-full max-w-[1200px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
           {/* Left: PRAKASH */}
-          <motion.div
+          <m.div
             className="md:col-span-7 relative"
             style={{ y, x: nameX } as unknown as React.CSSProperties}
           >
-            <motion.h1
+            <m.h1
               className="text-[clamp(3.5rem,12vw,9rem)] font-black leading-[0.8] tracking-[-0.05em] select-none"
               style={{ color: "var(--color-ink)" }}
               initial={{ opacity: 0, x: -40 }}
@@ -356,32 +365,23 @@ export const HeroSection = memo(function HeroSection() {
               }}
             >
               <PrakashWord />
-            </motion.h1>
+            </m.h1>
 
-            <motion.div
+            <m.div
               className="hidden md:block absolute -right-6 top-0 w-[3px] bg-red/60"
               initial={{ scaleY: 0, originY: 0 }}
               animate={{ scaleY: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
               style={{ height: "120%" }}
             />
-          </motion.div>
+          </m.div>
 
           {/* Right: SHRESTHA + title */}
-          <motion.div
+          <m.div
             className="md:col-span-5 md:pl-6"
-            style={
-              {
-                y: useTransform(
-                  scrollYProgress,
-                  [0, 1],
-                  [0, reduced ? 0 : -20],
-                ),
-                x: surnameX,
-              } as unknown as React.CSSProperties
-            }
+            style={{ y: surnameY, x: surnameX } as unknown as React.CSSProperties}
           >
-            <motion.h2
+            <m.h2
               className="text-[clamp(1.8rem,5vw,4rem)] font-black leading-[0.85] tracking-[-0.06em] select-none"
               style={{ color: "var(--color-ink)" }}
               initial={{ opacity: 0, x: 40 }}
@@ -393,7 +393,7 @@ export const HeroSection = memo(function HeroSection() {
               }}
             >
               {"SHRESTHA".split("").map((c, i) => (
-                <motion.span
+                <m.span
                   key={i}
                   className={styles.nameLetter}
                   style={{ color: "var(--color-ink)" }}
@@ -407,12 +407,12 @@ export const HeroSection = memo(function HeroSection() {
                   }}
                 >
                   {c}
-                </motion.span>
+                </m.span>
               ))}
-            </motion.h2>
+            </m.h2>
 
             {/* Title label box */}
-            <motion.div
+            <m.div
               className="mt-4 inline-block border-2 px-4 py-2"
               style={{
                 borderColor: "var(--border-strong)",
@@ -428,17 +428,17 @@ export const HeroSection = memo(function HeroSection() {
               >
                 Full Stack Engineer
               </span>
-            </motion.div>
+            </m.div>
 
             {/* Personality traits */}
-            <motion.div
+            <m.div
               className="mt-6 flex flex-wrap gap-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 1.0 }}
             >
               {traits.map((t, i) => (
-                <motion.span
+                <m.span
                   key={t}
                   className="text-[0.6rem] sm:text-[0.65rem] px-2.5 py-1 border font-medium cursor-default"
                   style={{
@@ -454,12 +454,12 @@ export const HeroSection = memo(function HeroSection() {
                   transition={{ type: "spring", stiffness: 300, damping: 15 }}
                 >
                   {t}
-                </motion.span>
+                </m.span>
               ))}
-            </motion.div>
+            </m.div>
 
             {/* CTA links */}
-            <motion.div
+            <m.div
               className="mt-8 flex gap-6 flex-wrap"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -477,12 +477,12 @@ export const HeroSection = memo(function HeroSection() {
                   important={l.important}
                 />
               ))}
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
 
         {/* Bottom caption */}
-        <motion.div
+        <m.div
           className="mt-12 md:mt-16 flex items-center gap-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -502,11 +502,11 @@ export const HeroSection = memo(function HeroSection() {
             className="h-px flex-1"
             style={{ background: "var(--border-default)" }}
           />
-        </motion.div>
+        </m.div>
       </div>
 
       <ScrollIndicator />
-    </motion.section>
+    </m.section>
   );
 });
 
@@ -524,7 +524,7 @@ const CTA = memo(function CTA({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <motion.a
+    <m.a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
@@ -551,24 +551,24 @@ const CTA = memo(function CTA({
       whileTap={{ scale: 0.95 }}
     >
       {important && (
-        <motion.span className="absolute -top-1 -right-1 text-[0.4rem] text-red/30">
+        <m.span className="absolute -top-1 -right-1 text-[0.4rem] text-red/30">
           ◆
-        </motion.span>
+        </m.span>
       )}
-      <motion.div
+      <m.div
         className={styles.ctaUnderline}
         initial={{ scaleX: 0 }}
         animate={hovered ? { scaleX: 1 } : { scaleX: 0 }}
         transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
       />
-      <motion.div
+      <m.div
         className={styles.ctaInk}
         animate={
           hovered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }
         }
         transition={{ duration: 0.3 }}
       />
-      <motion.span
+      <m.span
         animate={
           hovered
             ? { x: 3, color: "var(--color-red)" }
@@ -582,7 +582,7 @@ const CTA = memo(function CTA({
         transition={{ duration: 0.2 }}
       >
         {label}
-      </motion.span>
-    </motion.a>
+      </m.span>
+    </m.a>
   );
 });

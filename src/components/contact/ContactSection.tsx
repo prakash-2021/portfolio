@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { m, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { site } from "@/lib/site";
 import { Mascot } from "@/components/mascot/Mascot";
@@ -35,7 +35,7 @@ function PaperClip({ className }: { className?: string }) {
 
 function Stamp({ text, color, className }: { text: string; color: string; className?: string }) {
   return (
-    <motion.div
+    <m.div
       className={cn(styles.stamp, className)}
       style={{ borderColor: `${color}50`, color }}
       initial={{ scale: 0, rotate: -10 }}
@@ -43,7 +43,7 @@ function Stamp({ text, color, className }: { text: string; color: string; classN
       transition={{ type: "spring", stiffness: 200, damping: 12 }}
     >
       {text}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -60,7 +60,7 @@ const socialLinks = [
 function SocialCard({ label, href, color, index, highlight }: { label: string; href: string; color: string; index: number; highlight?: boolean }) {
   const [hovered, setHovered] = useState(false);
   return (
-    <motion.a
+    <m.a
       href={href}
       target="_blank" rel="noopener noreferrer"
       className={cn(styles.socialCard, highlight && styles.socialCardHighlight)}
@@ -75,20 +75,20 @@ function SocialCard({ label, href, color, index, highlight }: { label: string; h
       whileTap={{ scale: 0.97 }}
       data-cursor-link
     >
-      <motion.div
+      <m.div
         className={styles.socialCardGlow}
         animate={hovered ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.3 }}
       />
       <span className={styles.socialCardLabel}>{label}</span>
-      <motion.span
+      <m.span
         className={styles.socialCardArrow}
         animate={hovered ? { x: 3, opacity: 1 } : { x: 0, opacity: 0.3 }}
         transition={{ duration: 0.2 }}
       >
         →
-      </motion.span>
-    </motion.a>
+      </m.span>
+    </m.a>
   );
 }
 
@@ -120,21 +120,21 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
 
   if (state === "done") {
     return (
-      <motion.div
+      <m.div
         className={styles.doneState}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
         <Stamp text="CONFIDENTIAL" color="var(--color-red)" className="mb-4" />
-        <motion.div
+        <m.div
           className={styles.doneIcon}
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 12, delay: 0.2 }}
         >
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <motion.path
+            <m.path
               d="M6 18l7 7 13-13"
               stroke="var(--color-green)"
               strokeWidth="3"
@@ -145,32 +145,32 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
               transition={{ duration: 0.5, delay: 0.4 }}
             />
           </svg>
-        </motion.div>
-        <motion.h3
+        </m.div>
+        <m.h3
           className={styles.doneTitle}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.6 }}
         >
           MISSION RECEIVED
-          <motion.span
+          <m.span
             className={styles.doneStamp}
             initial={{ opacity: 0, rotate: -12, scale: 0.6 }}
             animate={{ opacity: 1, rotate: -4, scale: 1 }}
             transition={{ type: "spring", stiffness: 160, damping: 12, delay: 0.8 }}
           >
             ✓
-          </motion.span>
-        </motion.h3>
-        <motion.p
+          </m.span>
+        </m.h3>
+        <m.p
           className={styles.doneText}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.8 }}
         >
           I&apos;ll get back to you soon.
-        </motion.p>
-        <motion.button
+        </m.p>
+        <m.button
           className={styles.resetBtn}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -178,8 +178,8 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
           onClick={() => { setName(""); setEmail(""); setDetails(""); setPriority("Medium"); setState("idle"); onStateChange("idle"); }}
         >
           Send another mission →
-        </motion.button>
-      </motion.div>
+        </m.button>
+      </m.div>
     );
   }
 
@@ -196,7 +196,7 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
   };
 
   return (
-    <motion.form
+    <m.form
       className={styles.form}
       onSubmit={handleSubmit}
       initial={{ opacity: 0 }}
@@ -219,12 +219,12 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
             onBlur={() => setFocused(null)}
             data-cursor-input
           />
-          <motion.div
+          <m.div
             className={styles.inputGlow}
             animate={focused === "name" ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.3 }}
           />
-          <motion.div
+          <m.div
             className={styles.inputLine}
             animate={focused === "name" ? { scaleX: 1 } : { scaleX: 0 }}
             transition={{ duration: 0.3 }}
@@ -248,12 +248,12 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
             onBlur={() => setFocused(null)}
             data-cursor-input
           />
-          <motion.div
+          <m.div
             className={styles.inputGlow}
             animate={focused === "email" ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.3 }}
           />
-          <motion.div
+          <m.div
             className={styles.inputLine}
             animate={focused === "email" ? { scaleX: 1 } : { scaleX: 0 }}
             transition={{ duration: 0.3 }}
@@ -277,12 +277,12 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
             onBlur={() => setFocused(null)}
             data-cursor-input
           />
-          <motion.div
+          <m.div
             className={styles.inputGlow}
             animate={focused === "details" ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.3 }}
           />
-          <motion.div
+          <m.div
             className={styles.inputLine}
             animate={focused === "details" ? { scaleX: 1 } : { scaleX: 0 }}
             transition={{ duration: 0.3 }}
@@ -296,24 +296,23 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
           {PRIORITIES.map((p) => {
             const isActive = priority === p;
             return (
-              <motion.button
+              <m.button
                 key={p}
                 type="button"
                 className={cn(styles.priorityBtn, isActive && styles.priorityActive)}
                 onClick={() => setPriority(p)}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                layout
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 {p}
-              </motion.button>
+              </m.button>
             );
           })}
         </div>
       </div>
 
-      <motion.button
+      <m.button
         type="submit"
         className={styles.submitBtn}
         disabled={state === "submitting"}
@@ -321,26 +320,26 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
         whileTap={{ scale: 0.97 }}
       >
         {state === "submitting" ? (
-          <motion.span
+          <m.span
             className={styles.submittingText}
             animate={{ opacity: [1, 0.3, 1] }}
             transition={{ repeat: Infinity, duration: 1.2 }}
           >
             TRANSMITTING
-            <motion.span
+            <m.span
               className={styles.dots}
               animate={{ opacity: [0, 1, 0] }}
               transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
             >
               ...
-            </motion.span>
-          </motion.span>
+            </m.span>
+          </m.span>
         ) : (
           <span>TRANSMIT MESSAGE →</span>
         )}
-      </motion.button>
+      </m.button>
 
-      <motion.div
+      <m.div
         className={styles.handwrittenNote}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -348,8 +347,8 @@ function MissionForm({ onStateChange }: { onStateChange: (s: "idle" | "submittin
         transition={{ duration: 0.5, delay: 0.8 }}
       >
         All missions are reviewed within 24 hours
-      </motion.div>
-    </motion.form>
+      </m.div>
+    </m.form>
   );
 }
 
@@ -374,7 +373,7 @@ export function ContactSection() {
   }, []);
 
   return (
-    <motion.section
+    <m.section
       ref={ref}
       data-chapter={6}
       data-chapter-id="contact"
@@ -390,7 +389,7 @@ export function ContactSection() {
       <div className={styles.coordLabel}>/// 27.71°N 85.32°E // 1440 BC</div>
 
       <div className="max-w-[1100px] mx-auto">
-        <motion.div
+        <m.div
           className="mb-12 sm:mb-16"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -398,11 +397,11 @@ export function ContactSection() {
           transition={{ duration: 0.5 }}
         >
           <span className="comic-caption">/// Chapter 07 — Final Frame</span>
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
           {/* Left: Mascot + message */}
-          <motion.div
+          <m.div
             className="md:col-span-5 md:sticky md:top-24"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -415,15 +414,15 @@ export function ContactSection() {
                 action={mascotAction}
                 className={styles.mascotHero}
               />
-              <motion.div
+              <m.div
                 className={styles.mascotLabel}
                 animate={formState === "done" ? { opacity: 1 } : { opacity: 0.4 }}
               >
                 {formState === "done" ? "Mission complete!" : "Your next mission awaits"}
-              </motion.div>
+              </m.div>
             </div>
 
-            <motion.h2
+            <m.h2
               className={styles.title}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -433,9 +432,9 @@ export function ContactSection() {
               THE FINAL
               <br />
               <span className="text-red">ISSUE</span>
-            </motion.h2>
+            </m.h2>
 
-            <motion.p
+            <m.p
               className={styles.subtitle}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -445,9 +444,9 @@ export function ContactSection() {
               Every great product starts with a conversation.
               <br />
               Ready to write the next chapter?
-            </motion.p>
+            </m.p>
 
-            <motion.div
+            <m.div
               className={styles.divider}
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
@@ -457,7 +456,7 @@ export function ContactSection() {
 
             <AnimatePresence>
               {formState === "done" && (
-                <motion.div
+                <m.div
                   className={styles.endingNote}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -472,11 +471,11 @@ export function ContactSection() {
                     <Mascot size={20} action="walk" className="opacity-30" />
                     <span className={styles.exitLabel}>Carrying your mission...</span>
                   </div>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
 
-            <motion.div
+            <m.div
               className={styles.socialRow}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -486,11 +485,11 @@ export function ContactSection() {
               {socialLinks.map((l, i) => (
                 <SocialCard key={l.label} {...l} index={i} />
               ))}
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
 
           {/* Right: Mission Brief */}
-          <motion.div
+          <m.div
             className="md:col-span-7"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -520,9 +519,9 @@ export function ContactSection() {
 
               <div className={styles.cornerFold} />
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
-    </motion.section>
+    </m.section>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { toolCategories, type Tool, type ToolCategory } from "@/lib/tools";
 import { cn } from "@/lib/cn";
@@ -25,7 +25,7 @@ const ToolLogo = memo(function ToolLogo({
     : `https://cdn.simpleicons.org/${tool.simpleIconSlug}/${accentColor.replace("#", "")}`
 
   return (
-    <motion.button
+    <m.button
       onClick={onClick}
       className={cn(styles.toolLogo, isExpanded && styles.toolLogoExpanded)}
       whileHover={{ y: -3, scale: 1.04 }}
@@ -49,7 +49,7 @@ const ToolLogo = memo(function ToolLogo({
       </div>
       <span className={styles.logoName}>{tool.name}</span>
       <span className={styles.logoExp}>{tool.experience}</span>
-    </motion.button>
+    </m.button>
   )
 })
 
@@ -57,7 +57,7 @@ const ToolLogo = memo(function ToolLogo({
 
 const ToolDetail = memo(function ToolDetail({ tool, accentColor }: { tool: Tool; accentColor: string }) {
   return (
-    <motion.div
+    <m.div
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: "auto", opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
@@ -73,7 +73,7 @@ const ToolDetail = memo(function ToolDetail({ tool, accentColor }: { tool: Tool;
         <div className={styles.detailSection}>
           <span className={styles.detailLabel}>Confidence</span>
           <div className={styles.confidenceBar}>
-            <motion.div
+            <m.div
               className={styles.confidenceFill}
               initial={{ scaleX: 0 }}
               animate={{ scaleX: tool.confidence / 5 }}
@@ -99,7 +99,7 @@ const ToolDetail = memo(function ToolDetail({ tool, accentColor }: { tool: Tool;
           <span className={styles.detailFun}>{tool.funFact}</span>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   )
 })
 
@@ -126,7 +126,7 @@ const CategoryPanel = memo(function CategoryPanel({
   } as React.CSSProperties
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       className={styles.categoryPanel}
       style={catColors}
@@ -163,7 +163,7 @@ const CategoryPanel = memo(function CategoryPanel({
       </AnimatePresence>
       <span className={styles.annotation}>{category.tools.length} tools</span>
       <div className={styles.halftoneCorner} />
-    </motion.div>
+    </m.div>
   )
 })
 
@@ -206,14 +206,14 @@ export function ToolkitSection() {
       <div className={styles.halftoneOverlay} />
 
       {/* Section header */}
-      <motion.div
+      <m.div
         className={styles.sectionHeader}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <motion.span
+        <m.span
           className={styles.sectionLabel}
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -221,7 +221,7 @@ export function ToolkitSection() {
           transition={{ duration: 0.4, delay: 0.05 }}
         >
           /// Equipment Inventory
-        </motion.span>
+        </m.span>
         <h2 className={styles.sectionTitle}>
           Engineering <span className={styles.sectionAccent}>Toolkit</span>
         </h2>
@@ -229,17 +229,17 @@ export function ToolkitSection() {
           Every tool I reach for when building products — organized by discipline.
           Click any logo to see how I use it.
         </p>
-      </motion.div>
+      </m.div>
 
       {/* Tooltip note */}
-      <motion.div
+      <m.div
         className={styles.noteSticky}
         initial={{ opacity: 0, rotate: -3, scale: 0.9 }}
         animate={isInView ? { opacity: 1, rotate: -2, scale: 1 } : { opacity: 0, rotate: -3, scale: 0.9 }}
         transition={{ duration: 0.5, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <span className={styles.noteText}>hover &amp; click any logo →</span>
-      </motion.div>
+      </m.div>
 
       {/* Category panels */}
       <div className={styles.panelsGrid}>
@@ -255,7 +255,7 @@ export function ToolkitSection() {
       </div>
 
       {/* Floating note at bottom */}
-      <motion.div
+      <m.div
         className={styles.footerNote}
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -264,7 +264,7 @@ export function ToolkitSection() {
       >
         <span className={styles.footerIcon}>⚡</span>
         <span>Stack evolves constantly — this is my current loadout.</span>
-      </motion.div>
+      </m.div>
     </section>
   )
 }

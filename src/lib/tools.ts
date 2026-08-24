@@ -62,6 +62,8 @@ export const toolCategories: ToolCategory[] = [
       { slug: "koa", name: "Koa.js", simpleIconSlug: "koajs", experience: "2 years", yearsUsed: 2, confidence: 4, projects: ["FYP Pet Haven", "API gateways"], favoriteFeature: "Async middleware pattern", funFact: "Koa's ctx pattern made Express feel ancient overnight." },
       { slug: "strapi", name: "Strapi", simpleIconSlug: "strapi", experience: "2 years", yearsUsed: 2, confidence: 4, projects: ["Achieve Treks", "CMS backends"], favoriteFeature: "Headless CMS with plugins", funFact: "Strapi's content type builder saved me weeks of boilerplate." },
       { slug: "sanity", name: "Sanity CMS", simpleIconSlug: "sanity", experience: "2 years", yearsUsed: 2, confidence: 3, projects: ["Content platforms", "Blogs"], favoriteFeature: "GROQ queries + real-time collaboration", funFact: "Sanity's portable text is the best rich text format I've worked with." },
+      { slug: "python", name: "Python", simpleIconSlug: "python", experience: "1 year", yearsUsed: 1, confidence: 3, projects: ["Automation scripts", "Data tooling"], favoriteFeature: "Readable syntax + the standard library", funFact: "I reach for Python whenever a task is faster to script than to click through." },
+      { slug: "fastapi", name: "FastAPI", simpleIconSlug: "fastapi", experience: "1 year", yearsUsed: 1, confidence: 3, projects: ["Internal APIs"], favoriteFeature: "Type hints that generate OpenAPI docs for free", funFact: "The auto-generated /docs page has saved me from writing a spec more than once." },
     ],
   },
   {

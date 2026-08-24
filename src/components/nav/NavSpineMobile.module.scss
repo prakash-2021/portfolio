@@ -13,6 +13,9 @@
   flex-direction: column;
   gap: 5px;
   transition: background 0.4s ease, border-color 0.4s ease;
+  /* The backdrop blur already re-samples the page behind this bar on every
+   * scroll frame; containment keeps the bar's own reflows out of that path. */
+  contain: layout paint;
 }
 
 .track {
@@ -76,7 +79,7 @@
   height: 1px;
   background: var(--text-muted);
   border-radius: 1px;
-  transition: all 0.25s ease;
+  transition: width 0.25s ease, background 0.25s ease, opacity 0.25s ease;
   flex-shrink: 0;
 }
 .nodeActive .dash {

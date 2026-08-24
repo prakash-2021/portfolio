@@ -1,12 +1,9 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback, memo } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
+import { m, useMotionValue, useSpring } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useMediaQuery } from "@/hooks/useDevice";
 import { useScrollProgress } from "@/lib/scroll-provider";
 import { cn } from "@/lib/cn";
 import styles from "./NavSpine.module.scss";
@@ -29,6 +26,9 @@ const chapters: Chapter[] = [
 
 export const NavSpine = memo(function NavSpine() {
   const reduced = useReducedMotion();
+  /* Both nav variants are mounted at every width and hidden with CSS. Only the
+   * visible one needs to observe sections and re-render on chapter change. */
+  const visible = useMediaQuery("(min-width: 1024px)");
   const { lenis } = useScrollProgress();
   const [activeIdx, setActiveIdx] = useState(0);
   const [navHovered, setNavHovered] = useState(false);
@@ -43,6 +43,7 @@ export const NavSpine = memo(function NavSpine() {
   const springProgress = useSpring(progress, { stiffness: 120, damping: 20 });
 
   useEffect(() => {
+    if (!visible) return;
     const els = document.querySelectorAll("[data-chapter]");
     if (!els.length) return;
     const observer = new IntersectionObserver(
@@ -68,7 +69,7 @@ export const NavSpine = memo(function NavSpine() {
     );
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [visible]);
 
   useEffect(() => {
     progress.set(activeIdx / (chapters.length - 1));
@@ -103,14 +104,14 @@ export const NavSpine = memo(function NavSpine() {
         setHoveredIdx(null);
       }}
     >
-      <motion.div
+      <m.div
         className={styles.paperBg}
         animate={{ opacity: navHovered ? 0.55 : 0 }}
         transition={{ duration: 0.35, ease: "easeOut" }}
       />
 
       <div className={styles.inkTrack}>
-        <motion.div
+        <m.div
           className={styles.inkStroke}
           style={{ scaleY: springProgress, originY: 0 }}
         />

@@ -292,12 +292,14 @@
   aspect-ratio: 16 / 12;
 }
 
+/* No static will-change: Framer drives the hover scale and applies it for the
+ * duration of that animation. Declaring it here kept a full-size texture
+ * promoted for every card on the page at once. */
 .arcImage {
   width: 100%;
   height: 100%;
   background-size: cover;
   background-position: center;
-  will-change: transform;
 }
 
 .arcOverlay {
