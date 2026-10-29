@@ -1,11 +1,11 @@
 {
-  "name": "Prakash Shrestha — Issue #001",
+  "name": "Prakash Shrestha · Full Stack Engineer",
   "short_name": "Prakash Shrestha",
-  "description": "Engineering portfolio of Prakash Shrestha. Full Stack Engineer, Product Thinker, Animation Nerd.",
+  "description": "Full stack engineer in Kathmandu. React, Next.js, Node.js, NestJS, FastAPI, PostgreSQL, AWS.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#faf8f3",
-  "theme_color": "#1a1a2e",
+  "background_color": "#f6f4ef",
+  "theme_color": "#0e0f11",
   "icons": [
     { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }

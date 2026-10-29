@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# prakashshrestha7.com.np
 
-## Getting Started
+Portfolio of Prakash Shrestha, full stack engineer. Next.js 16 (App Router), React 19, TypeScript (strict),
+Tailwind CSS v4. Every page is statically generated.
 
-First, run the development server:
+## Editing content
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+All copy lives in [`src/content/profile.ts`](src/content/profile.ts): profile, proof strip, case studies,
+the "Currently building" systems and architecture diagram, experience, education, skills and about.
+Any string containing `[TODO: …]` renders as a highlighted placeholder on the site, so gaps stay visible:
+
+```sh
+grep -n "\[TODO:" src/content/profile.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Case study screenshots are in `src/assets/projects/` (1600px-wide WebP; `next/image` serves AVIF/WebP at
+the right size). The resume is `public/Prakash_Shrestha_Resume.pdf`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+pnpm dev       # local dev server
+pnpm build     # production build (all routes static)
+pnpm budget    # after a build: fails if home-page JS > 165 KB or CSS > 15 KB gzipped
+pnpm lint
+```
 
-## Learn More
+## Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/app/                 routes: / , /work , /work/[slug] , OG images, sitemap, robots, 404
+src/components/home/     home page sections (Server Components)
+src/components/trace/    "Trace a request" diagram: server markup + lazily loaded enhancer
+src/components/*.tsx     header, footer, and the only client islands (theme, copy email, time, menu)
+src/content/profile.ts   all content
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Old URLs (`/projects`, `/projects/:slug`, the old CV filename) redirect permanently via `next.config.ts`.

@@ -1,78 +1,75 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "@/styles/globals.scss";
-import { site } from "@/lib/site";
-import { LayoutClient } from "./layout-client";
+import { Bricolage_Grotesque, Inter } from "next/font/google";
+import { DesktopMotion } from "@/components/desktop-motion";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { person, site } from "@/content/profile";
+import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const display = Bricolage_Grotesque({
   subsets: ["latin"],
+  variable: "--font-bricolage",
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sans = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
   display: "swap",
 });
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf8f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#17181d" },
+    { media: "(prefers-color-scheme: light)", color: "#f6f4ef" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e0f11" },
   ],
 };
 
 export const metadata: Metadata = {
-  title: {
-    default: `${site.name} · Issue #001`,
-    template: `%s · ${site.name}`,
-  },
+  metadataBase: new URL(site.url),
+  title: { default: site.title, template: `%s · ${person.name}` },
   description: site.description,
+  applicationName: person.name,
+  authors: [{ name: person.name, url: site.url }],
+  creator: person.name,
+  openGraph: {
+    type: "website",
+    siteName: person.name,
+    locale: "en_GB",
+    title: site.title,
+    description: site.description,
+    url: "/",
+  },
+  twitter: { card: "summary_large_image", title: site.title, description: site.description },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "32x32" },
       { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    other: [
-      { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#1a1a2e" },
-    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   manifest: "/site.webmanifest",
-  other: {
-    "msapplication-TileColor": "#1a1a2e",
-    "msapplication-config": "/browserconfig.xml",
-  },
-  openGraph: {
-    title: `${site.name} · Issue #001`,
-    description: site.description,
-    siteName: site.name,
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.name} · Issue #001`,
-    description: site.description,
-  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+/* Applies a stored light/dark override before first paint. Kept tiny on purpose. */
+const themeScript = `try{var s=localStorage.getItem("color-scheme");if(s)document.querySelector('meta[name="color-scheme"]').content=s}catch(e){}`;
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${display.variable} ${sans.variable}`} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://cdn.simpleicons.org" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
+        <meta name="color-scheme" content="light dark" suppressHydrationWarning />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
-        <LayoutClient>{children}</LayoutClient>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <SiteHeader />
+        <main id="main" tabIndex={-1}>
+          {children}
+        </main>
+        <SiteFooter />
+        <DesktopMotion />
       </body>
     </html>
   );
