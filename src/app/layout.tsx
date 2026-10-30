@@ -12,10 +12,13 @@ const display = Bricolage_Grotesque({
   display: "swap",
 });
 
+// Not preloaded: only the display face (the hero name, i.e. the LCP text) is needed for the first
+// paint, so body text renders in the size-matched fallback and swaps in without competing for bandwidth.
 const sans = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  preload: false,
 });
 
 export const viewport: Viewport = {
