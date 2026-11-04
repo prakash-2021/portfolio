@@ -44,6 +44,7 @@ export const metadata: Metadata = {
     url: "/",
   },
   twitter: { card: "summary_large_image", title: site.title, description: site.description },
+  verification: { google: "zoiJfCRTfCZcXEWng2YaOwdtaFIQzuMymRlML0M5B6k" },
 };
 
 /* Applies a stored light/dark override before first paint. Kept tiny on purpose. */
