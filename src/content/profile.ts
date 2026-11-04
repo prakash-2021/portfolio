@@ -218,7 +218,7 @@ export const caseStudies: CaseStudy[] = [
       "Aioncy is an AI employee that answers customer conversations, captures leads and handles support across a business's channels. As one of four co-founders I lead engineering and own the client-facing product end to end: the React dashboard, its FastAPI backend, n8n automation and the Next.js marketing site.",
     client: "Aioncy (own product)",
     company: "Co-founder",
-    year: "2026 [TODO: confirm start year]",
+    year: "2026",
     role: "Co-founder and engineering lead",
     stack: ["React", "Next.js", "FastAPI", "n8n", "LLMs"],
     link: "https://aioncy.com",
@@ -253,8 +253,8 @@ export const caseStudies: CaseStudy[] = [
       "Leads scored by how likely they are to convert",
     ],
     architecture:
-      "React dashboard and Next.js marketing site → FastAPI backend → n8n automation workflows and the AI layer. [TODO: database, hosting and LLM provider]",
-    result: "Launching soon. [TODO: early-access waitlist numbers or pilot customers]",
+      "React dashboard and Next.js marketing site → FastAPI backend → n8n automation workflows and the AI layer.",
+    result: "Launching soon.",
     lessons: [
       "A guided onboarding path matters most when the product is new to the user.",
       "AI needs a clear handoff to a human, or businesses won't trust it with customers.",
@@ -459,7 +459,7 @@ export const caseStudies: CaseStudy[] = [
       "A complete pet adoption system where users browse pets, view details and manage adoption requests. I designed the database, wrote the backend and built the frontend from scratch.",
     client: "Final-year project, University of Wolverhampton",
     company: "Academic",
-    year: "2023 [TODO: confirm year; the BSc ran 2023 2025 - confirm]",
+    year: "2023 – 2025",
     role: "Full stack developer",
     stack: ["React", "Node.js", "Koa.js", "Express", "PostgreSQL", "Socket.IO", "JWT"],
     link: "https://fyp-pethaven.netlify.app",
