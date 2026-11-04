@@ -40,7 +40,7 @@ export function Building() {
                   rel="noopener"
                   className="link link-accent mt-3 inline-flex items-center gap-1 self-start text-sm"
                 >
-                  Visit the live site
+                  {p.linkLabel ?? "Visit the live site"}
                   <ArrowUpRight className="size-4" />
                 </a>
               )}
