@@ -4,6 +4,7 @@
  */
 import type { StaticImageData } from "next/image";
 import achieveTreksShot from "@/assets/projects/achievetrek.webp";
+import aioncyShot from "@/assets/projects/aioncy.webp";
 import beefManduShot from "@/assets/projects/beefmandu.webp";
 import biskajatraShot from "@/assets/projects/biskajatra.webp";
 import cutsAndCoffeeShot from "@/assets/projects/cutsandcoffee.webp";
@@ -102,6 +103,56 @@ export type CaseStudy = {
 
 export const caseStudies: CaseStudy[] = [
   {
+    slug: "achieve-treks",
+    title: "Achieve Treks",
+    summary: "A multi-language trekking platform with REST APIs, a CMS dashboard and technical SEO.",
+    description:
+      "A travel and trekking platform where people explore packages, itineraries and travel details. I worked across the frontend and backend: REST APIs, a CMS dashboard, multi-language support and technical SEO.",
+    client: "Trekking and expedition company, Nepal",
+    company: "Ottr Technology",
+    year: "2025",
+    role: "Full stack developer",
+    stack: ["Next.js", "Node.js", "Strapi", "PostgreSQL", "REST APIs", "Tailwind CSS"],
+    link: "https://www.achievetreks.com/en",
+    image: achieveTreksShot,
+    imageAlt:
+      "Achieve Treks homepage: “Experience Nepal's Enchanting Landscapes” over snow-capped Himalayan peaks, with an Enquire Now button.",
+    featured: true,
+    metric: { value: "3", label: "languages, one CMS" },
+    mission: "A multi-language trekking platform that feels as adventurous as the Himalayas it shows.",
+    problem:
+      "The old site was static HTML with no CMS, no multi-language support and poor mobile performance. Every content update needed a developer.",
+    approach:
+      "Strapi as a headless CMS so the content team works on its own, Next.js for fast server-rendered pages, and i18n routing for 3 languages. I built the CMS dashboard first so the client could add content while we built the frontend.",
+    built: {
+      frontend: [
+        "Next.js pages with i18n routing for English, Japanese and Korean",
+        "Trek pages with structured data for search",
+        "Itinerary pages with difficulty ratings",
+      ],
+      backend: [
+        "REST APIs for packages, itineraries and travel details",
+        "CMS dashboard that non-technical editors use daily",
+      ],
+      infrastructure: ["Technical SEO: structured data, metadata, multi-language routing"],
+    },
+    features: [
+      "Multi-language support (English, Japanese, Korean) with i18n routing",
+      "CMS dashboard for non-technical content editors",
+      "SEO-optimised trek pages with structured data",
+      "Interactive itinerary builder with difficulty ratings",
+    ],
+    architecture:
+      "Next.js with i18n routing → Strapi CMS (self-hosted) → PostgreSQL → Redis caching layer. Deployed on Vercel with automated backups.",
+    result:
+      "300% increase in organic traffic within 3 months. The content team publishes updates without engineering support.",
+    lessons: [
+      "Building the CMS first lets the client move in parallel and speeds up delivery.",
+      "Plan i18n from day one. Retrofitting it is painful.",
+      "Structured data is the highest-return SEO work on content sites.",
+    ],
+  },
+  {
     slug: "invicta-kent",
     title: "Invicta Kent Management",
     summary: "A full property management system for a UK company, built, deployed and run by me.",
@@ -160,53 +211,53 @@ export const caseStudies: CaseStudy[] = [
     ],
   },
   {
-    slug: "achieve-treks",
-    title: "Achieve Treks",
-    summary: "A multi-language trekking platform with REST APIs, a CMS dashboard and technical SEO.",
+    slug: "aioncy",
+    title: "Aioncy",
+    summary: "An AI employee for business conversations, leads and support. I co-founded it and lead engineering.",
     description:
-      "A travel and trekking platform where people explore packages, itineraries and travel details. I worked across the frontend and backend: REST APIs, a CMS dashboard, multi-language support and technical SEO.",
-    client: "Trekking and expedition company, Nepal",
-    company: "Ottr Technology",
-    year: "2025",
-    role: "Full stack developer",
-    stack: ["Next.js", "Node.js", "Strapi", "PostgreSQL", "REST APIs", "Tailwind CSS"],
-    link: "https://www.achievetreks.com/en",
-    image: achieveTreksShot,
+      "Aioncy is an AI employee that answers customer conversations, captures leads and handles support across a business's channels. As one of four co-founders I lead engineering and own the client-facing product end to end: the React dashboard, its FastAPI backend, n8n automation and the Next.js marketing site.",
+    client: "Aioncy (own product)",
+    company: "Co-founder",
+    year: "2026 [TODO: confirm start year]",
+    role: "Co-founder and engineering lead",
+    stack: ["React", "Next.js", "FastAPI", "n8n", "LLMs"],
+    link: "https://aioncy.com",
+    image: aioncyShot,
     imageAlt:
-      "Achieve Treks homepage: “Experience Nepal's Enchanting Landscapes” over snow-capped Himalayan peaks, with an Enquire Now button.",
+      "Aioncy homepage: “Your AI Employee for Conversations, Leads & Support” above tilted cards showing AI chat conversations and lead capture.",
     featured: true,
-    metric: { value: "3", label: "languages, one CMS" },
-    mission: "A multi-language trekking platform that feels as adventurous as the Himalayas it shows.",
+    metric: { value: "4", label: "products I own: dashboard, API, automation, site" },
+    mission: "Give businesses an AI employee that handles conversations, leads and support, so engagement stops being a full-time job.",
     problem:
-      "The old site was static HTML with no CMS, no multi-language support and poor mobile performance. Every content update needed a developer.",
+      "Businesses lose leads and customers in unanswered messages spread across channels. Answering them all by hand takes a full-time person.",
     approach:
-      "Strapi as a headless CMS so the content team works on its own, Next.js for fast server-rendered pages, and i18n routing for 3 languages. I built the CMS dashboard first so the client could add content while we built the frontend.",
+      "I built the business dashboard from our Figma designs around one guided path: connect a channel, train the AI, test it in a sandbox, then go live. A FastAPI backend powers the dashboard, n8n runs the automation workflows, and a Next.js site handles marketing and the early-access waitlist.",
     built: {
       frontend: [
-        "Next.js pages with i18n routing for English, Japanese and Korean",
-        "Trek pages with structured data for search",
-        "Itinerary pages with difficulty ratings",
+        "React business dashboard built from our Figma designs",
+        "Guided onboarding: connect a channel, train the AI, test it in a sandbox, go live",
+        "Four-panel unified inbox with AI and human takeover states",
+        "AI controls for tone, language, working hours, handoff rules and guardrails",
+        "Knowledge base management: website sync, PDF upload and Q&A pairs",
+        "Channel management, including a customisable, embeddable chat widget",
+        "Lead tracking with AI conversion scores, analytics, and plan, billing and credit management",
+        "Next.js marketing site with product showcase, pricing and the early-access waitlist",
       ],
-      backend: [
-        "REST APIs for packages, itineraries and travel details",
-        "CMS dashboard that non-technical editors use daily",
-      ],
-      infrastructure: ["Technical SEO: structured data, metadata, multi-language routing"],
+      backend: ["Designed and built the FastAPI APIs that power the dashboard"],
+      infrastructure: ["Contributed to the platform's n8n automation workflows"],
     },
     features: [
-      "Multi-language support (English, Japanese, Korean) with i18n routing",
-      "CMS dashboard for non-technical content editors",
-      "SEO-optimised trek pages with structured data",
-      "Interactive itinerary builder with difficulty ratings",
+      "Unified inbox where people can take over from the AI at any point",
+      "AI trained on the business's own website, PDFs and Q&A pairs",
+      "Embeddable chat widget the business customises",
+      "Leads scored by how likely they are to convert",
     ],
     architecture:
-      "Next.js with i18n routing → Strapi CMS (self-hosted) → PostgreSQL → Redis caching layer. Deployed on Vercel with automated backups.",
-    result:
-      "300% increase in organic traffic within 3 months. The content team publishes updates without engineering support.",
+      "React dashboard and Next.js marketing site → FastAPI backend → n8n automation workflows and the AI layer. [TODO: database, hosting and LLM provider]",
+    result: "Launching soon. [TODO: early-access waitlist numbers or pilot customers]",
     lessons: [
-      "Building the CMS first lets the client move in parallel and speeds up delivery.",
-      "Plan i18n from day one. Retrofitting it is painful.",
-      "Structured data is the highest-return SEO work on content sites.",
+      "A guided onboarding path matters most when the product is new to the user.",
+      "AI needs a clear handoff to a human, or businesses won't trust it with customers.",
     ],
   },
   {
@@ -504,6 +555,8 @@ export type BuildingProject = {
   name: string;
   status: string;
   link?: string;
+  /** Link text; defaults to "Visit the live site". */
+  linkLabel?: string;
   stack: string[];
   what: string;
   built: string[];
@@ -515,6 +568,8 @@ export const building: BuildingProject[] = [
   {
     name: "OSHC",
     status: "Pre-launch",
+    link: "https://uat.oshccompare.com.au/",
+    linkLabel: "Preview the staging site",
     stack: ["Next.js", "NestJS", "PostgreSQL", "Redis", "BullMQ", "AWS"],
     what: "A platform for comparing and buying Overseas Student Health Cover, the health insurance international students need in Australia, sold direct and through education agents.",
     built: [
