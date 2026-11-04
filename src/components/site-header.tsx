@@ -41,7 +41,7 @@ export function SiteHeader() {
             Resume
           </a>
           <ThemeToggle />
-          <MobileNav links={[...nav, { href: person.links.resume, label: "Resume (PDF)" }]} />
+          <MobileNav links={nav} />
         </div>
       </div>
     </header>
